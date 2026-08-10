@@ -19,16 +19,16 @@
       "RelativeMoniker": "D:0:0:{C85D00A3-7091-48E4-84F9-D6CF215B4185}|Metin2Bot\\Metin2Bot.csproj|solutionrelative:metin2bot\\metin2oficial\\accionesimg.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{C85D00A3-7091-48E4-84F9-D6CF215B4185}|Metin2Bot\\Metin2Bot.csproj|d:\\gon\\metin\\repos\\original\\metin2bot\\screenshots\\screenshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C85D00A3-7091-48E4-84F9-D6CF215B4185}|Metin2Bot\\Metin2Bot.csproj|solutionrelative:metin2bot\\screenshots\\screenshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{C85D00A3-7091-48E4-84F9-D6CF215B4185}|Metin2Bot\\Metin2Bot.csproj|d:\\gon\\metin\\repos\\original\\metin2bot\\imagereader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C85D00A3-7091-48E4-84F9-D6CF215B4185}|Metin2Bot\\Metin2Bot.csproj|solutionrelative:metin2bot\\imagereader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C85D00A3-7091-48E4-84F9-D6CF215B4185}|Metin2Bot\\Metin2Bot.csproj|d:\\gon\\metin\\repos\\original\\metin2bot\\mibutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C85D00A3-7091-48E4-84F9-D6CF215B4185}|Metin2Bot\\Metin2Bot.csproj|solutionrelative:metin2bot\\mibutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C85D00A3-7091-48E4-84F9-D6CF215B4185}|Metin2Bot\\Metin2Bot.csproj|d:\\gon\\metin\\repos\\original\\metin2bot\\screenshots\\screenshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C85D00A3-7091-48E4-84F9-D6CF215B4185}|Metin2Bot\\Metin2Bot.csproj|solutionrelative:metin2bot\\screenshots\\screenshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -48,10 +48,11 @@
               "RelativeDocumentMoniker": "Metin2Bot\\Program.cs",
               "ToolTip": "D:\\Gon\\metin\\repos\\Original\\Metin2Bot\\Program.cs",
               "RelativeToolTip": "Metin2Bot\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-05T14:11:47.288Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -61,7 +62,7 @@
               "RelativeDocumentMoniker": "Metin2Bot\\Metin2Oficial\\Metin1600x900.cs",
               "ToolTip": "D:\\Gon\\metin\\repos\\Original\\Metin2Bot\\Metin2Oficial\\Metin1600x900.cs",
               "RelativeToolTip": "Metin2Bot\\Metin2Oficial\\Metin1600x900.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-08T16:02:30.843Z",
               "IsPinned": true,
@@ -69,13 +70,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 4,
               "Title": "ScreenShot.cs",
               "DocumentMoniker": "D:\\Gon\\metin\\repos\\Original\\Metin2Bot\\Screenshots\\ScreenShot.cs",
               "RelativeDocumentMoniker": "Metin2Bot\\Screenshots\\ScreenShot.cs",
               "ToolTip": "D:\\Gon\\metin\\repos\\Original\\Metin2Bot\\Screenshots\\ScreenShot.cs",
               "RelativeToolTip": "Metin2Bot\\Screenshots\\ScreenShot.cs",
-              "ViewState": "AgIAAC4AAAAAAAAAAAAawE8AAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE8AAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-26T15:36:24.718Z",
               "IsPinned": true
@@ -88,26 +89,26 @@
               "RelativeDocumentMoniker": "Metin2Bot\\Metin2Oficial\\AccionesImg.cs",
               "ToolTip": "D:\\Gon\\metin\\repos\\Original\\Metin2Bot\\Metin2Oficial\\AccionesImg.cs",
               "RelativeToolTip": "Metin2Bot\\Metin2Oficial\\AccionesImg.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAAowAwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-26T15:34:58.547Z",
               "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "ImageReader.cs",
               "DocumentMoniker": "D:\\Gon\\metin\\repos\\Original\\Metin2Bot\\ImageReader.cs",
               "RelativeDocumentMoniker": "Metin2Bot\\ImageReader.cs",
               "ToolTip": "D:\\Gon\\metin\\repos\\Original\\Metin2Bot\\ImageReader.cs",
               "RelativeToolTip": "Metin2Bot\\ImageReader.cs",
-              "ViewState": "AgIAAEQAAAAAAAAAAAAlwGYAAAAcAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGYAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-01T01:01:37.904Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "MiButton.cs",
               "DocumentMoniker": "D:\\Gon\\metin\\repos\\Original\\Metin2Bot\\MiButton.cs",
               "RelativeDocumentMoniker": "Metin2Bot\\MiButton.cs",
@@ -131,7 +132,7 @@
               "RelativeDocumentMoniker": "Metin2Bot\\Metin2.cs",
               "ToolTip": "D:\\Gon\\metin\\repos\\Original\\Metin2Bot\\Metin2.cs",
               "RelativeToolTip": "Metin2Bot\\Metin2.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAQwDIAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAgwCcAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-31T13:00:19.904Z",
               "EditorCaption": ""

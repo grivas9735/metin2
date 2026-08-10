@@ -5,6 +5,7 @@ namespace Metin2Bot.Metin2Oficial
     public static class Metin1600x900
     {
         private static int minutosApagado = 999999; // (60,1) (120,2) (180,3) (240,4) (360,6) (480,8)
+        private static int minutosPausado = 999999;
 
         private static MiButton btn = new MiButton();
 
@@ -15,6 +16,12 @@ namespace Metin2Bot.Metin2Oficial
         {
             await Task.Delay(TimeSpan.FromMinutes(minutosApagado));
             Shutdown();
+        }
+
+        public static async Task AwaitPause()
+        {
+            await Task.Delay(TimeSpan.FromMinutes(minutosPausado));
+            Environment.Exit(0);
         }
 
         public static void IntercambiarMetines(ref Metin2 metin1, ref Metin2? metin2)
@@ -33,6 +40,7 @@ namespace Metin2Bot.Metin2Oficial
             var metins = MetinFactory.GetLeveleoConChami();
 
             AwaitShutdown();
+            AwaitPause();
 
             var metin1 = metins.First();
             var metin2 = metins.Count == 2 ? metins.LastOrDefault() : null;
@@ -67,6 +75,7 @@ namespace Metin2Bot.Metin2Oficial
             var metins = MetinFactory.GetAll();
             
             AwaitShutdown();
+            AwaitPause();
 
             while (true)
             {
@@ -95,6 +104,7 @@ namespace Metin2Bot.Metin2Oficial
             var metins = MetinFactory.GetAll();
 
             AwaitShutdown();
+            AwaitPause();
 
             while (true)
             {
@@ -119,6 +129,7 @@ namespace Metin2Bot.Metin2Oficial
             var metins = MetinFactory.GetAll();
 
             AwaitShutdown();
+            AwaitPause();
 
             while (true)
             {

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Metin2Bot")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dd221d189f6b8aba4b3682330b7f08c137c9cca5")]
 [assembly: System.Reflection.AssemblyProductAttribute("Metin2Bot")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Metin2Bot")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

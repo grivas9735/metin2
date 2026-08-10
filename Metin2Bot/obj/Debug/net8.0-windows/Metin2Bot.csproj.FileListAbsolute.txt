@@ -233,3 +233,4 @@ D:\Gon\metin\repos\Original\Metin2Bot\obj\Debug\net8.0-windows\refint\Metin2Bot.
 D:\Gon\metin\repos\Original\Metin2Bot\obj\Debug\net8.0-windows\Metin2Bot.pdb
 D:\Gon\metin\repos\Original\Metin2Bot\obj\Debug\net8.0-windows\Metin2Bot.genruntimeconfig.cache
 D:\Gon\metin\repos\Original\Metin2Bot\obj\Debug\net8.0-windows\ref\Metin2Bot.dll
+D:\Gon\metin\repos\Original\Metin2Bot\obj\Debug\net8.0-windows\Metin2Bot.sourcelink.json
