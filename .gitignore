@@ -8,3 +8,5 @@
 # Archivos de caché o temporales de paquetes NuGet
 *.nuget.g.props
 *.nuget.g.targets
+
+Metin2Bot/config/appsettings.json

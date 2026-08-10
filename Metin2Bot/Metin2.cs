@@ -24,7 +24,7 @@ namespace Metin2Bot
 
         public bool RecogerFragmento { get; set; }
 
-        public TimeSpan timerPocionRoja = TimeSpan.FromSeconds(2);
+        public TimeSpan timerPocionRoja = TimeSpan.FromSeconds(1);
         public DateTime timerPocionRojaDate = DateTime.Now.AddDays(-1);
 
         public TimeSpan timerPocionAzul = TimeSpan.FromSeconds(22);
