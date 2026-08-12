@@ -9,11 +9,11 @@ namespace Metin2Bot.Metin2Oficial
         { "piedra", "dragon", "dragón", "de pie", "fragm" };
 
         private static List<string> ItemsCity2 = new List<string>()
-        { "ébano", "ebano", "cuerno" };
+        { "ébano", "ebano", "cuerno", "hormiga", "leon", "león" };
 
         private static List<string> ItemsSiempre = new List<string>()
         { "weiliao", "arte guerra", "ao zi", "arte guerra", "arteguerra",
-          "bola", "polimorf" };
+          "bola", "polimorf", "wu zi" };
 
         public static List<string> ListaItemsAgarrar()
         {
@@ -26,10 +26,13 @@ namespace Metin2Bot.Metin2Oficial
 
         public static async Task<TextRegion?> BuscarFragmentoEnergia(Metin2 metin, MiButton btn)
         {
-            ScreenShot.SacarScreenshotFragmentos(metin.StartX, metin.StartY);
-            var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\mps.png");
-
+            var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\metin_frag_{metin.Id}.png");
             return await ImageReader.ProcessImageLocalV2(imagePath, ListaItemsAgarrar(), btn);
+        }
+
+        public static void SacarScreenshotFragmentos(Metin2 metin)
+        {
+            ScreenShot.SacarScreenshotFragmentos(metin);
         }
 
         public static async Task<bool> EsPantallaLogin(Metin2 metin, MiButton btn)

@@ -4,8 +4,8 @@ namespace Metin2Bot.Metin2Oficial
 {
     public static class Metin1600x900
     {
-        private static int minutosApagado = 999999; // (60,1) (120,2) (180,3) (240,4) (360,6) (480,8)
-        private static int minutosPausado = 999999;
+        private static int minutosApagado = 479; // (60,1) (120,2) (180,3) (240,4) (360,6) (480,8)
+        private static int minutosPausado = 480;
 
         private static MiButton btn = new MiButton();
 
@@ -47,7 +47,7 @@ namespace Metin2Bot.Metin2Oficial
             IntercambiarMetines(ref metin1, ref metin2);
 
             await User.MostrarMetin(metin1.ProcessId);
-
+            
             while (true)
             {
                 await EvalPocionRoja(metin1);
@@ -112,6 +112,7 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     await User.MostrarMetin(metin.ProcessId);
 
+                    await EvalDonarExp(metin);
                     await EvalEstaMuerto(metin);
                     await EvalRelogin(metin);
                     await EvalPocionRoja(metin);
@@ -137,6 +138,7 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     await User.MostrarMetin(metin.ProcessId);
 
+                    await EvalEstaMuerto(metin);
                     await btn.PocionRoja();
 
                     await Task.Delay(1000);
@@ -176,6 +178,7 @@ namespace Metin2Bot.Metin2Oficial
             {
                 await DetenerAutocaza(metin);
                 await Task.Delay(1200);
+                AccionesImg.SacarScreenshotFragmentos(metin);
                 metin.TextRegion = await AccionesImg.BuscarFragmentoEnergia(metin, btn);
                 if (metin.TextRegion != null && metin.TextRegion.HasCoordinates)
                 {
@@ -185,13 +188,60 @@ namespace Metin2Bot.Metin2Oficial
                 }
                 metin.TextRegion = null;
                 await btn.MoverCamaraE(50);
-                await IniciarAutocaza(metin);
+                await Task.Delay(50);
+                metin.timerAutocazaDate = DateTime.Now.AddDays(-1);
+                return;
             }
 
             if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos)
             {
-                metin.TextRegion = await AccionesImg.BuscarFragmentoEnergia(metin, btn);
+                AccionesImg.SacarScreenshotFragmentos(metin);
+                _ = Task.Run(async () =>
+                {
+                    metin.TextRegion = await AccionesImg.BuscarFragmentoEnergia(metin, btn);
+                });
+
                 metin.timerFragmentosDate = DateTime.Now;
+            }
+        }
+
+        private static async Task EvalDonarExp(Metin2 metin)
+        {
+            if (DateTime.Now - metin.timerDonarExpDate >= metin.timerDonarExp)
+            {
+                // Abrir menu gremio
+                btn.MantenerTeclaApretada(MiButton.BT7.MENU);
+                await Task.Delay(100);
+                await btn.PresionarYSoltar(MiButton.BT7.KEY_G);
+                await Task.Delay(100);
+                btn.SoltarTecla(MiButton.BT7.MENU);
+                await Task.Delay(100);
+
+                // Click flechita exp
+                await User.ClickAt(metin.StartX + 180, metin.StartY + 20);
+                await Task.Delay(100);
+
+                // Apretar 6 veces 9
+                await btn.PresionarYSoltarNVeces(MiButton.BT7.KEY_9, 6);
+                await Task.Delay(100);
+
+                // Apretar boton en caso de error de 0 exp
+                await User.ClickAt(metin.StartX + 785, metin.StartY + 352);
+                await Task.Delay(100);
+
+                // Apretar boton OK del cartelito de numero
+                await User.ClickAt(metin.StartX + 150, metin.StartY - 25);
+                await Task.Delay(100);
+
+                // Cerrar ventana gremio
+                btn.MantenerTeclaApretada(MiButton.BT7.MENU);
+                await Task.Delay(100);
+                await btn.PresionarYSoltar(MiButton.BT7.KEY_G);
+                await Task.Delay(100);
+                btn.SoltarTecla(MiButton.BT7.MENU);
+                await Task.Delay(100);
+
+                metin.timerDonarExpDate = DateTime.Now;
             }
         }
 

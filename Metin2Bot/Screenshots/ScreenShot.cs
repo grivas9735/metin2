@@ -92,9 +92,9 @@
             screenshot.Save(AppConfig.GetRouteValue("MPs") + @$"\mps.png", System.Drawing.Imaging.ImageFormat.Png);
         }
 
-        public static void SacarScreenshotFragmentos(int width, int height)
+        public static void SacarScreenshotFragmentos(Metin2 metin)
         {
-            Rectangle captureArea = new Rectangle(width, height - 100, 1500, 820);
+            Rectangle captureArea = new Rectangle(metin.StartX, metin.StartY - 100, 1500, 820);
 
             // Tomar el screenshot
             Bitmap screenshot = new Bitmap(captureArea.Width, captureArea.Height);
@@ -104,7 +104,7 @@
             }
 
             // Guardar el screenshot para pruebas
-            screenshot.Save(AppConfig.GetRouteValue("MPs") + @$"\mps.png", System.Drawing.Imaging.ImageFormat.Png);
+            screenshot.Save(AppConfig.GetRouteValue("MPs") + @$"\metin_frag_{metin.Id}.png", System.Drawing.Imaging.ImageFormat.Png);
         }
 
         public static void SacarScreenshotChampSelect(int width, int height)

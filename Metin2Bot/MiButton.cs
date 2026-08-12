@@ -566,6 +566,15 @@ namespace Metin2Bot
             await PresionarYSoltar(BT7.KEY_2);
         }
 
+        public async Task PresionarYSoltarNVeces(BT7 tecla, int veces)
+        {
+            for (int i = 0; i < veces;  i++)
+            {
+                await PresionarYSoltar(tecla);
+                await Task.Delay(50);
+            }
+        }
+
         public async Task PresionarYSoltar(BT7 tecla, int ms = 50)
         {
             Input[] array = new Input[4];
