@@ -4,7 +4,7 @@ namespace Metin2Bot.Metin2Oficial
 {
     public static class Metin1600x900
     {
-        private static int minutosApagado = 479; // (60,1) (120,2) (180,3) (240,4) (360,6) (480,8)
+        private static int minutosApagado = 99999; // (60,1) (120,2) (180,3) (240,4) (360,6) (480,8)
         private static int minutosPausado = 480;
 
         private static MiButton btn = new MiButton();
@@ -177,13 +177,15 @@ namespace Metin2Bot.Metin2Oficial
             if (metin.TextRegion != null && metin.TextRegion.HasCoordinates)
             {
                 await DetenerAutocaza(metin);
-                await Task.Delay(1200);
-                AccionesImg.SacarScreenshotFragmentos(metin);
-                metin.TextRegion = await AccionesImg.BuscarFragmentoEnergia(metin, btn);
+                await btn.PocionRoja(10);
+                //await Task.Delay(1200);
+                //AccionesImg.SacarScreenshotFragmentos(metin);
+                //metin.TextRegion = await AccionesImg.BuscarFragmentoEnergia(metin, btn);
                 if (metin.TextRegion != null && metin.TextRegion.HasCoordinates)
                 {
                     await User.ClickAt(metin.StartX + metin.TextRegion.X, metin.StartY - 100 + metin.TextRegion.Y, 10);
-                    await Task.Delay(2500);
+                    await btn.PocionRoja(10);
+                    await Task.Delay(1800);
                     await btn.AgarrarItems();
                 }
                 metin.TextRegion = null;
@@ -211,35 +213,35 @@ namespace Metin2Bot.Metin2Oficial
             {
                 // Abrir menu gremio
                 btn.MantenerTeclaApretada(MiButton.BT7.MENU);
-                await Task.Delay(100);
+                await Task.Delay(150);
                 await btn.PresionarYSoltar(MiButton.BT7.KEY_G);
-                await Task.Delay(100);
+                await Task.Delay(150);
                 btn.SoltarTecla(MiButton.BT7.MENU);
-                await Task.Delay(100);
+                await Task.Delay(150);
 
                 // Click flechita exp
                 await User.ClickAt(metin.StartX + 180, metin.StartY + 20);
-                await Task.Delay(100);
+                await Task.Delay(150);
 
                 // Apretar 6 veces 9
                 await btn.PresionarYSoltarNVeces(MiButton.BT7.KEY_9, 6);
-                await Task.Delay(100);
-
-                // Apretar boton en caso de error de 0 exp
-                await User.ClickAt(metin.StartX + 785, metin.StartY + 352);
-                await Task.Delay(100);
+                await Task.Delay(150);
 
                 // Apretar boton OK del cartelito de numero
                 await User.ClickAt(metin.StartX + 150, metin.StartY - 25);
-                await Task.Delay(100);
+                await Task.Delay(150);
+
+                // Apretar boton en caso de error de 0 exp
+                await User.ClickAt(metin.StartX + 785, metin.StartY + 352);
+                await Task.Delay(150);
 
                 // Cerrar ventana gremio
                 btn.MantenerTeclaApretada(MiButton.BT7.MENU);
-                await Task.Delay(100);
+                await Task.Delay(150);
                 await btn.PresionarYSoltar(MiButton.BT7.KEY_G);
-                await Task.Delay(100);
+                await Task.Delay(150);
                 btn.SoltarTecla(MiButton.BT7.MENU);
-                await Task.Delay(100);
+                await Task.Delay(150);
 
                 metin.timerDonarExpDate = DateTime.Now;
             }

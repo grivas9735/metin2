@@ -31,7 +31,7 @@ namespace Metin2Bot
         public DateTime timerPocionAzulDate = DateTime.Now.AddDays(-1);
 
         public TimeSpan timerDonarExp = TimeSpan.FromMinutes(20);
-        public DateTime timerDonarExpDate = DateTime.Now.AddMinutes(20);
+        public DateTime timerDonarExpDate = DateTime.Now.AddMinutes(2);
 
         public TimeSpan timerHabF1 = TimeSpan.FromSeconds(112);
         public DateTime timerHabF1Date = DateTime.Now.AddDays(-1);
