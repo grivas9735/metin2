@@ -84,6 +84,14 @@ namespace Metin2Bot
             await Task.Delay(50);
         }
 
+        public static bool EsMetinEnPrimerPlano(IntPtr metin)
+        {
+            if (metin == IntPtr.Zero)
+                return false;
+
+            return User.GetForegroundWindow() == metin;
+        }
+
         public static void PresionarDigito(MiButton btn, char digito)
         {
             if (digito == '-')

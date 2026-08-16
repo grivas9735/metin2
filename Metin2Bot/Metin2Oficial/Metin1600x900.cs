@@ -5,7 +5,7 @@ namespace Metin2Bot.Metin2Oficial
     public static class Metin1600x900
     {
         private static int minutosApagado = 99999; // (60,1) (120,2) (180,3) (240,4) (360,6) (480,8)
-        private static int minutosPausado = 480;
+        private static int minutosPausado = 99999;
 
         private static MiButton btn = new MiButton();
 
@@ -145,6 +145,25 @@ namespace Metin2Bot.Metin2Oficial
                 }
 
                 await User.MostrarVentanaActual(activeWindow);
+            }
+        }
+
+        public static async Task Metinear()
+        {
+            var metins = MetinFactory.GetAll();
+
+            while (true)
+            {
+                foreach (var metin in metins)
+                {
+                    if (User.EsMetinEnPrimerPlano(metin.ProcessId))
+                    {
+                        await btn.PocionRoja();
+                        await btn.PocionAzul();
+
+                        await Task.Delay(100);
+                    }
+                }
             }
         }
 
