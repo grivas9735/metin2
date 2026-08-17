@@ -24,10 +24,10 @@ namespace Metin2Bot
 
         public bool RecogerFzekragmento { get; set; }
 
-        public TimeSpan timerPocionRoja = TimeSpan.FromSeconds(1);
+        public TimeSpan timerPocionRoja = TimeSpan.FromSeconds(2);
         public DateTime timerPocionRojaDate = DateTime.Now.AddDays(-1);
 
-        public TimeSpan timerPocionAzul = TimeSpan.FromSeconds(22);
+        public TimeSpan timerPocionAzul = TimeSpan.FromSeconds(25);
         public DateTime timerPocionAzulDate = DateTime.Now.AddDays(-1);
 
         public TimeSpan timerDonarExp = TimeSpan.FromMinutes(20);
@@ -36,7 +36,7 @@ namespace Metin2Bot
         public TimeSpan timerHabF1 = TimeSpan.FromSeconds(112);
         public DateTime timerHabF1Date = DateTime.Now.AddDays(-1);
 
-        public TimeSpan timerHabF2 = TimeSpan.FromSeconds(60);
+        public TimeSpan timerHabF2 = TimeSpan.FromSeconds(63);
         public DateTime timerHabF2Date = DateTime.Now.AddDays(-1);
 
         public TimeSpan timerRelogin = TimeSpan.FromSeconds(60);

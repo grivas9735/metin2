@@ -8,11 +8,23 @@ namespace Metin2Bot
         {
             Console.WindowWidth = 100;
             Console.WindowHeight = 20;
-            //Metin1600x900.LevearConChami().Wait();
-            //Metin1600x900.LevearAll().Wait();
-            Metin1600x900.Fragmentar().Wait();
-            //Metin1600x900.Idle().Wait();
-            //Metin1600x900.Metinear().Wait();
+
+            while (true) {
+                try
+                {
+                    //Metin1600x900.LevearConChami().Wait();
+                    Metin1600x900.LevearAll().Wait();
+                    //Metin1600x900.Fragmentar().Wait();
+                    //Metin1600x900.Idle().Wait();
+                    //Metin1600x900.Metinear().Wait();
+                }
+                catch (Exception ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine($"EXCEPCION => {ex.Message}\n");
+                    Console.ResetColor();
+                }
+            }
         }
     }
 }
