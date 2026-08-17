@@ -4,7 +4,7 @@ namespace Metin2Bot.Screenshots
 {
     public static class ScreenShot
     {
-        public static void SacarScreenshotPantallaLogin(Metin2 metin)
+        public static string SacarScreenshotPantallaLogin(Metin2 metin)
         {
             Rectangle captureArea = new Rectangle(metin.StartX + 850, metin.StartY + 600, 180, 150);
 
@@ -16,10 +16,12 @@ namespace Metin2Bot.Screenshots
             }
 
             // Guardar el screenshot para pruebas
-            screenshot.Save(AppConfig.GetRouteValue("MPs") + @$"\metin_login_{metin.Id}.png", System.Drawing.Imaging.ImageFormat.Png);
+            var str = @$"\metin_login_{metin.Id}.png";
+            screenshot.Save(AppConfig.GetRouteValue("MPs") + str, System.Drawing.Imaging.ImageFormat.Png);
+            return str;
         }
 
-        public static void SacarScreenshotFragmentos(Metin2 metin)
+        public static string SacarScreenshotFragmentos(Metin2 metin)
         {
             Rectangle captureArea = new Rectangle(metin.StartX, metin.StartY - 100, 1500, 820);
 
@@ -31,10 +33,12 @@ namespace Metin2Bot.Screenshots
             }
 
             // Guardar el screenshot para pruebas
-            screenshot.Save(AppConfig.GetRouteValue("MPs") + @$"\metin_frag_{metin.Id}.png", System.Drawing.Imaging.ImageFormat.Png);
+            var str = @$"\metin_frag_{metin.Id}.png";
+            screenshot.Save(AppConfig.GetRouteValue("MPs") + str, System.Drawing.Imaging.ImageFormat.Png);
+            return str;
         }
 
-        public static void SacarScreenshotChampSelect(Metin2 metin)
+        public static string SacarScreenshotChampSelect(Metin2 metin)
         {
             Rectangle captureArea = new Rectangle(metin.StartX - 20, metin.StartY - 20, 150, 50);
 
@@ -46,10 +50,12 @@ namespace Metin2Bot.Screenshots
             }
 
             // Guardar el screenshot para pruebas
-            screenshot.Save(AppConfig.GetRouteValue("MPs") + @$"\metin_champ_select_{metin.Id}.png", System.Drawing.Imaging.ImageFormat.Png);
+            var str = @$"\metin_champ_select_{metin.Id}.png";
+            screenshot.Save(AppConfig.GetRouteValue("MPs") + str, System.Drawing.Imaging.ImageFormat.Png);
+            return str;
         }
 
-        public static void SacarScreenshotInsideGame(Metin2 metin)
+        public static string SacarScreenshotInsideGame(Metin2 metin)
         {
             Rectangle captureArea = new Rectangle(metin.StartX + 1480, metin.StartY + 20, 70, 25);
 
@@ -61,10 +67,12 @@ namespace Metin2Bot.Screenshots
             }
 
             // Guardar el screenshot para pruebas
-            screenshot.Save(AppConfig.GetRouteValue("MPs") + @$"\metin_inside_game_{metin.Id}.png", System.Drawing.Imaging.ImageFormat.Png);
+            var str = @$"\metin_inside_game_{metin.Id}.png";
+            screenshot.Save(AppConfig.GetRouteValue("MPs") + str, System.Drawing.Imaging.ImageFormat.Png);
+            return str;
         }
 
-        public static void SacarScreenshotEstaMuerto(Metin2 metin)
+        public static string SacarScreenshotEstaMuerto(Metin2 metin)
         {
             Rectangle captureArea = new Rectangle(metin.StartX + 40, metin.StartY - 70, 200, 80);
 
@@ -76,7 +84,9 @@ namespace Metin2Bot.Screenshots
             }
 
             // Guardar el screenshot para pruebas
-            screenshot.Save(AppConfig.GetRouteValue("MPs") + @$"\metin_esta_muerto_{metin.Id}.png", System.Drawing.Imaging.ImageFormat.Png);
+            var str = @$"\metin_esta_muerto_{metin.Id}.png";
+            screenshot.Save(AppConfig.GetRouteValue("MPs") + str, System.Drawing.Imaging.ImageFormat.Png);
+            return str;
         }
     }
 }

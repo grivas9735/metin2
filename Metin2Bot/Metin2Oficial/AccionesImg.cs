@@ -37,8 +37,8 @@ namespace Metin2Bot.Metin2Oficial
 
         public static async Task<bool> EsPantallaLogin(Metin2 metin, MiButton btn)
         {
-            ScreenShot.SacarScreenshotPantallaLogin(metin);
-            var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\mps.png");
+            var str = ScreenShot.SacarScreenshotPantallaLogin(metin);
+            var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + str);
 
             var text = await ImageReader.ProcessImageLocal(imagePath, btn);
 
@@ -53,8 +53,8 @@ namespace Metin2Bot.Metin2Oficial
 
         public static async Task<bool> EsChampSelect(Metin2 metin, MiButton btn)
         {
-            ScreenShot.SacarScreenshotChampSelect(metin);
-            var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\mps.png");
+            var str = ScreenShot.SacarScreenshotChampSelect(metin);
+            var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + str);
 
             var text = await ImageReader.ProcessImageLocal(imagePath, btn);
 
@@ -69,8 +69,8 @@ namespace Metin2Bot.Metin2Oficial
 
         public static async Task<Tuple<bool, string?>> InsideGame(Metin2 metin, MiButton btn)
         {
-            ScreenShot.SacarScreenshotInsideGame(metin);
-            var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\mps.png");
+            var str = ScreenShot.SacarScreenshotInsideGame(metin);
+            var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + str);
 
             var text = await ImageReader.ProcessImageLocal(imagePath, btn);
 
@@ -90,8 +90,8 @@ namespace Metin2Bot.Metin2Oficial
 
         public static async Task<bool> EstaMuerto(Metin2 metin, MiButton btn)
         {
-            ScreenShot.SacarScreenshotEstaMuerto(metin);
-            var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\mps.png");
+            var str = ScreenShot.SacarScreenshotEstaMuerto(metin);
+            var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + str);
 
             var text = await ImageReader.ProcessImageLocal(imagePath, btn);
 
