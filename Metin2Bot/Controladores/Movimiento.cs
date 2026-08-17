@@ -92,7 +92,7 @@ namespace Metin2Bot.Controladores
         {
             try
             {
-                ScreenShot.SacarScreenshotPantalla(GetCaptchaImageName(metin.Id), metin.StartX + 1488, metin.StartY + 60, 74, 20);
+                //ScreenShot.SacarScreenshotPantalla(GetCaptchaImageName(metin.Id), metin.StartX + 1488, metin.StartY + 60, 74, 20);
                 var imagePath = await ImageReader.RecrearImagen(metin, GetCaptchaImageName(metin.Id));
                 var result = await ImageReader.ProcessImageLocal(imagePath, new MiButton());
 

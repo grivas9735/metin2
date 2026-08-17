@@ -21,13 +21,13 @@ namespace Metin2Bot.Screenshots
                     ScreenShot.SacarScreenshotFragmentos(metin);
                     break;
                 case Captura.Login:
-                    ScreenShot.SacarScreenshotPantallaLogin(metin.StartX, metin.StartY);
+                    ScreenShot.SacarScreenshotPantallaLogin(metin);
                     break;
                 case Captura.InsideGame:
-                    ScreenShot.SacarScreenshotInsideGame(metin.StartX, metin.StartY);
+                    ScreenShot.SacarScreenshotInsideGame(metin);
                     break;
                 case Captura.Revivir:
-                    ScreenShot.SacarScreenshotEstaMuerto(metin.StartX, metin.StartY);
+                    ScreenShot.SacarScreenshotEstaMuerto(metin);
                     break;
                     
             }

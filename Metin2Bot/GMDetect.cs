@@ -10,7 +10,7 @@ namespace Metin2Bot
 
         public static async Task<Tuple<bool, string?>> DetectGM(Metin2 metin, MiButton btn)
         {
-            ScreenShot.SacarScreenshotMPs(metin.StartX, metin.StartY);
+            //ScreenShot.SacarScreenshotMPs(metin.StartX, metin.StartY);
             var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\mps.png");
 
             var text = await ImageReader.ProcessImageLocal(imagePath, btn);
@@ -26,7 +26,7 @@ namespace Metin2Bot
         {
             try
             {
-                ScreenShot.SacarScreenshotPantalla(GetGMsImageName(metin.Id), metin.StartX + 1245, metin.StartY + 530, 150, 160);
+                //ScreenShot.SacarScreenshotPantalla(GetGMsImageName(metin.Id), metin.StartX + 1245, metin.StartY + 530, 150, 160);
                 var imagePath = await ImageReader.RecrearImagen(metin, GetGMsImageName(metin.Id));
                 return await ImageReader.ProcessImageLocal(imagePath, new MiButton()) ?? string.Empty;
             }
@@ -41,7 +41,7 @@ namespace Metin2Bot
             try
             {
                 // cuadro entero: metin.StartX + 800, metin.StartY - 100, 600, 50
-                ScreenShot.SacarScreenshotPantalla(GetMetinHPImage(metin.Id), metin.StartX + 1000, metin.StartY - 80, 300, 20);
+                //ScreenShot.SacarScreenshotPantalla(GetMetinHPImage(metin.Id), metin.StartX + 1000, metin.StartY - 80, 300, 20);
                 var imagePath = await ImageReader.RecrearImagen(metin, GetMetinHPImage(metin.Id));
                 var metinhp = await ImageReader.ProcessImageLocal(imagePath, new MiButton()) ?? string.Empty;
             }

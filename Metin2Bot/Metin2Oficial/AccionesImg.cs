@@ -37,7 +37,7 @@ namespace Metin2Bot.Metin2Oficial
 
         public static async Task<bool> EsPantallaLogin(Metin2 metin, MiButton btn)
         {
-            ScreenShot.SacarScreenshotPantallaLogin(metin.StartX, metin.StartY);
+            ScreenShot.SacarScreenshotPantallaLogin(metin);
             var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\mps.png");
 
             var text = await ImageReader.ProcessImageLocal(imagePath, btn);
@@ -53,7 +53,7 @@ namespace Metin2Bot.Metin2Oficial
 
         public static async Task<bool> EsChampSelect(Metin2 metin, MiButton btn)
         {
-            ScreenShot.SacarScreenshotChampSelect(metin.StartX, metin.StartY);
+            ScreenShot.SacarScreenshotChampSelect(metin);
             var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\mps.png");
 
             var text = await ImageReader.ProcessImageLocal(imagePath, btn);
@@ -69,7 +69,7 @@ namespace Metin2Bot.Metin2Oficial
 
         public static async Task<Tuple<bool, string?>> InsideGame(Metin2 metin, MiButton btn)
         {
-            ScreenShot.SacarScreenshotInsideGame(metin.StartX, metin.StartY);
+            ScreenShot.SacarScreenshotInsideGame(metin);
             var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\mps.png");
 
             var text = await ImageReader.ProcessImageLocal(imagePath, btn);
@@ -90,7 +90,7 @@ namespace Metin2Bot.Metin2Oficial
 
         public static async Task<bool> EstaMuerto(Metin2 metin, MiButton btn)
         {
-            ScreenShot.SacarScreenshotEstaMuerto(metin.StartX, metin.StartY);
+            ScreenShot.SacarScreenshotEstaMuerto(metin);
             var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\mps.png");
 
             var text = await ImageReader.ProcessImageLocal(imagePath, btn);
