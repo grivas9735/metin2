@@ -9,11 +9,11 @@ namespace Metin2Bot.Metin2Oficial
         { "piedra", "dragon", "dragón", "de pie", "fragm" };
 
         private static List<string> ItemsCity2 = new List<string>()
-        { "ébano", "ebano", "cuerno", "hormiga", "leon", "león" };
+        { "ébano", "ebano", "cuerno" };
 
         private static List<string> ItemsSiempre = new List<string>()
         { "weiliao", "arte guerra", "ao zi", "arte guerra", "arteguerra",
-          "bola", "polimorf", "wu zi" };
+          "bola", "polimorf", "wu zi", "luz luna", "luzluna" };
 
         public static List<string> ListaItemsAgarrar()
         {
