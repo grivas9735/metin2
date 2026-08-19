@@ -22,9 +22,7 @@ namespace Metin2Bot
 
         public TextRegion? TextRegion { get; set; }
 
-        public bool RecogerFzekragmento { get; set; }
-
-        public TimeSpan timerPocionRoja = TimeSpan.FromSeconds(2);
+        public TimeSpan timerPocionRoja = TimeSpan.FromSeconds(1);
         public DateTime timerPocionRojaDate = DateTime.Now.AddDays(-1);
 
         public TimeSpan timerPocionAzul = TimeSpan.FromSeconds(25);

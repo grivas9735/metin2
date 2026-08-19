@@ -117,7 +117,7 @@ namespace Metin2Bot.Metin2Oficial
                     await EvalRelogin(metin);
                     await EvalPocionRoja(metin);
                     await EvalAutocaza(metin);
-                    await BuscarFragmentosV2(metin);
+                    await BuscarFragmentos(metin);
                 }
 
                 await User.MostrarVentanaActual(activeWindow);
@@ -169,30 +169,6 @@ namespace Metin2Bot.Metin2Oficial
 
         private static async Task BuscarFragmentos(Metin2 metin)
         {
-            if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos)
-            {
-                var txtRegion = await AccionesImg.BuscarFragmentoEnergia(metin, btn);
-
-                if (txtRegion != null && txtRegion.HasCoordinates)
-                {
-                    await DetenerAutocaza(metin);
-                    await Task.Delay(1200);
-                    txtRegion = await AccionesImg.BuscarFragmentoEnergia(metin, btn);
-                    if (txtRegion != null && txtRegion.HasCoordinates)
-                    {
-                        await User.ClickAt(metin.StartX + txtRegion.X, metin.StartY - 100 + txtRegion.Y, 10);
-                        await btn.AgarrarItems();
-                        await Task.Delay(2500);
-                    }
-                    await IniciarAutocaza(metin);
-                }
-
-                metin.timerFragmentosDate = DateTime.Now;
-            }
-        }
-
-        private static async Task BuscarFragmentosV2(Metin2 metin)
-        {
             if (metin.TextRegion != null && metin.TextRegion.HasCoordinates)
             {
                 await DetenerAutocaza(metin);
@@ -204,7 +180,7 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     await User.ClickAt(metin.StartX + metin.TextRegion.X, metin.StartY - 100 + metin.TextRegion.Y, 10);
                     await btn.PocionRoja(10);
-                    await Task.Delay(1800);
+                    await Task.Delay(1600);
                     await btn.AgarrarItems();
                 }
                 metin.TextRegion = null;
@@ -395,7 +371,7 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     Console.WriteLine("REVIVIENDO\n");
                     await User.ClickAt(metin.StartX + 100, metin.StartY - 40);
-                    await Task.Delay(1000);
+                    await Task.Delay(800);
                     var sigueMuerto = await AccionesImg.EstaMuerto(metin, btn);
 
                     if (!sigueMuerto)

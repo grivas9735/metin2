@@ -13,8 +13,8 @@ namespace Metin2Bot
                 try
                 {
                     //Metin1600x900.LevearConChami().Wait();
-                    Metin1600x900.LevearAll().Wait();
-                    //Metin1600x900.Fragmentar().Wait();
+                    //Metin1600x900.LevearAll().Wait();
+                    Metin1600x900.Fragmentar().Wait();
                     //Metin1600x900.Idle().Wait();
                     //Metin1600x900.Metinear().Wait();
                 }
