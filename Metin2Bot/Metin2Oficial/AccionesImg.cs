@@ -75,7 +75,6 @@ namespace Metin2Bot.Metin2Oficial
             public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
             {
                 var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\metin_champ_select_{metin.Id}.png");
-
                 var text = await ImageReader.ProcessImageLocal(imagePath, btn);
 
                 if (text == null)
