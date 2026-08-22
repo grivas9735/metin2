@@ -173,14 +173,12 @@ namespace Metin2Bot.Metin2Oficial
             {
                 await DetenerAutocaza(metin);
                 await btn.PocionRoja(10);
-                //await Task.Delay(1200);
-                //AccionesImg.SacarScreenshotFragmentos(metin);
-                //metin.TextRegion = await AccionesImg.BuscarFragmentoEnergia(metin, btn);
+                
                 if (metin.TextRegion != null && metin.TextRegion.HasCoordinates)
                 {
                     await User.ClickAt(metin.StartX + metin.TextRegion.X, metin.StartY - 100 + metin.TextRegion.Y, 10);
                     await btn.PocionRoja(10);
-                    await Task.Delay(1600);
+                    await Task.Delay(1200);
                     await btn.AgarrarItems();
                 }
                 metin.TextRegion = null;
@@ -192,10 +190,10 @@ namespace Metin2Bot.Metin2Oficial
 
             if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos)
             {
-                AccionesImg.SacarScreenshotFragmentos(metin);
+                AccionesImg.PicFragmentos.TakePic(metin);
                 _ = Task.Run(async () =>
                 {
-                    metin.TextRegion = await AccionesImg.BuscarFragmentoEnergia(metin, btn);
+                    metin.TextRegion = await AccionesImg.PicFragmentos.ProcessCoordinates(metin, btn);
                 });
 
                 metin.timerFragmentosDate = DateTime.Now;
@@ -318,7 +316,7 @@ namespace Metin2Bot.Metin2Oficial
                 metin.timerAutocazaDate = DateTime.Now;
             }
         }
-
+        
         private static async Task IniciarAutocaza(Metin2 metin)
         {
             await Task.Delay(50);
@@ -365,77 +363,76 @@ namespace Metin2Bot.Metin2Oficial
 
         private static async Task EvalEstaMuerto(Metin2 metin)
         {
+            if (metin.EstaMuerto)
+            {
+                Console.WriteLine("REVIVIENDO\n");
+                await User.ClickAt(metin.StartX + 100, metin.StartY - 40);
+                await Task.Delay(800);
+                AccionesImg.PicEstaMuerto.TakePic(metin);
+                var sigueMuerto = await AccionesImg.PicEstaMuerto.ProcessText(metin, btn);
+
+                if (!sigueMuerto)
+                {
+                    await btn.PocionRoja(10);
+                    metin.EstaMuerto = false;
+                    metin.timerEstaMuertoDate = DateTime.Now;
+                    metin.timerAutocazaDate = DateTime.Now.AddDays(-1);
+                }
+            }
+
             if (DateTime.Now - metin.timerEstaMuertoDate >= metin.timerEstaMuerto)
             {
-                if (await AccionesImg.EstaMuerto(metin, btn))
+                AccionesImg.PicEstaMuerto.TakePic(metin);
+                _ = Task.Run(async () =>
                 {
-                    Console.WriteLine("REVIVIENDO\n");
-                    await User.ClickAt(metin.StartX + 100, metin.StartY - 40);
-                    await Task.Delay(800);
-                    var sigueMuerto = await AccionesImg.EstaMuerto(metin, btn);
-
-                    if (!sigueMuerto)
-                    {
-                        await btn.PocionRoja(10);
-                        metin.timerEstaMuertoDate = DateTime.Now;
-                        metin.timerAutocazaDate = DateTime.Now.AddDays(-1);
-                    }
-                }
+                    metin.EstaMuerto = await AccionesImg.PicEstaMuerto.ProcessText(metin, btn);
+                });
             }
         }
 
         private static async Task EvalRelogin(Metin2 metin)
         {
+            if (metin.EstaEnPantallaLogin || metin.EstaEnChampSelect)
+            {
+                if (metin.EstaEnPantallaLogin)
+                {
+                    await btn.ApretarEnter(100); // Este enter es para sacar cualquier posible cartel de error
+                    await Task.Delay(100);
+                    await User.ClickAt(metin.StartX + 900, metin.StartY + 670);
+                    await Task.Delay(15000);
+
+                    AccionesImg.PicChampSelect.TakePic(metin);
+                    metin.EstaEnChampSelect = await AccionesImg.PicChampSelect.ProcessText(metin, btn);
+                    metin.EstaEnPantallaLogin = false;
+                }
+
+                if (metin.EstaEnChampSelect)
+                {
+                    await btn.ApretarEnter(100);
+                    await Task.Delay(15000);
+                    await IniciarAutocaza(metin);
+                    metin.EstaEnPantallaLogin = false;
+                    metin.EstaEnChampSelect = false;
+                }
+            }
+
             if (DateTime.Now - metin.timerReloginDate >= metin.timerRelogin)
             {
-                bool isInGame = false;
+                Console.WriteLine("VALIDANDO RELOGIN");
 
-                while (!isInGame)
+                AccionesImg.PicLogin.TakePic(metin);
+                AccionesImg.PicChampSelect.TakePic(metin);
+
+                _ = Task.Run(async () =>
                 {
-                    Console.WriteLine("VALIDANDO RELOGIN");
+                    var t1 = AccionesImg.PicLogin.ProcessText(metin, btn);
+                    var t2 = AccionesImg.PicChampSelect.ProcessText(metin, btn);
+                    await Task.WhenAll(t1, t2);
 
-                    var esPantallaLogin = await AccionesImg.EsPantallaLogin(metin, btn);
-                    var esChampSelect = await AccionesImg.EsChampSelect(metin, btn);
-
-                    Console.WriteLine($"Login: {esPantallaLogin}");
-                    Console.WriteLine($"Champ: {esChampSelect}\n");
-
-                    if (esPantallaLogin || esChampSelect)
-                    {
-                        if (esPantallaLogin)
-                        {
-                            await btn.ApretarEnter(100); // Este enter es para sacar cualquier posible cartel de error
-                            await Task.Delay(100);
-                            await User.ClickAt(metin.StartX + 900, metin.StartY + 670);
-                            await Task.Delay(15000);
-
-                            esChampSelect = await AccionesImg.EsChampSelect(metin, btn);
-
-                            if (esChampSelect)
-                            {
-                                await btn.ApretarEnter(100);
-                                await Task.Delay(15000);
-                                await IniciarAutocaza(metin);
-                            }
-                        }
-                        else
-                        {
-                            await btn.ApretarEnter(100);
-                            await Task.Delay(15000);
-                            await IniciarAutocaza(metin);
-                        }
-                    }
-
+                    metin.EstaEnPantallaLogin = t1.Result;
+                    metin.EstaEnChampSelect = t2.Result;
                     metin.timerReloginDate = DateTime.Now;
-                    
-                    // Por ahora lo dejo en true para que no valide si esta ingame. Para comportamiento viejo descomentar lo de abajo
-                    isInGame = true;
-
-                    //var isInGameTuple = await AccionesImg.InsideGame(metin, btn);
-                    //isInGame = isInGameTuple.Item1;
-                    //Console.WriteLine($"InGame: {isInGameTuple.Item1} => {isInGameTuple.Item2?.Replace(" ", "")}\n");
-                    //await btn.PocionRoja(10);
-                }
+                });
             }
         }
 

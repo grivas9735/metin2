@@ -5,7 +5,7 @@ namespace Metin2Bot.Metin2Oficial
 {
     public static class AccionesImg
     {
-        private static List<string> ListFragmentos = new List<string>() 
+        private static List<string> ListFragmentos = new List<string>()
         { "piedra", "dragon", "dragón", "de pie", "fragm" };
 
         private static List<string> ItemsCity2 = new List<string>()
@@ -13,7 +13,9 @@ namespace Metin2Bot.Metin2Oficial
 
         private static List<string> ItemsSiempre = new List<string>()
         { "weiliao", "arte guerra", "ao zi", "arte guerra", "arteguerra",
-          "bola", "polimorf", "wu zi", "luz luna", "luzluna" };
+          "bola", "polimorf", "wu zi", "luz luna", "luzluna", "pendiente",
+          "collar", "bota", "zapato"
+        };
 
         public static List<string> ListaItemsAgarrar()
         {
@@ -24,85 +26,146 @@ namespace Metin2Bot.Metin2Oficial
             return lst;
         }
 
-        public static async Task<TextRegion?> BuscarFragmentoEnergia(Metin2 metin, MiButton btn)
+        public interface IPicture
         {
-            var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\metin_frag_{metin.Id}.png");
-            return await ImageReader.ProcessImageLocalV2(imagePath, ListaItemsAgarrar(), btn);
+            void TakePic(Metin2 metin);
+            Task<bool> ProcessText(Metin2 metin, MiButton btn);
+            Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn);
         }
 
-        public static void SacarScreenshotFragmentos(Metin2 metin)
+        public static IPicture PicChampSelect 
         {
-            ScreenShot.SacarScreenshotFragmentos(metin);
-        }
-
-        public static async Task<bool> EsPantallaLogin(Metin2 metin, MiButton btn)
-        {
-            var str = ScreenShot.SacarScreenshotPantallaLogin(metin);
-            var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + str);
-
-            var text = await ImageReader.ProcessImageLocal(imagePath, btn);
-
-            if (text == null)
+            get
             {
-                return false;
+                return new PictureChampSelect();
+            }
+        }
+
+        public static IPicture PicEstaMuerto
+        {
+            get
+            {
+                return new PictureEstaMuerto();
+            }
+        }
+
+        public static IPicture PicLogin
+        {
+            get
+            {
+                return new PictureLogin();
+            }
+        }
+
+        public static IPicture PicFragmentos
+        {
+            get
+            {
+                return new PictureFragmentos();
+            }
+        }
+
+        public class PictureChampSelect : IPicture
+        {
+            public Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn)
+            {
+                throw new NotImplementedException();
             }
 
-            return text.Contains("ok", StringComparison.CurrentCultureIgnoreCase) 
-                && text.Contains("salir", StringComparison.CurrentCultureIgnoreCase);
-        }
-
-        public static async Task<bool> EsChampSelect(Metin2 metin, MiButton btn)
-        {
-            var str = ScreenShot.SacarScreenshotChampSelect(metin);
-            var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + str);
-
-            var text = await ImageReader.ProcessImageLocal(imagePath, btn);
-
-            if (text == null)
+            public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
             {
-                return false;
+                var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\metin_champ_select_{metin.Id}.png");
+
+                var text = await ImageReader.ProcessImageLocal(imagePath, btn);
+
+                if (text == null)
+                {
+                    return false;
+                }
+
+                return text.Contains("seleccionar", StringComparison.CurrentCultureIgnoreCase)
+                    || text.Contains("personaje", StringComparison.CurrentCultureIgnoreCase);
             }
 
-            return text.Contains("seleccionar", StringComparison.CurrentCultureIgnoreCase)
-                || text.Contains("personaje", StringComparison.CurrentCultureIgnoreCase);
+            public void TakePic(Metin2 metin)
+            {
+                ScreenShot.SacarScreenshotChampSelect(metin);
+            }
         }
 
-        public static async Task<Tuple<bool, string?>> InsideGame(Metin2 metin, MiButton btn)
+        public class PictureEstaMuerto : IPicture
         {
-            var str = ScreenShot.SacarScreenshotInsideGame(metin);
-            var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + str);
-
-            var text = await ImageReader.ProcessImageLocal(imagePath, btn);
-
-            if (text == null)
+            public Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn)
             {
-                return new Tuple<bool, string?>(false, text);
+                throw new NotImplementedException();
             }
 
-            var contains = text.Contains("eria", StringComparison.CurrentCultureIgnoreCase)
-                || text.Contains("iberia", StringComparison.CurrentCultureIgnoreCase)
-                || text.Contains("lberia", StringComparison.CurrentCultureIgnoreCase)
-                || text.Contains("iber", StringComparison.CurrentCultureIgnoreCase)
-                || text.Contains("lber", StringComparison.CurrentCultureIgnoreCase);
+            public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
+            {
+                var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\metin_esta_muerto_{metin.Id}.png");
+                var text = await ImageReader.ProcessImageLocal(imagePath, btn);
 
-            return new Tuple<bool, string?>(contains, text);
+                if (text == null)
+                {
+                    return false;
+                }
+
+                return text.Contains("volver", StringComparison.CurrentCultureIgnoreCase)
+                    || text.Contains("empezar", StringComparison.CurrentCultureIgnoreCase)
+                    || text.Contains("ciudad", StringComparison.CurrentCultureIgnoreCase);
+            }
+
+            public void TakePic(Metin2 metin)
+            {
+                ScreenShot.SacarScreenshotEstaMuerto(metin);
+            }
         }
 
-        public static async Task<bool> EstaMuerto(Metin2 metin, MiButton btn)
+        public class PictureLogin : IPicture
         {
-            var str = ScreenShot.SacarScreenshotEstaMuerto(metin);
-            var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + str);
-
-            var text = await ImageReader.ProcessImageLocal(imagePath, btn);
-
-            if (text == null)
+            public Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn)
             {
-                return false;
+                throw new NotImplementedException();
             }
 
-            return text.Contains("volver", StringComparison.CurrentCultureIgnoreCase)
-                || text.Contains("empezar", StringComparison.CurrentCultureIgnoreCase)
-                || text.Contains("ciudad", StringComparison.CurrentCultureIgnoreCase);
+            public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
+            {
+                var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\metin_login_{metin.Id}.png");
+
+                var text = await ImageReader.ProcessImageLocal(imagePath, btn);
+
+                if (text == null)
+                {
+                    return false;
+                }
+
+                return text.Contains("ok", StringComparison.CurrentCultureIgnoreCase)
+                    && text.Contains("salir", StringComparison.CurrentCultureIgnoreCase);
+            }
+
+            public void TakePic(Metin2 metin)
+            {
+                ScreenShot.SacarScreenshotPantallaLogin(metin);
+            }
+        }
+
+        public class PictureFragmentos : IPicture
+        {
+            public async Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn)
+            {
+                var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\metin_frag_{metin.Id}.png");
+                return await ImageReader.ProcessImageLocalV2(imagePath, ListaItemsAgarrar(), btn);
+            }
+
+            public Task<bool> ProcessText(Metin2 metin, MiButton btn)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void TakePic(Metin2 metin)
+            {
+                ScreenShot.SacarScreenshotFragmentos(metin);
+            }
         }
     }
 }
