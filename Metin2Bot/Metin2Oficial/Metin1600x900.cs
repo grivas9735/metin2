@@ -46,10 +46,9 @@ namespace Metin2Bot.Metin2Oficial
             var metin2 = metins.Count == 2 ? metins.LastOrDefault() : null;
             IntercambiarMetines(ref metin1, ref metin2);
 
-            await User.MostrarMetin(metin1.ProcessId);
-            
             while (true)
             {
+                await User.MostrarMetin(metin1.ProcessId);
                 await EvalPocionRoja(metin1);
                 await EvalPocionAzul(metin1);
                 await EvalHabF1(metin1);
@@ -60,11 +59,17 @@ namespace Metin2Bot.Metin2Oficial
 
                 if (metin2 != null)
                 {
+                    await User.MostrarMetin(metin2.ProcessId);
+                    await Task.Delay(100);
                     await EvalBuffs(metin2);
+                    await EvalEstaMuerto(metin2);
+                    await EvalRelogin(metin2);
                     await User.MostrarMetin(metin1.ProcessId);
+                    await Task.Delay(100);
                 }
 
                 await btn.AgarrarItems();
+                await User.MostrarVentanaActual(activeWindow);
                 await Task.Delay(100);
             }
         }
@@ -244,16 +249,13 @@ namespace Metin2Bot.Metin2Oficial
         {
             if (DateTime.Now - timerBuffsDate >= timerBuffs)
             {
-                await User.MostrarMetin(metinBuffi.ProcessId);
-                await Task.Delay(50);
-
                 Console.WriteLine("BUFFS F1");
                 await btn.PresionarYSoltar(MiButton.BT7.F1);
                 await Task.Delay(2000);
 
                 Console.WriteLine("BUFFS F2\n");
                 await btn.PresionarYSoltar(MiButton.BT7.F2);
-                await Task.Delay(80);
+                await Task.Delay(100);
 
                 timerBuffsDate = DateTime.Now;
             }
