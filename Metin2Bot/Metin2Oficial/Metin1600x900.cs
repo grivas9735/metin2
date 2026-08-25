@@ -188,7 +188,7 @@ namespace Metin2Bot.Metin2Oficial
                 return;
             }
 
-            if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos)
+            if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos && metin.TextRegion == null)
             {
                 AccionesImg.PicFragmentos.TakePic(metin);
                 _ = Task.Run(async () =>
@@ -380,7 +380,7 @@ namespace Metin2Bot.Metin2Oficial
                 }
             }
 
-            if (DateTime.Now - metin.timerEstaMuertoDate >= metin.timerEstaMuerto)
+            if (DateTime.Now - metin.timerEstaMuertoDate >= metin.timerEstaMuerto && !metin.EstaMuerto)
             {
                 AccionesImg.PicEstaMuerto.TakePic(metin);
                 _ = Task.Run(async () =>
