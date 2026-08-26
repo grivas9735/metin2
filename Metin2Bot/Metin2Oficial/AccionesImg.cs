@@ -28,7 +28,7 @@ namespace Metin2Bot.Metin2Oficial
 
         public interface IPicture
         {
-            void TakePic(Metin2 metin);
+            Task TakePic(Metin2 metin);
             Task<bool> ProcessText(Metin2 metin, MiButton btn);
             Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn);
         }
@@ -74,8 +74,8 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
             {
-                var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\metin_champ_select_{metin.Id}.png");
-                var text = await ImageReader.ProcessImageLocal(imagePath, btn);
+                var imagePath = await RecrearImagen(metin, metin.ImgChampSelectName);
+                var text = await ProcessImageLocal(imagePath, btn);
 
                 if (text == null)
                 {
@@ -86,8 +86,9 @@ namespace Metin2Bot.Metin2Oficial
                     || text.Contains("personaje", StringComparison.CurrentCultureIgnoreCase);
             }
 
-            public void TakePic(Metin2 metin)
+            public async Task TakePic(Metin2 metin)
             {
+                await Task.Delay(20);
                 ScreenShot.SacarScreenshotChampSelect(metin);
             }
         }
@@ -101,8 +102,8 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
             {
-                var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\metin_esta_muerto_{metin.Id}.png");
-                var text = await ImageReader.ProcessImageLocal(imagePath, btn);
+                var imagePath = await RecrearImagen(metin, metin.ImgEstaMuertoName);
+                var text = await ProcessImageLocal(imagePath, btn);
 
                 if (text == null)
                 {
@@ -114,8 +115,9 @@ namespace Metin2Bot.Metin2Oficial
                     || text.Contains("ciudad", StringComparison.CurrentCultureIgnoreCase);
             }
 
-            public void TakePic(Metin2 metin)
+            public async Task TakePic(Metin2 metin)
             {
+                await Task.Delay(20);
                 ScreenShot.SacarScreenshotEstaMuerto(metin);
             }
         }
@@ -129,9 +131,8 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
             {
-                var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\metin_login_{metin.Id}.png");
-
-                var text = await ImageReader.ProcessImageLocal(imagePath, btn);
+                var imagePath = await RecrearImagen(metin, metin.ImgLoginName);
+                var text = await ProcessImageLocal(imagePath, btn);
 
                 if (text == null)
                 {
@@ -142,8 +143,9 @@ namespace Metin2Bot.Metin2Oficial
                     && text.Contains("salir", StringComparison.CurrentCultureIgnoreCase);
             }
 
-            public void TakePic(Metin2 metin)
+            public async Task TakePic(Metin2 metin)
             {
+                await Task.Delay(20);
                 ScreenShot.SacarScreenshotPantallaLogin(metin);
             }
         }
@@ -152,8 +154,8 @@ namespace Metin2Bot.Metin2Oficial
         {
             public async Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn)
             {
-                var imagePath = await ImageReader.RecrearImagen(metin, AppConfig.GetRouteValue("MPs") + @$"\metin_frag_{metin.Id}.png");
-                return await ImageReader.ProcessImageLocalV2(imagePath, ListaItemsAgarrar(), btn);
+                var imagePath = await RecrearImagen(metin, metin.ImgFragmentosName);
+                return await ProcessImageLocalV2(imagePath, ListaItemsAgarrar(), btn);
             }
 
             public Task<bool> ProcessText(Metin2 metin, MiButton btn)
@@ -161,8 +163,9 @@ namespace Metin2Bot.Metin2Oficial
                 throw new NotImplementedException();
             }
 
-            public void TakePic(Metin2 metin)
+            public async Task TakePic(Metin2 metin)
             {
+                //await Task.Delay(20);
                 ScreenShot.SacarScreenshotFragmentos(metin);
             }
         }

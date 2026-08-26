@@ -4,7 +4,7 @@ namespace Metin2Bot.Metin2Oficial
 {
     public static class Metin1600x900
     {
-        private static int minutosApagado = 99999; // (60,1) (120,2) (180,3) (240,4) (360,6) (480,8)
+        private static int minutosApagado = 99999; // (60,1) (120,2) (180,9999993) (240,4) (360,6) (480,8)
         private static int minutosPausado = 99999;
 
         private static MiButton btn = new MiButton();
@@ -39,8 +39,8 @@ namespace Metin2Bot.Metin2Oficial
             var activeWindow = User.GetForegroundWindow();
             var metins = MetinFactory.GetLeveleoConChami();
 
-            AwaitShutdown();
-            AwaitPause();
+            _ = AwaitShutdown();
+            _ = AwaitPause();
 
             var metin1 = metins.First();
             var metin2 = metins.Count == 2 ? metins.LastOrDefault() : null;
@@ -79,8 +79,8 @@ namespace Metin2Bot.Metin2Oficial
             var activeWindow = User.GetForegroundWindow();
             var metins = MetinFactory.GetAll();
             
-            AwaitShutdown();
-            AwaitPause();
+            _ = AwaitShutdown();
+            _ = AwaitPause();
 
             while (true)
             {
@@ -108,8 +108,8 @@ namespace Metin2Bot.Metin2Oficial
             var activeWindow = User.GetForegroundWindow();
             var metins = MetinFactory.GetAll();
 
-            AwaitShutdown();
-            AwaitPause();
+            _ = AwaitShutdown();
+            _ = AwaitPause();
 
             while (true)
             {
@@ -134,8 +134,8 @@ namespace Metin2Bot.Metin2Oficial
             var activeWindow = User.GetForegroundWindow();
             var metins = MetinFactory.GetAll();
 
-            AwaitShutdown();
-            AwaitPause();
+            _ = AwaitShutdown();
+            _ = AwaitPause();
 
             while (true)
             {
@@ -183,19 +183,19 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     await User.ClickAt(metin.StartX + metin.TextRegion.X, metin.StartY - 100 + metin.TextRegion.Y, 10);
                     await btn.PocionRoja(10);
-                    await Task.Delay(1200);
+                    await Task.Delay(1000);
                     await btn.AgarrarItems();
                 }
                 metin.TextRegion = null;
-                await btn.MoverCamaraE(50);
-                await Task.Delay(50);
                 metin.timerAutocazaDate = DateTime.Now.AddDays(-1);
                 return;
             }
 
-            if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos && metin.TextRegion == null)
+            if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos)
             {
-                AccionesImg.PicFragmentos.TakePic(metin);
+                await btn.MoverCamaraE(50);
+                await Task.Delay(50);
+                await AccionesImg.PicFragmentos.TakePic(metin);
                 _ = Task.Run(async () =>
                 {
                     metin.TextRegion = await AccionesImg.PicFragmentos.ProcessCoordinates(metin, btn);
@@ -370,7 +370,7 @@ namespace Metin2Bot.Metin2Oficial
                 Console.WriteLine("REVIVIENDO\n");
                 await User.ClickAt(metin.StartX + 100, metin.StartY - 40);
                 await Task.Delay(800);
-                AccionesImg.PicEstaMuerto.TakePic(metin);
+                await AccionesImg.PicEstaMuerto.TakePic(metin);
                 var sigueMuerto = await AccionesImg.PicEstaMuerto.ProcessText(metin, btn);
 
                 if (!sigueMuerto)
@@ -384,7 +384,7 @@ namespace Metin2Bot.Metin2Oficial
 
             if (DateTime.Now - metin.timerEstaMuertoDate >= metin.timerEstaMuerto && !metin.EstaMuerto)
             {
-                AccionesImg.PicEstaMuerto.TakePic(metin);
+                await AccionesImg.PicEstaMuerto.TakePic(metin);
                 _ = Task.Run(async () =>
                 {
                     metin.EstaMuerto = await AccionesImg.PicEstaMuerto.ProcessText(metin, btn);
@@ -403,7 +403,7 @@ namespace Metin2Bot.Metin2Oficial
                     await User.ClickAt(metin.StartX + 900, metin.StartY + 670);
                     await Task.Delay(15000);
 
-                    AccionesImg.PicChampSelect.TakePic(metin);
+                    await AccionesImg.PicChampSelect.TakePic(metin);
                     metin.EstaEnChampSelect = await AccionesImg.PicChampSelect.ProcessText(metin, btn);
                     metin.EstaEnPantallaLogin = false;
                 }
@@ -422,8 +422,8 @@ namespace Metin2Bot.Metin2Oficial
             {
                 Console.WriteLine("VALIDANDO RELOGIN");
 
-                AccionesImg.PicLogin.TakePic(metin);
-                AccionesImg.PicChampSelect.TakePic(metin);
+                await AccionesImg.PicLogin.TakePic(metin);
+                await AccionesImg.PicChampSelect.TakePic(metin);
 
                 _ = Task.Run(async () =>
                 {

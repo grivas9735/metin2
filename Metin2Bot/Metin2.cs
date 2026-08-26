@@ -1,4 +1,5 @@
-﻿using static Metin2Bot.ImageReader;
+﻿using System.Diagnostics.Metrics;
+using static Metin2Bot.ImageReader;
 
 namespace Metin2Bot
 {
@@ -56,5 +57,37 @@ namespace Metin2Bot
 
         public TimeSpan timerAutocaza = TimeSpan.FromMinutes(5);
         public DateTime timerAutocazaDate = DateTime.Now.AddDays(-1);
+
+        public string ImgChampSelectName
+        {
+            get
+            {
+                return AppConfig.GetRouteValue("MPs") + @$"\metin_champ_select_{Id}.png";
+            }
+        }
+
+        public string ImgEstaMuertoName
+        {
+            get
+            {
+                return AppConfig.GetRouteValue("MPs") + @$"\metin_esta_muerto_{Id}.png";
+            }
+        }
+
+        public string ImgLoginName
+        {
+            get
+            {
+                return AppConfig.GetRouteValue("MPs") + @$"\metin_login_{Id}.png";
+            }
+        }
+
+        public string ImgFragmentosName
+        {
+            get
+            {
+                return AppConfig.GetRouteValue("MPs") + @$"\metin_frag_{Id}.png";
+            }
+        }
     }
 }
