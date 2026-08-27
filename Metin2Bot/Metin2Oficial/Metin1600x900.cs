@@ -187,7 +187,6 @@ namespace Metin2Bot.Metin2Oficial
             if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos)
             {
                 await btn.MoverCamaraE(50);
-                await Task.Delay(50);
                 await AccionesImg.PicFragmentos.TakePic(metin);
                 _ = Task.Run(async () =>
                 {
