@@ -175,7 +175,6 @@ namespace Metin2Bot.Metin2Oficial
             if (metin.TextRegion != null && metin.TextRegion.HasCoordinates)
             {
                 await DetenerAutocaza(metin);
-                await btn.PocionRoja(10);
                 await User.ClickAt(metin.StartX + metin.TextRegion.X, metin.StartY - 100 + metin.TextRegion.Y, 10);
                 await btn.PocionRoja(10);
                 await Task.Delay(1000);
