@@ -4,13 +4,13 @@ namespace Metin2Bot.Metin2Oficial
 {
     public static class Metin1600x900
     {
-        private static int minutosApagado = 99999; // (60,1) (120,2) (180,9999993) (240,4) (360,6) (480,8)
-        private static int minutosPausado = 99999;
+        private static readonly int minutosApagado = 99999; // (60,1) (120,2) (180,3) (240,4) (360,6) (480,8)
+        private static readonly int minutosPausado = 99999;
 
-        private static MiButton btn = new MiButton();
+        private static readonly MiButton btn = new();
 
-        public static TimeSpan timerBuffs = TimeSpan.FromSeconds(20);
-        public static DateTime timerBuffsDate = DateTime.Now.AddDays(-1);
+        private static readonly TimeSpan timerBuffs = TimeSpan.FromSeconds(20);
+        private static DateTime timerBuffsDate = DateTime.Now.AddDays(-1);
 
         public static async Task AwaitShutdown()
         {
@@ -28,9 +28,7 @@ namespace Metin2Bot.Metin2Oficial
         {
             if (metin2 != null)
             {
-                var aux = metin1;
-                metin1 = metin2;
-                metin2 = aux;
+                (metin2, metin1) = (metin1, metin2);
             }
         }
 
