@@ -9,7 +9,8 @@ namespace Metin2Bot
             Console.WindowWidth = 100;
             Console.WindowHeight = 20;
 
-            while (true) {
+            while (true) 
+            {
                 try
                 {
                     //Metin1600x900.LevearConChami().Wait();
