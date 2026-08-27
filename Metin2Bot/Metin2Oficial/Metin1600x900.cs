@@ -359,19 +359,18 @@ namespace Metin2Bot.Metin2Oficial
                 await User.ClickAt(metin.StartX + 100, metin.StartY - 40);
                 await Task.Delay(800);
                 await AccionesImg.PicEstaMuerto.TakePic(metin);
-                var sigueMuerto = await AccionesImg.PicEstaMuerto.ProcessText(metin, btn);
+                metin.EstaMuerto = await AccionesImg.PicEstaMuerto.ProcessText(metin, btn);
 
-                if (!sigueMuerto)
+                if (!metin.EstaMuerto)
                 {
                     await btn.PocionRoja(10);
-                    metin.EstaMuerto = false;
-                    metin.timerEstaMuertoDate = DateTime.Now;
                     metin.timerAutocazaDate = DateTime.Now.AddDays(-1);
                 }
             }
 
             if (DateTime.Now - metin.timerEstaMuertoDate >= metin.timerEstaMuerto && !metin.EstaMuerto)
             {
+                metin.timerEstaMuertoDate = DateTime.Now;
                 await AccionesImg.PicEstaMuerto.TakePic(metin);
                 _ = Task.Run(async () =>
                 {
