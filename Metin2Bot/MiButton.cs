@@ -527,12 +527,12 @@ namespace Metin2Bot
             await PresionarYSoltar(BT7.RETURN, ms);
         }
 
-        public async Task MoverCamaraE(int ms = 1)
+        public async Task MoverCamaraE(int ms = 50)
         {
             await PresionarYSoltar(BT7.KEY_E, ms);
         }
 
-        public async Task MoverCamaraQ(int ms = 1)
+        public async Task MoverCamaraQ(int ms = 50)
         {
             await PresionarYSoltar(BT7.KEY_Q, ms);
         }

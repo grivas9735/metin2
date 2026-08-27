@@ -258,9 +258,6 @@ namespace Metin2Bot.Metin2Oficial
         {
             if (DateTime.Now - metin.timerPocionRojaDate >= metin.timerPocionRoja)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("USANDO POCION ROJA\n");
-                Console.ResetColor();
                 await btn.PocionRoja();
                 metin.timerPocionRojaDate = DateTime.Now;
             }
@@ -270,9 +267,6 @@ namespace Metin2Bot.Metin2Oficial
         {
             if (DateTime.Now - metin.timerPocionAzulDate >= metin.timerPocionAzul)
             {
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.WriteLine("USANDO POCION AZUL\n");
-                Console.ResetColor();
                 await btn.PocionAzul();
                 metin.timerPocionAzulDate = DateTime.Now;
             }
@@ -306,7 +300,6 @@ namespace Metin2Bot.Metin2Oficial
         {
             if (DateTime.Now - metin.timerAutocazaDate >= metin.timerAutocaza)
             {
-                Console.WriteLine("ACTIVANDO AUTOCAZA POR LAS DUDAS\n");
                 await IniciarAutocaza(metin);
                 metin.timerAutocazaDate = DateTime.Now;
             }
@@ -314,6 +307,7 @@ namespace Metin2Bot.Metin2Oficial
         
         private static async Task IniciarAutocaza(Metin2 metin)
         {
+            Console.WriteLine("ACTIVANDO AUTOCAZA\n");
             await Task.Delay(50);
 
             // ABRIR AUTOCAZA
@@ -342,6 +336,7 @@ namespace Metin2Bot.Metin2Oficial
 
         private static async Task DetenerAutocaza(Metin2 metin)
         {
+            Console.WriteLine("DETENIENDO AUTOCAZA\n");
             await Task.Delay(50);
 
             // ABRIR AUTOCAZA
@@ -415,8 +410,9 @@ namespace Metin2Bot.Metin2Oficial
             {
                 Console.WriteLine("VALIDANDO RELOGIN");
 
-                await AccionesImg.PicLogin.TakePic(metin);
-                await AccionesImg.PicChampSelect.TakePic(metin);
+                var p1 = AccionesImg.PicLogin.TakePic(metin);
+                var p2 = AccionesImg.PicChampSelect.TakePic(metin);
+                await Task.WhenAll(p1, p2);
 
                 _ = Task.Run(async () =>
                 {

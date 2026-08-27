@@ -88,6 +88,8 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task TakePic(Metin2 metin)
             {
+                Console.WriteLine("FOTO CHAMP SELECT\n");
+                await Task.Delay(50);
                 ScreenShot.SacarScreenshotChampSelect(metin);
             }
         }
@@ -116,6 +118,8 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task TakePic(Metin2 metin)
             {
+                Console.WriteLine("FOTO ESTA MUERTO\n");
+                await Task.Delay(50);
                 ScreenShot.SacarScreenshotEstaMuerto(metin);
             }
         }
@@ -143,6 +147,8 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task TakePic(Metin2 metin)
             {
+                Console.WriteLine("FOTO LOGIN\n");
+                await Task.Delay(50);
                 ScreenShot.SacarScreenshotPantallaLogin(metin);
             }
         }
@@ -162,6 +168,7 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task TakePic(Metin2 metin)
             {
+                Console.WriteLine("FOTO FRAGMENTOS\n");
                 ScreenShot.SacarScreenshotFragmentos(metin);
             }
         }

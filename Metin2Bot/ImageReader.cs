@@ -20,39 +20,6 @@ namespace Metin2Bot
             public bool HasCoordinates { get; set; } = true;
         }
 
-        public static async Task<string?> ProcessImageAPI(string imageRoute, MiButton btn)
-        {
-            try
-            {
-                var client = new HttpClient();
-                client.Timeout = TimeSpan.FromSeconds(5);
-
-                var content = new MultipartFormDataContent();
-                content.Add(new StringContent(apiKey), "apikey");
-                content.Add(new ByteArrayContent(File.ReadAllBytes(imageRoute)), "file", Path.GetFileName(imageRoute));
-
-                content.Add(new StringContent("spa"), "language"); // Cambia el idioma si es necesario
-                content.Add(new StringContent("true"), "isOverlayRequired");
-                content.Add(new StringContent("true"), "detectOrientation"); // Detectar orientación
-                content.Add(new StringContent("false"), "scale"); // Escalar la imagen si es necesario
-                content.Add(new StringContent("2"), "ocrEngine"); // Usar el motor avanzado
-
-                var response = await client.PostAsync("https://api.ocr.space/parse/image", content);
-                string result = await response.Content.ReadAsStringAsync();
-                var json = JsonConvert.DeserializeObject<RootObject>(result);
-                btn.AgarrarItems();
-
-                client.Dispose();
-                content.Dispose();
-                return json?.ParsedResults[0]?.ParsedText;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"ERROR AL EJECUTAR PROCESADO DE IMAGEN API: {ex.Message}");
-                return null;
-            }
-        }
-
         public static async Task<string?> ProcessImageLocal(string imageRoute, MiButton btn)
         {
             try
@@ -205,15 +172,5 @@ namespace Metin2Bot
 
             return outputPath;
         }
-    }
-
-    public class RootObject
-    {
-        public List<ParsedResult> ParsedResults { get; set; }
-    }
-
-    public class ParsedResult
-    {
-        public string ParsedText { get; set; }
     }
 }
