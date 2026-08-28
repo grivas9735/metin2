@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Metin2Bot.Screenshots;
+using System.Diagnostics;
 
 namespace Metin2Bot.Metin2Oficial
 {
@@ -127,6 +128,29 @@ namespace Metin2Bot.Metin2Oficial
             }
         }
 
+        public static async Task Test()
+        {
+            var activeWindow = User.GetForegroundWindow();
+            var metins = MetinFactory.GetAll();
+
+            while (true)
+            {
+                foreach (var metin in metins)
+                {
+                    await User.MostrarMetin(metin.ProcessId);
+
+                    await EvalDonarExp(metin);
+                    //await EvalEstaMuerto(metin);
+                    //await EvalRelogin(metin);
+                    //await EvalPocionRoja(metin);
+                    //await EvalAutocaza(metin);
+                    //await BuscarFragmentos(metin);
+                }
+
+                await User.MostrarVentanaActual(activeWindow);
+            }
+        }
+
         public static async Task Idle()
         {
             var activeWindow = User.GetForegroundWindow();
@@ -175,7 +199,10 @@ namespace Metin2Bot.Metin2Oficial
             if (metin.TextRegion != null && metin.TextRegion.HasCoordinates)
             {
                 await DetenerAutocaza(metin);
-                await User.ClickAt(metin.StartX + metin.TextRegion.X, metin.StartY - 100 + metin.TextRegion.Y, 10);
+                await User.ClickAt(
+                    metin.StartX + metin.TextRegion.X + Resolution.ClickFragmentarItemPiso().X,
+                    metin.StartY + metin.TextRegion.Y + Resolution.ClickFragmentarItemPiso().Y, 
+                    10);
                 await btn.PocionRoja(10);
                 await Task.Delay(1000);
                 await btn.AgarrarItems();
@@ -210,7 +237,7 @@ namespace Metin2Bot.Metin2Oficial
                 await Task.Delay(150);
 
                 // Click flechita exp
-                await User.ClickAt(metin.StartX + 180, metin.StartY + 20);
+                await User.ClickAt(metin.StartX + Resolution.ClickFlechitaExp().X, metin.StartY + Resolution.ClickFlechitaExp().Y);
                 await Task.Delay(150);
 
                 // Apretar 6 veces 9
@@ -218,11 +245,7 @@ namespace Metin2Bot.Metin2Oficial
                 await Task.Delay(150);
 
                 // Apretar boton OK del cartelito de numero
-                await User.ClickAt(metin.StartX + 150, metin.StartY - 25);
-                await Task.Delay(150);
-
-                // Apretar boton en caso de error de 0 exp
-                await User.ClickAt(metin.StartX + 785, metin.StartY + 352);
+                await User.ClickAt(metin.StartX + Resolution.ClickBotonOkDonar().X, metin.StartY - Resolution.ClickBotonOkDonar().Y);
                 await Task.Delay(150);
 
                 // Cerrar ventana gremio
@@ -231,6 +254,10 @@ namespace Metin2Bot.Metin2Oficial
                 await btn.PresionarYSoltar(MiButton.BT7.KEY_G);
                 await Task.Delay(150);
                 btn.SoltarTecla(MiButton.BT7.MENU);
+                await Task.Delay(150);
+
+                // Apretar boton en caso de error de 0 exp
+                await User.ClickAt(metin.StartX + Resolution.ClickBotonErrorDonarExp().X, metin.StartY + Resolution.ClickBotonErrorDonarExp().Y);
                 await Task.Delay(150);
 
                 metin.timerDonarExpDate = DateTime.Now;
@@ -314,19 +341,19 @@ namespace Metin2Bot.Metin2Oficial
             await Task.Delay(50);
 
             // DETENER
-            await User.ClickAt(metin.StartX + 890, metin.StartY + 555);
+            await User.ClickAt(metin.StartX + Resolution.ClickAutocazaDetener().X, metin.StartY + Resolution.ClickAutocazaDetener().Y);
 
             // RESETEAR
-            await User.ClickAt(metin.StartX + 890, metin.StartY + 400);
+            await User.ClickAt(metin.StartX + Resolution.ClickAutocazaResetear().X, metin.StartY + Resolution.ClickAutocazaResetear().Y);
 
             // ATACAR
-            await User.ClickAt(metin.StartX + 890, metin.StartY + 420);
+            await User.ClickAt(metin.StartX + Resolution.ClickAutocazaAtacar().X, metin.StartY + Resolution.ClickAutocazaAtacar().Y);
 
             // ALCANCE
-            await User.ClickAt(metin.StartX + 890, metin.StartY + 450);
+            await User.ClickAt(metin.StartX + Resolution.ClickAutocazaAlcance().X, metin.StartY + Resolution.ClickAutocazaAlcance().Y);
 
             // EMPEZAR
-            await User.ClickAt(metin.StartX + 800, metin.StartY + 555);
+            await User.ClickAt(metin.StartX + Resolution.ClickAutocazaEmpezar().X, metin.StartY + Resolution.ClickAutocazaEmpezar().Y);
 
             // CERRAR AUTOCAZA
             await btn.PresionarYSoltar(MiButton.BT7.KEY_K, 100);
@@ -343,7 +370,7 @@ namespace Metin2Bot.Metin2Oficial
             await Task.Delay(50);
 
             // DETENER
-            await User.ClickAt(metin.StartX + 890, metin.StartY + 555);
+            await User.ClickAt(metin.StartX + Resolution.ClickAutocazaDetener().X, metin.StartY + Resolution.ClickAutocazaDetener().Y);
 
             // CERRAR AUTOCAZA
             await btn.PresionarYSoltar(MiButton.BT7.KEY_K, 100);
@@ -355,7 +382,7 @@ namespace Metin2Bot.Metin2Oficial
             if (metin.EstaMuerto)
             {
                 Console.WriteLine("REVIVIENDO\n");
-                await User.ClickAt(metin.StartX + 100, metin.StartY - 40);
+                await User.ClickAt(metin.StartX + Resolution.ClickRevivir().X, metin.StartY - Resolution.ClickRevivir().Y);
                 await Task.Delay(800);
                 await AccionesImg.PicEstaMuerto.TakePic(metin);
                 metin.EstaMuerto = await AccionesImg.PicEstaMuerto.ProcessText(metin, btn);
@@ -386,7 +413,7 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     await btn.ApretarEnter(100); // Este enter es para sacar cualquier posible cartel de error
                     await Task.Delay(100);
-                    await User.ClickAt(metin.StartX + 900, metin.StartY + 670);
+                    await User.ClickAt(metin.StartX + Resolution.ClickLoginOK().X, metin.StartY + Resolution.ClickLoginOK().Y);
                     await Task.Delay(15000);
 
                     await AccionesImg.PicChampSelect.TakePic(metin);

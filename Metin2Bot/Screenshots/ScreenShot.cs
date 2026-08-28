@@ -4,7 +4,7 @@
     {
         public static void SacarScreenshotPantallaLogin(Metin2 metin)
         {
-            Rectangle captureArea = new(metin.StartX + 850, metin.StartY + 600, 180, 150);
+            Rectangle captureArea = Resolution.RectScreenshotPantallaLogin(metin);
 
             // Tomar el screenshot
             using Bitmap screenshot = new(captureArea.Width, captureArea.Height);
@@ -19,7 +19,7 @@
 
         public static void SacarScreenshotFragmentos(Metin2 metin)
         {
-            Rectangle captureArea = new(metin.StartX, metin.StartY - 100, 1500, 820);
+            Rectangle captureArea = Resolution.RectScreenshotFragmentos(metin);
 
             // Tomar el screenshot
             using Bitmap screenshot = new(captureArea.Width, captureArea.Height);
@@ -34,7 +34,7 @@
 
         public static void SacarScreenshotChampSelect(Metin2 metin)
         {
-            Rectangle captureArea = new(metin.StartX - 20, metin.StartY - 20, 150, 50);
+            Rectangle captureArea = Resolution.RectScreenshotChampSelect(metin);
 
             // Tomar el screenshot
             using Bitmap screenshot = new(captureArea.Width, captureArea.Height);
@@ -49,7 +49,7 @@
 
         public static void SacarScreenshotEstaMuerto(Metin2 metin)
         {
-            Rectangle captureArea = new(metin.StartX + 40, metin.StartY - 70, 200, 80);
+            Rectangle captureArea = Resolution.RectScreenshotEstaMuerto(metin);
 
             // Tomar el screenshot
             using Bitmap screenshot = new Bitmap(captureArea.Width, captureArea.Height);
