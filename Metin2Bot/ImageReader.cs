@@ -137,7 +137,6 @@ namespace Metin2Bot
         {
             imageRoute = ConvertToBlackAndWhite(metin, imageRoute);
             return Task.FromResult(CambiarAFullHD(metin, imageRoute));
-            //return Task.Run(() => { return CambiarAFullHD(metin, imageRoute); });
         }
 
         static string CambiarAFullHD(Metin2 metin, string imageRoute)
@@ -150,7 +149,6 @@ namespace Metin2Bot
                 resized.SetResolution(1920, 1080);
 
                 // Guardar la nueva imagen con mayor resolución
-                //imageRoute = Path.Combine(Path.GetDirectoryName(imageRoute), $"bw_fhd_captcha{metin.Id}.png");
                 imageRoute = imageRoute.Replace("metin_bw_", "metin_bw_fhd_");
                 resized.Save(imageRoute);
             }
@@ -166,7 +164,6 @@ namespace Metin2Bot
             // Aplicar umbral para convertir a blanco y negro puro
             Cv2.Threshold(img, img, 128, 255, ThresholdTypes.Binary);
 
-            //string outputPath = Path.Combine(Path.GetDirectoryName(inputPath), $"bw_captcha{metin.Id}.png");
             string outputPath = inputPath.Replace("metin_", "metin_bw_");
             img.SaveImage(outputPath);
 

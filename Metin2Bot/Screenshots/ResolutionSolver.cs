@@ -13,7 +13,7 @@
 
     public static class Resolution
     {
-        private static readonly ResolutionEnum ResolutionEnum = ResolutionEnum.R1600x900;
+        private static readonly ResolutionEnum ResolutionEnum = ResolutionEnum.R800x600;
 
         #region Donacion Exp
 
@@ -126,7 +126,7 @@
                 return new Coordenadas(900, 670);
             }
 
-            return new Coordenadas(900, 670);
+            return new Coordenadas(500, 370);
         }
 
         #endregion
@@ -154,7 +154,7 @@
                 return new Rectangle(metin.StartX + 850, metin.StartY + 600, 180, 150);
             }
 
-            return new Rectangle(metin.StartX + 850, metin.StartY + 600, 180, 150);
+            return new Rectangle(metin.StartX + 450, metin.StartY + 320, 150, 100);
         }
 
         public static Rectangle RectScreenshotFragmentos(Metin2 metin)
@@ -164,7 +164,7 @@
                 return new Rectangle(metin.StartX, metin.StartY - 100, 1500, 820);
             }
 
-            return new Rectangle(metin.StartX, metin.StartY - 100, 1500, 820);
+            return new Rectangle(metin.StartX, metin.StartY - 100, 620, 550);
         }
 
         public static Rectangle RectScreenshotChampSelect(Metin2 metin)
@@ -174,7 +174,7 @@
                 return new Rectangle(metin.StartX - 20, metin.StartY - 20, 150, 50);
             }
 
-            return new Rectangle(metin.StartX - 20, metin.StartY - 20, 150, 50);
+            return new Rectangle(metin.StartX - 20, metin.StartY - 100, 150, 50);
         }
 
         public static Rectangle RectScreenshotEstaMuerto(Metin2 metin)

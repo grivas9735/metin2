@@ -140,11 +140,11 @@ namespace Metin2Bot.Metin2Oficial
                     await User.MostrarMetin(metin.ProcessId);
 
                     await EvalDonarExp(metin);
-                    //await EvalEstaMuerto(metin);
-                    //await EvalRelogin(metin);
-                    //await EvalPocionRoja(metin);
-                    //await EvalAutocaza(metin);
-                    //await BuscarFragmentos(metin);
+                    await EvalEstaMuerto(metin);
+                    await EvalRelogin(metin);
+                    await EvalPocionRoja(metin);
+                    await EvalAutocaza(metin);
+                    await BuscarFragmentos(metin);
                 }
 
                 await User.MostrarVentanaActual(activeWindow);
