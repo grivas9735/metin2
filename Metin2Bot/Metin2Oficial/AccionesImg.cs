@@ -11,6 +11,9 @@ namespace Metin2Bot.Metin2Oficial
         private static List<string> ItemsCity2 = new List<string>()
         { "ébano", "ebano", "cuerno" };
 
+        private static List<string> ItemsValle = new List<string>()
+        { "cartilla" };
+
         private static List<string> ItemsSiempre = new List<string>()
         { "weiliao", "arte guerra", "ao zi", "arte guerra", "arteguerra",
           "bola", "polimorf", "wu zi", "luz luna", "luzluna", "pendiente",
@@ -22,6 +25,7 @@ namespace Metin2Bot.Metin2Oficial
             var lst = new List<string>();
             lst.AddRange(ListFragmentos);
             lst.AddRange(ItemsCity2);
+            lst.AddRange(ItemsValle);
             lst.AddRange(ItemsSiempre);
             return lst;
         }
