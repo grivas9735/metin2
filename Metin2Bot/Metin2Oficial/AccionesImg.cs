@@ -17,7 +17,7 @@ namespace Metin2Bot.Metin2Oficial
         private static List<string> ItemsSiempre = new List<string>()
         { "weiliao", "arte guerra", "ao zi", "arte guerra", "arteguerra",
           "bola", "polimorf", "wu zi", "luz luna", "luzluna", "pendiente",
-          "collar", "bota", "zapato"
+          "collar", "bota", "zapato", "morada"
         };
 
         public static List<string> ListaItemsAgarrar()
