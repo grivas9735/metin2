@@ -69,6 +69,41 @@ namespace Metin2Bot.Metin2Oficial
             }
         }
 
+        public static IPicture PicCoordenadas
+        {
+            get
+            {
+                return new PictureCoordenadas();
+            }
+        }
+
+        public class PictureCoordenadas : IPicture
+        {
+            public Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn)
+            {
+                throw new NotImplementedException();
+            }
+
+            public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
+            {
+                var imagePath = await RecrearImagen(metin, metin.ImgCoordenadasName);
+                var text = await ProcessImageLocal(imagePath, btn);
+
+                if (text == null)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            public async Task TakePic(Metin2 metin)
+            {
+                await Task.Delay(50);
+                ScreenShot.SacarScreenshotCoordenadas(metin);
+            }
+        }
+
         public class PictureChampSelect : IPicture
         {
             public Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn)

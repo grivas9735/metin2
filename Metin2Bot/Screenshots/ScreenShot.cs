@@ -61,5 +61,20 @@
             // Guardar el screenshot para pruebas
             screenshot.Save(metin.ImgEstaMuertoName, System.Drawing.Imaging.ImageFormat.Png);
         }
+
+        public static void SacarScreenshotCoordenadas(Metin2 metin)
+        {
+            Rectangle captureArea = Resolution.RectScreenshotCoordenadas(metin);
+
+            // Tomar el screenshot
+            using Bitmap screenshot = new Bitmap(captureArea.Width, captureArea.Height);
+            using (Graphics g = Graphics.FromImage(screenshot))
+            {
+                g.CopyFromScreen(captureArea.Location, Point.Empty, captureArea.Size);
+            }
+
+            // Guardar el screenshot para pruebas
+            screenshot.Save(metin.ImgCoordenadasName, System.Drawing.Imaging.ImageFormat.Png);
+        }
     }
 }

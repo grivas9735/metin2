@@ -89,5 +89,13 @@ namespace Metin2Bot
                 return AppConfig.GetRouteValue("MPs") + @$"\metin_frag_{Id}.png";
             }
         }
+
+        public string ImgCoordenadasName
+        {
+            get
+            {
+                return AppConfig.GetRouteValue("MPs") + @$"\metin_coords_{Id}.png";
+            }
+        }
     }
 }

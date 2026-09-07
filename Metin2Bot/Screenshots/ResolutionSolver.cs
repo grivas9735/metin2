@@ -15,6 +15,20 @@
     {
         private static readonly ResolutionEnum ResolutionEnum = ResolutionEnum.R800x600;
 
+        #region Coordenadas
+
+        public static Coordenadas WatchCoords()
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                throw new NotImplementedException();
+            }
+
+            return new Coordenadas(720, -50);
+        }
+
+        #endregion
+
         #region Donacion Exp
 
         public static Coordenadas ClickFlechitaExp()
@@ -185,6 +199,16 @@
             }
 
             return new Rectangle(metin.StartX + 40, metin.StartY - 70, 200, 80);
+        }
+
+        public static Rectangle RectScreenshotCoordenadas(Metin2 metin)
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                throw new NotImplementedException();
+            }
+
+            return new Rectangle(metin.StartX + 655, metin.StartY - 50, 58, 15);
         }
 
         #endregion
