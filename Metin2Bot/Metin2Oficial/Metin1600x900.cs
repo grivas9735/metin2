@@ -117,9 +117,9 @@ namespace Metin2Bot.Metin2Oficial
                     await User.MostrarMetin(metin.ProcessId);
 
                     // PRUEBAS COORDENADAS MOVIMIENTO
-                    User.MouseToPosition(metin.StartX + Resolution.WatchCoords().X, metin.StartY + Resolution.WatchCoords().Y);
-                    await AccionesImg.PicCoordenadas.TakePic(metin);
-                    await AccionesImg.PicCoordenadas.ProcessText(metin, btn);
+                    //User.MouseToPosition(metin.StartX + Resolution.WatchCoords().X, metin.StartY + Resolution.WatchCoords().Y);
+                    //await AccionesImg.PicCoordenadas.TakePic(metin);
+                    //await AccionesImg.PicCoordenadas.ProcessText(metin, btn);
 
                     await EvalDonarExp(metin);
                     await EvalEstaMuerto(metin);
