@@ -604,45 +604,45 @@ namespace Metin2Bot
             SendInput(1u, array, Input.Size);
         }
 
-        public async Task MoverWA()
+        public async Task MoverWA(int tiempo)
         {
             MantenerTeclaApretada(BT7.KEY_W);
             MantenerTeclaApretada(BT7.KEY_A);
 
-            await Task.Delay(80);
+            await Task.Delay(tiempo);
 
             SoltarTecla(BT7.KEY_W);
             SoltarTecla(BT7.KEY_A);
         }
 
-        public async Task MoverWD()
+        public async Task MoverWD(int tiempo)
         {
             MantenerTeclaApretada(BT7.KEY_W);
             MantenerTeclaApretada(BT7.KEY_D);
 
-            await Task.Delay(80);
+            await Task.Delay(tiempo);
 
             SoltarTecla(BT7.KEY_W);
             SoltarTecla(BT7.KEY_D);
         }
 
-        public async Task MoverSA()
+        public async Task MoverSA(int tiempo)
         {
             MantenerTeclaApretada(BT7.KEY_S);
             MantenerTeclaApretada(BT7.KEY_A);
 
-            await Task.Delay(80);
+            await Task.Delay(tiempo);
 
             SoltarTecla(BT7.KEY_S);
             SoltarTecla(BT7.KEY_A);
         }
 
-        public async Task MoverSD()
+        public async Task MoverSD(int tiempo)
         {
             MantenerTeclaApretada(BT7.KEY_S);
             MantenerTeclaApretada(BT7.KEY_D);
 
-            await Task.Delay(80);
+            await Task.Delay(tiempo);
 
             SoltarTecla(BT7.KEY_S);
             SoltarTecla(BT7.KEY_D);

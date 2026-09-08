@@ -1,5 +1,7 @@
-﻿using Metin2Bot.Screenshots;
+﻿using Metin2Bot.Controladores;
+using Metin2Bot.Screenshots;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace Metin2Bot.Metin2Oficial
 {
@@ -117,9 +119,7 @@ namespace Metin2Bot.Metin2Oficial
                     await User.MostrarMetin(metin.ProcessId);
 
                     // PRUEBAS COORDENADAS MOVIMIENTO
-                    //User.MouseToPosition(metin.StartX + Resolution.WatchCoords().X, metin.StartY + Resolution.WatchCoords().Y);
-                    //await AccionesImg.PicCoordenadas.TakePic(metin);
-                    //await AccionesImg.PicCoordenadas.ProcessText(metin, btn);
+                    //await Movimiento.MoverPersonaje(metin, new Vector2(558, 620));
 
                     await EvalDonarExp(metin);
                     await EvalEstaMuerto(metin);

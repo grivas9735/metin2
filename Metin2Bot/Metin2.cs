@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.Metrics;
+using System.Numerics;
 using static Metin2Bot.ImageReader;
 
 namespace Metin2Bot
@@ -30,6 +31,7 @@ namespace Metin2Bot
         public bool EstaMuerto { get; set; }
 
         public TextRegion? TextRegion { get; set; }
+        public Vector2? Coordenadas { get; set; }
 
         public TimeSpan timerPocionRoja = TimeSpan.FromSeconds(1);
         public DateTime timerPocionRojaDate = DateTime.Now.AddDays(-1);

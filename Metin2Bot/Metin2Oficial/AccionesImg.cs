@@ -1,4 +1,7 @@
 ﻿using Metin2Bot.Screenshots;
+using System.Numerics;
+using System.Text.RegularExpressions;
+using TesseractOCR.Renderers;
 using static Metin2Bot.ImageReader;
 
 namespace Metin2Bot.Metin2Oficial
@@ -88,13 +91,26 @@ namespace Metin2Bot.Metin2Oficial
             {
                 var imagePath = await RecrearImagen(metin, metin.ImgCoordenadasName);
                 var text = await ProcessImageLocal(imagePath, btn);
+                Console.WriteLine(text);
 
-                if (text == null)
+                if (!string.IsNullOrEmpty(text) && text.Contains(','))
                 {
-                    return false;
+                    var split = text.Split(',');
+                    var primerCoordenada = split[0].Split('(')[1];
+                    var segundaCoordenada = split[1].Split(')')[0];
+                    var validx = int.TryParse(primerCoordenada, out var coordx);
+                    var validy = int.TryParse(segundaCoordenada, out var coordy);
+                    Console.WriteLine(coordx + "," + coordy);
+
+                    if (validx && validy)
+                    {
+                        metin.Coordenadas = new Vector2(coordx, coordy);
+                        return true;
+                    }
                 }
 
-                return true;
+                metin.Coordenadas = null;
+                return false;
             }
 
             public async Task TakePic(Metin2 metin)
