@@ -1,7 +1,5 @@
 ﻿using Metin2Bot.Screenshots;
 using System.Numerics;
-using System.Text.RegularExpressions;
-using TesseractOCR.Renderers;
 using static Metin2Bot.ImageReader;
 
 namespace Metin2Bot.Metin2Oficial

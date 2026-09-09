@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Metrics;
-using System.Numerics;
+﻿using System.Numerics;
 using static Metin2Bot.ImageReader;
 
 namespace Metin2Bot

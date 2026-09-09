@@ -1,8 +1,5 @@
-﻿using Newtonsoft.Json;
-using OpenCvSharp;
-using System;
-using System.Drawing;
-using System.Linq;
+﻿using OpenCvSharp;
+using System.Diagnostics.Metrics;
 using System.Text.RegularExpressions;
 using Tesseract;
 
@@ -10,8 +7,6 @@ namespace Metin2Bot
 {
     public static class ImageReader
     {
-        private const string apiKey = "K86761202088957";
-
         public class TextRegion
         {
             public string Text { get; set; } = string.Empty;
@@ -75,9 +70,12 @@ namespace Metin2Bot
                     foreach (var palabra in palabras)
                     {
                         txtRegion = regiones.FirstOrDefault(x => x.Text.Contains(palabra, StringComparison.CurrentCultureIgnoreCase));
-
+                        
                         if (txtRegion != null)
                         {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine($"{palabra}");
+                            Console.ResetColor();
                             break;
                         }
                     }

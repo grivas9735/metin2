@@ -1,7 +1,5 @@
-﻿using Metin2Bot.Controladores;
-using Metin2Bot.Screenshots;
+﻿using Metin2Bot.Screenshots;
 using System.Diagnostics;
-using System.Numerics;
 
 namespace Metin2Bot.Metin2Oficial
 {
