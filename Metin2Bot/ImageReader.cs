@@ -1,6 +1,5 @@
 ﻿using OpenCvSharp;
-using System.Diagnostics.Metrics;
-using System.Text.RegularExpressions;
+using PaddleOCRSharp;
 using Tesseract;
 
 namespace Metin2Bot
@@ -13,6 +12,24 @@ namespace Metin2Bot
             public int X { get; set; }
             public int Y { get; set; }
             public bool HasCoordinates { get; set; } = true;
+        }
+
+        public static async Task<string?> ProcessImageLocalV3(string imageRoute, MiButton btn)
+        {
+            try
+            {
+                var ocr = new PaddleOCREngine();
+                var result = ocr.DetectText(imageRoute);
+                var texto = result.Text;
+                ocr.Dispose();
+
+                return texto;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ERROR AL EJECUTAR PROCESADO DE IMAGEN LOCAL: {ex.Message}");
+                return null;
+            }
         }
 
         public static async Task<string?> ProcessImageLocal(string imageRoute, MiButton btn)

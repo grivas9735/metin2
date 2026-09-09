@@ -88,7 +88,7 @@ namespace Metin2Bot.Metin2Oficial
             public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
             {
                 var imagePath = await RecrearImagen(metin, metin.ImgCoordenadasName);
-                var text = await ProcessImageLocal(imagePath, btn);
+                var text = await ProcessImageLocalV3(imagePath, btn);
                 Console.WriteLine(text);
 
                 if (!string.IsNullOrEmpty(text) && text.Contains(','))

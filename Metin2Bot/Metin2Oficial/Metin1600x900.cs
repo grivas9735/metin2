@@ -1,5 +1,8 @@
 ﻿using Metin2Bot.Screenshots;
 using System.Diagnostics;
+using PaddleOCRSharp;
+using Metin2Bot.Controladores;
+using System.Numerics;
 
 namespace Metin2Bot.Metin2Oficial
 {
@@ -119,7 +122,7 @@ namespace Metin2Bot.Metin2Oficial
                     // PRUEBAS COORDENADAS MOVIMIENTO
                     //await Movimiento.MoverPersonaje(metin, new Vector2(558, 620));
 
-                    await EvalDonarExp(metin);
+                    //await EvalDonarExp(metin);
                     await EvalEstaMuerto(metin);
                     await EvalRelogin(metin);
                     await EvalPocionRoja(metin);
