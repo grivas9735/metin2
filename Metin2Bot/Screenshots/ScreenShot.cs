@@ -76,5 +76,37 @@
             // Guardar el screenshot para pruebas
             screenshot.Save(metin.ImgCoordenadasName, System.Drawing.Imaging.ImageFormat.Png);
         }
+
+        #region Bitmaps
+
+        public static Bitmap SacarScreenshotCoordenadasBM(Metin2 metin)
+        {
+            var captureArea = Resolution.RectScreenshotCoordenadas(metin);
+
+            // Tomar el screenshot
+            Bitmap screenshot = new(captureArea.Width, captureArea.Height);
+            using (Graphics g = Graphics.FromImage(screenshot))
+            {
+                g.CopyFromScreen(captureArea.Location, Point.Empty, captureArea.Size);
+            }
+
+            return screenshot;
+        }
+
+        public static Bitmap SacarScreenshotEstaMuertoBM(Metin2 metin)
+        {
+            var captureArea = Resolution.RectScreenshotEstaMuerto(metin);
+
+            // Tomar el screenshot
+            Bitmap screenshot = new(captureArea.Width, captureArea.Height);
+            using (Graphics g = Graphics.FromImage(screenshot))
+            {
+                g.CopyFromScreen(captureArea.Location, Point.Empty, captureArea.Size);
+            }
+
+            return screenshot;
+        }
+
+        #endregion
     }
 }

@@ -88,7 +88,8 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
             {
-                var text = ProcessImageLocalV3(metin, metin.ImgCoordenadasName, btn);
+                var bm = ScreenShot.SacarScreenshotCoordenadasBM(metin);
+                var text = ProcessInMemory(ref bm);
 
                 if (string.IsNullOrWhiteSpace(text))
                 {
@@ -133,7 +134,7 @@ namespace Metin2Bot.Metin2Oficial
             public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
             {
                 var imagePath = await RecrearImagen(metin, metin.ImgChampSelectName);
-                var text = ProcessImageLocal(imagePath, btn);
+                var text = ProcessImageLocal(imagePath);
 
                 if (text == null)
                 {
@@ -161,10 +162,10 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
             {
-                var imagePath = await RecrearImagen(metin, metin.ImgEstaMuertoName);
-                var text = ProcessImageLocal(imagePath, btn);
+                var bm = ScreenShot.SacarScreenshotEstaMuertoBM(metin);
+                var text = ProcessInMemory(ref bm);
 
-                if (text == null)
+                if (string.IsNullOrWhiteSpace(text))
                 {
                     return false;
                 }
@@ -176,9 +177,6 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task TakePic(Metin2 metin)
             {
-                await Task.Delay(50);
-                Console.WriteLine("FOTO ESTA MUERTO\n");
-                ScreenShot.SacarScreenshotEstaMuerto(metin);
             }
         }
 
@@ -192,7 +190,7 @@ namespace Metin2Bot.Metin2Oficial
             public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
             {
                 var imagePath = await RecrearImagen(metin, metin.ImgLoginName);
-                var text = ProcessImageLocal(imagePath, btn);
+                var text = ProcessImageLocal(imagePath);
 
                 if (text == null)
                 {
@@ -216,7 +214,7 @@ namespace Metin2Bot.Metin2Oficial
             public async Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn)
             {
                 var imagePath = await RecrearImagen(metin, metin.ImgFragmentosName);
-                return ProcessImageLocalV2(imagePath, ListaItemsAgarrar(), btn);
+                return ProcessImageLocalV2(imagePath, ListaItemsAgarrar());
             }
 
             public Task<bool> ProcessText(Metin2 metin, MiButton btn)

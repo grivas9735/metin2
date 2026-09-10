@@ -17,35 +17,22 @@ namespace Metin2Bot
             public bool HasCoordinates { get; set; } = true;
         }
 
-        public static string? ProcessImageLocalV3(Metin2 metin, string imageRoute, MiButton btn)
+        public static string? ProcessInMemory(ref Bitmap bm)
         {
             try
             {
-                Rectangle captureArea = Resolution.RectScreenshotCoordenadas(metin);
-
-                var screenshot = new Bitmap(
-                    captureArea.Width,
-                    captureArea.Height);
-
-                using (Graphics g = Graphics.FromImage(screenshot))
-                {
-                    g.CopyFromScreen(
-                        captureArea.Location,
-                        System.Drawing.Point.Empty,
-                        captureArea.Size);
-                }
-
-                var result = ocr.DetectText(screenshot);
+                var result = ocr.DetectText(bm);
+                bm.Dispose();
                 return result.Text;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"ERROR AL EJECUTAR PROCESADO DE IMAGEN LOCAL: {ex.Message}");
+                Console.WriteLine($"ERROR AL EJECUTAR PROCESADO DE IMAGEN EN MEMORIA: {ex.Message}");
                 return null;
             }
         }
 
-        public static string? ProcessImageLocal(string imageRoute, MiButton btn)
+        public static string? ProcessImageLocal(string imageRoute)
         {
             try
             {
@@ -73,7 +60,7 @@ namespace Metin2Bot
             }
         }
 
-        public static TextRegion? ProcessImageLocalV2(string imageRoute, List<string> palabras, MiButton btn)
+        public static TextRegion? ProcessImageLocalV2(string imageRoute, List<string> palabras)
         {
             try
             {
