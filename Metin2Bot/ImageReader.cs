@@ -1,5 +1,4 @@
-﻿using Metin2Bot.Screenshots;
-using OpenCvSharp;
+﻿using OpenCvSharp;
 using PaddleOCRSharp;
 using Tesseract;
 
