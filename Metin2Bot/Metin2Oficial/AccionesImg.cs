@@ -1,5 +1,6 @@
 ﻿using Metin2Bot.Screenshots;
 using System.Numerics;
+using System.Text.RegularExpressions;
 using static Metin2Bot.ImageReader;
 
 namespace Metin2Bot.Metin2Oficial
@@ -87,28 +88,32 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
             {
-                var imagePath = await RecrearImagen(metin, metin.ImgCoordenadasName);
-                var text = await ProcessImageLocalV3(imagePath, btn);
-                Console.WriteLine(text);
+                var text = ProcessImageLocalV3(metin, metin.ImgCoordenadasName, btn);
 
-                if (!string.IsNullOrEmpty(text) && text.Contains(','))
+                if (string.IsNullOrWhiteSpace(text))
                 {
-                    var split = text.Split(',');
-                    var primerCoordenada = split[0].Split('(')[1];
-                    var segundaCoordenada = split[1].Split(')')[0];
-                    var validx = int.TryParse(primerCoordenada, out var coordx);
-                    var validy = int.TryParse(segundaCoordenada, out var coordy);
-                    Console.WriteLine(coordx + "," + coordy);
-
-                    if (validx && validy)
-                    {
-                        metin.Coordenadas = new Vector2(coordx, coordy);
-                        return true;
-                    }
+                    metin.Coordenadas = null;
+                    return false;
                 }
 
-                metin.Coordenadas = null;
-                return false;
+                var match = Regex.Match(text, @"\(\s*(\d+)\s*,\s*(\d+)\s*\)");
+
+                if (!match.Success)
+                {
+                    metin.Coordenadas = null;
+                    return false;
+                }
+
+                if (!int.TryParse(match.Groups[1].Value, out var coordx) ||
+                    !int.TryParse(match.Groups[2].Value, out var coordy))
+                {
+                    metin.Coordenadas = null;
+                    return false;
+                }
+
+                metin.Coordenadas = new Vector2(coordx, coordy);
+
+                return true;
             }
 
             public async Task TakePic(Metin2 metin)
@@ -128,7 +133,7 @@ namespace Metin2Bot.Metin2Oficial
             public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
             {
                 var imagePath = await RecrearImagen(metin, metin.ImgChampSelectName);
-                var text = await ProcessImageLocal(imagePath, btn);
+                var text = ProcessImageLocal(imagePath, btn);
 
                 if (text == null)
                 {
@@ -157,7 +162,7 @@ namespace Metin2Bot.Metin2Oficial
             public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
             {
                 var imagePath = await RecrearImagen(metin, metin.ImgEstaMuertoName);
-                var text = await ProcessImageLocal(imagePath, btn);
+                var text = ProcessImageLocal(imagePath, btn);
 
                 if (text == null)
                 {
@@ -187,7 +192,7 @@ namespace Metin2Bot.Metin2Oficial
             public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
             {
                 var imagePath = await RecrearImagen(metin, metin.ImgLoginName);
-                var text = await ProcessImageLocal(imagePath, btn);
+                var text = ProcessImageLocal(imagePath, btn);
 
                 if (text == null)
                 {
@@ -211,7 +216,7 @@ namespace Metin2Bot.Metin2Oficial
             public async Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn)
             {
                 var imagePath = await RecrearImagen(metin, metin.ImgFragmentosName);
-                return await ProcessImageLocalV2(imagePath, ListaItemsAgarrar(), btn);
+                return ProcessImageLocalV2(imagePath, ListaItemsAgarrar(), btn);
             }
 
             public Task<bool> ProcessText(Metin2 metin, MiButton btn)

@@ -1,7 +1,8 @@
-﻿using Metin2Bot.Screenshots;
-using System.Diagnostics;
+﻿using Metin2Bot.Controladores;
+using Metin2Bot.Screenshots;
 using PaddleOCRSharp;
-using Metin2Bot.Controladores;
+using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Numerics;
 
 namespace Metin2Bot.Metin2Oficial
@@ -80,7 +81,7 @@ namespace Metin2Bot.Metin2Oficial
         {
             var activeWindow = User.GetForegroundWindow();
             var metins = MetinFactory.GetAll();
-            
+
             _ = AwaitShutdown();
             _ = AwaitPause();
 
@@ -119,9 +120,6 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     await User.MostrarMetin(metin.ProcessId);
 
-                    // PRUEBAS COORDENADAS MOVIMIENTO
-                    //await Movimiento.MoverPersonaje(metin, new Vector2(558, 620));
-
                     //await EvalDonarExp(metin);
                     await EvalEstaMuerto(metin);
                     await EvalRelogin(metin);
@@ -132,6 +130,55 @@ namespace Metin2Bot.Metin2Oficial
 
                 await User.MostrarVentanaActual(activeWindow);
             }
+        }
+
+        public static async Task BackearFragmenteros()
+        {
+            var activeWindow = User.GetForegroundWindow();
+            var metins = MetinFactory.GetAll();
+            
+            _ = Task.Run(async () =>
+            {
+                await btn.PocionRoja();
+                await Task.Delay(500);
+            });
+
+            foreach (var metin in metins)
+            {
+                await User.MostrarMetin(metin.ProcessId);
+
+                await Movimiento.MoverPersonaje(metin, new Vector2(109, 572));
+                await Movimiento.MoverPersonaje(metin, new Vector2(147, 546));
+                await Movimiento.MoverPersonaje(metin, new Vector2(184, 532));
+                await Movimiento.MoverPersonaje(metin, new Vector2(246, 519));
+                await Movimiento.MoverPersonaje(metin, new Vector2(283, 514));
+                await Movimiento.MoverPersonaje(metin, new Vector2(320, 502));
+                await Movimiento.MoverPersonaje(metin, new Vector2(350, 499));
+                await Movimiento.MoverPersonaje(metin, new Vector2(364, 499));
+                await Movimiento.MoverPersonaje(metin, new Vector2(395, 499));
+                await Movimiento.MoverPersonaje(metin, new Vector2(405, 499));
+                await Movimiento.MoverPersonaje(metin, new Vector2(425, 499));
+                await Movimiento.MoverPersonaje(metin, new Vector2(449, 505));
+                await Movimiento.MoverPersonaje(metin, new Vector2(494, 514));
+                await Movimiento.MoverPersonaje(metin, new Vector2(506, 544));
+
+                // ARCO CIUDAD
+                await Movimiento.MoverPersonaje(metin, new Vector2(526, 580));
+                await Movimiento.MoverPersonaje(metin, new Vector2(537, 580));
+                await Movimiento.MoverPersonaje(metin, new Vector2(550, 580));
+
+                // MIRINE Y ALQUIMISTA
+                await Movimiento.MoverPersonaje(metin, new Vector2(596, 569));
+                await Movimiento.MoverPersonaje(metin, new Vector2(611, 553));
+                await Movimiento.MoverPersonaje(metin, new Vector2(611, 529));
+                await Movimiento.MoverPersonaje(metin, new Vector2(624, 522));
+                await Movimiento.MoverPersonaje(metin, new Vector2(623, 512));
+
+                // 1473,73 portal valle !!
+                await User.MostrarVentanaActual(activeWindow);
+            }
+
+            Environment.Exit(0);
         }
 
         public static async Task Test()
@@ -207,7 +254,7 @@ namespace Metin2Bot.Metin2Oficial
                 await DetenerAutocaza(metin);
                 await User.ClickAt(
                     metin.StartX + metin.TextRegion.X + Resolution.ClickFragmentarItemPiso().X,
-                    metin.StartY + metin.TextRegion.Y + Resolution.ClickFragmentarItemPiso().Y, 
+                    metin.StartY + metin.TextRegion.Y + Resolution.ClickFragmentarItemPiso().Y,
                     10);
                 await btn.PocionRoja(10);
                 await Task.Delay(1000);
@@ -336,7 +383,7 @@ namespace Metin2Bot.Metin2Oficial
                 metin.timerAutocazaDate = DateTime.Now;
             }
         }
-        
+
         private static async Task IniciarAutocaza(Metin2 metin)
         {
             Console.WriteLine("ACTIVANDO AUTOCAZA\n");

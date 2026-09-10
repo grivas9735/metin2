@@ -608,44 +608,61 @@ namespace Metin2Bot
         {
             MantenerTeclaApretada(BT7.KEY_W);
             MantenerTeclaApretada(BT7.KEY_A);
-
             await Task.Delay(tiempo);
-
-            SoltarTecla(BT7.KEY_W);
-            SoltarTecla(BT7.KEY_A);
         }
 
         public async Task MoverWD(int tiempo)
         {
             MantenerTeclaApretada(BT7.KEY_W);
             MantenerTeclaApretada(BT7.KEY_D);
-
             await Task.Delay(tiempo);
-
-            SoltarTecla(BT7.KEY_W);
-            SoltarTecla(BT7.KEY_D);
         }
 
         public async Task MoverSA(int tiempo)
         {
             MantenerTeclaApretada(BT7.KEY_S);
             MantenerTeclaApretada(BT7.KEY_A);
-
             await Task.Delay(tiempo);
-
-            SoltarTecla(BT7.KEY_S);
-            SoltarTecla(BT7.KEY_A);
         }
 
         public async Task MoverSD(int tiempo)
         {
             MantenerTeclaApretada(BT7.KEY_S);
             MantenerTeclaApretada(BT7.KEY_D);
-
             await Task.Delay(tiempo);
+        }
 
+        public async Task MoverW(int tiempo)
+        {
+            MantenerTeclaApretada(BT7.KEY_W);
+            await Task.Delay(tiempo);
+        }
+
+        public async Task MoverA(int tiempo)
+        {
+            MantenerTeclaApretada(BT7.KEY_A);
+            await Task.Delay(tiempo);
+        }
+
+        public async Task MoverS(int tiempo)
+        {
+            MantenerTeclaApretada(BT7.KEY_S);
+            await Task.Delay(tiempo);
+        }
+
+        public async Task MoverD(int tiempo)
+        {
+            MantenerTeclaApretada(BT7.KEY_D);
+            await Task.Delay(tiempo);
+        }
+
+        public async Task Quieto(int tiempo)
+        {
+            SoltarTecla(BT7.KEY_W);
+            SoltarTecla(BT7.KEY_A);
             SoltarTecla(BT7.KEY_S);
             SoltarTecla(BT7.KEY_D);
+            await Task.Delay(tiempo);
         }
 
         public void PressKey(short btn)

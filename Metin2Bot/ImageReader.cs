@@ -1,4 +1,5 @@
-﻿using OpenCvSharp;
+﻿using Metin2Bot.Screenshots;
+using OpenCvSharp;
 using PaddleOCRSharp;
 using Tesseract;
 
@@ -6,6 +7,8 @@ namespace Metin2Bot
 {
     public static class ImageReader
     {
+        private static readonly PaddleOCREngine ocr = new();
+
         public class TextRegion
         {
             public string Text { get; set; } = string.Empty;
@@ -14,16 +17,26 @@ namespace Metin2Bot
             public bool HasCoordinates { get; set; } = true;
         }
 
-        public static async Task<string?> ProcessImageLocalV3(string imageRoute, MiButton btn)
+        public static string? ProcessImageLocalV3(Metin2 metin, string imageRoute, MiButton btn)
         {
             try
             {
-                var ocr = new PaddleOCREngine();
-                var result = ocr.DetectText(imageRoute);
-                var texto = result.Text;
-                ocr.Dispose();
+                Rectangle captureArea = Resolution.RectScreenshotCoordenadas(metin);
 
-                return texto;
+                var screenshot = new Bitmap(
+                    captureArea.Width,
+                    captureArea.Height);
+
+                using (Graphics g = Graphics.FromImage(screenshot))
+                {
+                    g.CopyFromScreen(
+                        captureArea.Location,
+                        System.Drawing.Point.Empty,
+                        captureArea.Size);
+                }
+
+                var result = ocr.DetectText(screenshot);
+                return result.Text;
             }
             catch (Exception ex)
             {
@@ -32,7 +45,7 @@ namespace Metin2Bot
             }
         }
 
-        public static async Task<string?> ProcessImageLocal(string imageRoute, MiButton btn)
+        public static string? ProcessImageLocal(string imageRoute, MiButton btn)
         {
             try
             {
@@ -60,7 +73,7 @@ namespace Metin2Bot
             }
         }
 
-        public static async Task<TextRegion> ProcessImageLocalV2(string imageRoute, List<string> palabras, MiButton btn)
+        public static TextRegion? ProcessImageLocalV2(string imageRoute, List<string> palabras, MiButton btn)
         {
             try
             {
