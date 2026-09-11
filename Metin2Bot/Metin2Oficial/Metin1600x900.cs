@@ -1,15 +1,13 @@
 ﻿using Metin2Bot.Controladores;
 using Metin2Bot.Screenshots;
-using PaddleOCRSharp;
 using System.Diagnostics;
-using System.Diagnostics.Metrics;
 using System.Numerics;
 
 namespace Metin2Bot.Metin2Oficial
 {
     public static class Metin1600x900
     {
-        private static readonly int minutosApagado = 99999; // (60,1) (120,2) (180,3) (240,4) (360,6) (480,8)
+        private static readonly int minutosApagado = 99999; // (60,1) (120,2) (180,3) (240,4) (360,6) (480,8) (600,10)
         private static readonly int minutosPausado = 99999;
 
         private static readonly MiButton btn = new();
