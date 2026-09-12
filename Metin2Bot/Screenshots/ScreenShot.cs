@@ -94,6 +94,34 @@
 
         #region Bitmaps
 
+        public static Bitmap SacarScreenshotFragmentosBM(Metin2 metin)
+        {
+            var captureArea = Resolution.RectScreenshotFragmentos(metin);
+
+            // Tomar el screenshot
+            Bitmap screenshot = new(captureArea.Width, captureArea.Height);
+            using (Graphics g = Graphics.FromImage(screenshot))
+            {
+                g.CopyFromScreen(captureArea.Location, Point.Empty, captureArea.Size);
+            }
+
+            return screenshot;
+        }
+
+        public static Bitmap SacarScreenshotAlquimistaBM(Metin2 metin)
+        {
+            var captureArea = Resolution.RectScreenshotAlquimista(metin);
+
+            // Tomar el screenshot
+            Bitmap screenshot = new(captureArea.Width, captureArea.Height);
+            using (Graphics g = Graphics.FromImage(screenshot))
+            {
+                g.CopyFromScreen(captureArea.Location, Point.Empty, captureArea.Size);
+            }
+
+            return screenshot;
+        }
+
         public static Bitmap SacarScreenshotCoordenadasBM(Metin2 metin)
         {
             var captureArea = Resolution.RectScreenshotCoordenadas(metin);

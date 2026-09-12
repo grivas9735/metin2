@@ -56,6 +56,70 @@ namespace Metin2Bot
             }
         }
 
+        public static TextRegion? ProcessInMemoryV2(Bitmap bm, List<string> palabras)
+        {
+            try
+            {
+                var result = PaddleOCR.Instance.DetectText(bm);
+
+                // Si no detectó nada, salimos
+                if (result == null || result.TextBlocks == null) return null;
+
+                TextRegion? txtRegion = null;
+
+                // 1. Emulamos tu 'ExtractCoordinates' transformando los bloques de Paddle a tus TextRegions
+                // Calculamos el X e Y como el centro de la caja delimitadora (como haces en Tesseract)
+                var regiones = result.TextBlocks.Select(block =>
+                {
+                    // BoxPoints[0] es Arriba-Izquierda, BoxPoints[2] es Abajo-Derecha
+                    var ancho = block.BoxPoints[1].X - block.BoxPoints[0].X;
+                    var alto = block.BoxPoints[3].Y - block.BoxPoints[0].Y;
+
+                    return new TextRegion
+                    {
+                        Text = block.Text.Trim(),
+                        HasCoordinates = true,
+                        // Calculamos el centro exacto igual que tu código Tesseract
+                        X = block.BoxPoints[0].X + (ancho / 2),
+                        Y = block.BoxPoints[0].Y + (alto / 2)
+                    };
+                }).ToList();
+
+                // 2. Misma lógica de búsqueda exacta que tu código Tesseract (1 solo foreach)
+                foreach (var palabra in palabras)
+                {
+                    txtRegion = regiones.FirstOrDefault(x => x.Text.Contains(palabra, StringComparison.CurrentCultureIgnoreCase));
+
+                    if (txtRegion != null)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine($"{palabra}");
+                        Console.ResetColor();
+                        break;
+                    }
+                }
+
+                // 3. Lógica de fallback si no encuentra la palabra
+                if (txtRegion == null)
+                {
+                    txtRegion = new TextRegion
+                    {
+                        HasCoordinates = false
+                    };
+                }
+
+                // Le asignamos el texto completo encontrado en la imagen
+                txtRegion.Text = result.Text;
+
+                return txtRegion;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ERROR AL EJECUTAR PROCESADO DE IMAGEN EN MEMORIA: {ex.Message}");
+                return null;
+            }
+        }
+
         public static TextRegion? ProcessImageLocalV2(string imageRoute, List<string> palabras)
         {
             try
@@ -95,8 +159,10 @@ namespace Metin2Bot
 
                     if (txtRegion == null)
                     {
-                        txtRegion = new TextRegion();
-                        txtRegion.HasCoordinates = false;
+                        txtRegion = new TextRegion
+                        {
+                            HasCoordinates = false
+                        };
                     }
 
                     txtRegion.Text = texto;

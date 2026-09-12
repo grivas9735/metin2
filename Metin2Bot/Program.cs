@@ -4,7 +4,7 @@ namespace Metin2Bot
 {
     internal class Program
     {
-        static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
             Console.WindowWidth = 100;
             Console.WindowHeight = 20;
@@ -13,13 +13,13 @@ namespace Metin2Bot
             {
                 try
                 {
-                    //Metin1600x900.LevearConChami().Wait();
-                    //Metin1600x900.LevearAll().Wait();
-                    Metin1600x900.Fragmentar().Wait();
-                    //Metin1600x900.Idle().Wait();
-                    //Metin1600x900.Metinear().Wait();
-                    //Metin1600x900.Test().Wait();
-                    //Metin1600x900.BackearFragmenteros().Wait();
+                    //await Metin1600x900.LevearConChami();
+                    //await Metin1600x900.LevearAll();
+                    await Metin1600x900.Fragmentar();
+                    //await Metin1600x900.Idle();
+                    //await Metin1600x900.Metinear();
+                    //await Metin1600x900.Test();
+                    //await Metin1600x900.BackearFragmenteros();
                 }
                 catch (Exception ex)
                 {

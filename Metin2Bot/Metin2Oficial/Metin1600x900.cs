@@ -293,7 +293,6 @@ namespace Metin2Bot.Metin2Oficial
             if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos)
             {
                 await btn.MoverCamaraE(180);
-                await AccionesImg.PicFragmentos.TakePic(metin);
                 _ = Task.Run(async () =>
                 {
                     metin.TextRegion = await AccionesImg.PicFragmentos.ProcessCoordinates(metin);
@@ -312,7 +311,6 @@ namespace Metin2Bot.Metin2Oficial
             {
                 await btn.MoverCamaraE(180);
                 await Task.Delay(200);
-                await AccionesImg.PicAlquimista.TakePic(metin);
                 textRegion = await AccionesImg.PicAlquimista.ProcessCoordinates(metin);
                 intentosBusquedaAlquimista++;
             } while ((textRegion == null || !textRegion.HasCoordinates) && intentosBusquedaAlquimista < 15);
