@@ -41,7 +41,7 @@ namespace Metin2Bot
         public TimeSpan timerDonarExp = TimeSpan.FromMinutes(20);
         public DateTime timerDonarExpDate = DateTime.Now.AddMinutes(2);
 
-        public TimeSpan timerHabF1 = TimeSpan.FromSeconds(115);
+        public TimeSpan timerHabF1 = TimeSpan.FromSeconds(118);
         public DateTime timerHabF1Date = DateTime.Now.AddDays(-1);
         
         public TimeSpan timerHabF2 = TimeSpan.FromSeconds(65);

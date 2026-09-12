@@ -156,9 +156,7 @@ namespace Metin2Bot.Metin2Oficial
                 // IR HACIA LA POTERA
                 if (encontroAlquimista)
                 {
-                    await Movimiento.MoverPersonaje(metin, new Vector2(631, 526));
-                    await Movimiento.MoverPersonaje(metin, new Vector2(639, 556));
-                    await Movimiento.MoverPersonaje(metin, new Vector2(674, 564));
+                    await MoverAPotera(metin);
                 }
 
                 // 1473,73 portal valle !!
@@ -236,11 +234,19 @@ namespace Metin2Bot.Metin2Oficial
 
         public static async Task PerspectivaDesdeArriba(Metin2 metin)
         {
+            Console.WriteLine($"ACOMODANDO CAMARA\n");
             await Task.Delay(100);
             await btn.PresionarYSoltar(MiButton.BT7.KEY_G, 2000);
             await Task.Delay(100);
             await btn.PresionarYSoltar(MiButton.BT7.KEY_F, 2000);
             await Task.Delay(100);
+        }
+
+        private static async Task MoverAPotera(Metin2 metin)
+        {
+            await Movimiento.MoverPersonaje(metin, new Vector2(631, 526));
+            await Movimiento.MoverPersonaje(metin, new Vector2(639, 556));
+            await Movimiento.MoverPersonaje(metin, new Vector2(674, 564));
         }
 
         private static async Task MoverAAlquimista(Metin2 metin)
@@ -292,6 +298,7 @@ namespace Metin2Bot.Metin2Oficial
 
             if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos)
             {
+                Console.WriteLine($"BUSCANDO FRAGMENTOS\n");
                 await btn.MoverCamaraE(180);
                 _ = Task.Run(async () =>
                 {
@@ -309,6 +316,7 @@ namespace Metin2Bot.Metin2Oficial
 
             do
             {
+                Console.WriteLine($"BUSCANDO ALQUIMISTA {intentosBusquedaAlquimista + 1}\n");
                 await btn.MoverCamaraE(180);
                 await Task.Delay(200);
                 textRegion = await AccionesImg.PicAlquimista.ProcessCoordinates(metin);
@@ -344,6 +352,8 @@ namespace Metin2Bot.Metin2Oficial
         {
             if (DateTime.Now - metin.timerDonarExpDate >= metin.timerDonarExp)
             {
+                Console.WriteLine("DONANDO EXP\n");
+
                 // Abrir menu gremio
                 btn.MantenerTeclaApretada(MiButton.BT7.MENU);
                 await Task.Delay(150);
@@ -511,6 +521,7 @@ namespace Metin2Bot.Metin2Oficial
 
             if (DateTime.Now - metin.timerEstaMuertoDate >= metin.timerEstaMuerto && !metin.EstaMuerto)
             {
+                Console.WriteLine("VALIDANDO ESTA MUERTO\n");
                 metin.timerEstaMuertoDate = DateTime.Now;
                 _ = Task.Run(async () =>
                 {
@@ -546,7 +557,7 @@ namespace Metin2Bot.Metin2Oficial
 
             if (DateTime.Now - metin.timerReloginDate >= metin.timerRelogin)
             {
-                Console.WriteLine("VALIDANDO RELOGIN");
+                Console.WriteLine("VALIDANDO RELOGIN\n");
 
                 _ = Task.Run(async () =>
                 {
