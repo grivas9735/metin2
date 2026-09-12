@@ -288,7 +288,7 @@ namespace Metin2Bot.Metin2Oficial
                     10);
                 await btn.PocionRoja(10);
                 await Task.Delay(1000);
-                //await btn.AgarrarItems();
+
                 metin.TextRegion = null;
                 metin.timerAutocazaDate = DateTime.Now.AddDays(-1);
                 return;
