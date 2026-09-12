@@ -1,6 +1,7 @@
 ﻿using Metin2Bot.Controladores;
 using Metin2Bot.Screenshots;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Numerics;
 using static Metin2Bot.ImageReader;
 
@@ -146,32 +147,9 @@ namespace Metin2Bot.Metin2Oficial
             {
                 await User.MostrarMetin(metin.ProcessId);
 
-                await Movimiento.MoverPersonaje(metin, new Vector2(109, 572));
-                await Movimiento.MoverPersonaje(metin, new Vector2(147, 546));
-                await Movimiento.MoverPersonaje(metin, new Vector2(184, 532));
-                await Movimiento.MoverPersonaje(metin, new Vector2(246, 519));
-                await Movimiento.MoverPersonaje(metin, new Vector2(283, 514));
-                await Movimiento.MoverPersonaje(metin, new Vector2(320, 502));
-                await Movimiento.MoverPersonaje(metin, new Vector2(350, 499));
-                await Movimiento.MoverPersonaje(metin, new Vector2(364, 499));
-                await Movimiento.MoverPersonaje(metin, new Vector2(395, 499));
-                await Movimiento.MoverPersonaje(metin, new Vector2(405, 499));
-                await Movimiento.MoverPersonaje(metin, new Vector2(425, 499));
-                await Movimiento.MoverPersonaje(metin, new Vector2(449, 505));
-                await Movimiento.MoverPersonaje(metin, new Vector2(494, 514));
-                await Movimiento.MoverPersonaje(metin, new Vector2(506, 544));
+                await MoverAAlquimista(metin);
 
-                // ARCO CIUDAD
-                await Movimiento.MoverPersonaje(metin, new Vector2(526, 580));
-                await Movimiento.MoverPersonaje(metin, new Vector2(537, 580));
-                await Movimiento.MoverPersonaje(metin, new Vector2(550, 580));
-
-                // MIRINE Y ALQUIMISTA
-                await Movimiento.MoverPersonaje(metin, new Vector2(596, 569));
-                await Movimiento.MoverPersonaje(metin, new Vector2(611, 553));
-                await Movimiento.MoverPersonaje(metin, new Vector2(611, 529));
-                await Movimiento.MoverPersonaje(metin, new Vector2(624, 522));
-                await Movimiento.MoverPersonaje(metin, new Vector2(623, 512));
+                await PerspectivaDesdeArriba(metin);
 
                 // BUSCAR ALQUIMISTA
                 var encontroAlquimista = await BuscarAlquimista(metin);
@@ -255,6 +233,45 @@ namespace Metin2Bot.Metin2Oficial
                     }
                 }
             }
+        }
+
+        public static async Task PerspectivaDesdeArriba(Metin2 metin)
+        {
+            await Task.Delay(100);
+            await btn.PresionarYSoltar(MiButton.BT7.KEY_G, 2000);
+            await Task.Delay(100);
+            await btn.PresionarYSoltar(MiButton.BT7.KEY_F, 2000);
+            await Task.Delay(100);
+        }
+
+        private static async Task MoverAAlquimista(Metin2 metin)
+        {
+            await Movimiento.MoverPersonaje(metin, new Vector2(109, 572));
+            await Movimiento.MoverPersonaje(metin, new Vector2(147, 546));
+            await Movimiento.MoverPersonaje(metin, new Vector2(184, 532));
+            await Movimiento.MoverPersonaje(metin, new Vector2(246, 519));
+            await Movimiento.MoverPersonaje(metin, new Vector2(283, 514));
+            await Movimiento.MoverPersonaje(metin, new Vector2(320, 502));
+            await Movimiento.MoverPersonaje(metin, new Vector2(350, 499));
+            await Movimiento.MoverPersonaje(metin, new Vector2(364, 499));
+            await Movimiento.MoverPersonaje(metin, new Vector2(395, 499));
+            await Movimiento.MoverPersonaje(metin, new Vector2(405, 499));
+            await Movimiento.MoverPersonaje(metin, new Vector2(425, 499));
+            await Movimiento.MoverPersonaje(metin, new Vector2(449, 505));
+            await Movimiento.MoverPersonaje(metin, new Vector2(494, 514));
+            await Movimiento.MoverPersonaje(metin, new Vector2(506, 544));
+
+            // ARCO CIUDAD
+            await Movimiento.MoverPersonaje(metin, new Vector2(526, 580));
+            await Movimiento.MoverPersonaje(metin, new Vector2(537, 580));
+            await Movimiento.MoverPersonaje(metin, new Vector2(550, 580));
+
+            // MIRINE Y ALQUIMISTA
+            await Movimiento.MoverPersonaje(metin, new Vector2(596, 569));
+            await Movimiento.MoverPersonaje(metin, new Vector2(611, 553));
+            await Movimiento.MoverPersonaje(metin, new Vector2(611, 529));
+            await Movimiento.MoverPersonaje(metin, new Vector2(624, 522));
+            await Movimiento.MoverPersonaje(metin, new Vector2(623, 512));
         }
 
         private static async Task BuscarFragmentos(Metin2 metin)
@@ -486,7 +503,6 @@ namespace Metin2Bot.Metin2Oficial
                 Console.WriteLine("REVIVIENDO\n");
                 await User.ClickAt(metin.StartX + Resolution.ClickRevivir().X, metin.StartY - Resolution.ClickRevivir().Y);
                 await Task.Delay(800);
-                await AccionesImg.PicEstaMuerto.TakePic(metin);
                 metin.EstaMuerto = await AccionesImg.PicEstaMuerto.ProcessText(metin);
 
                 if (!metin.EstaMuerto)
@@ -499,7 +515,6 @@ namespace Metin2Bot.Metin2Oficial
             if (DateTime.Now - metin.timerEstaMuertoDate >= metin.timerEstaMuerto && !metin.EstaMuerto)
             {
                 metin.timerEstaMuertoDate = DateTime.Now;
-                await AccionesImg.PicEstaMuerto.TakePic(metin);
                 _ = Task.Run(async () =>
                 {
                     metin.EstaMuerto = await AccionesImg.PicEstaMuerto.ProcessText(metin);
