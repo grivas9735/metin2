@@ -139,8 +139,11 @@ namespace Metin2Bot.Metin2Oficial
             
             _ = Task.Run(async () =>
             {
-                await btn.PocionRoja();
-                await Task.Delay(500);
+                while (true)
+                {
+                    await btn.PocionRoja();
+                    await Task.Delay(1000);
+                }
             });
 
             foreach (var metin in metins)
