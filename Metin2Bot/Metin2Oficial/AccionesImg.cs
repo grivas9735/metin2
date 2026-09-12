@@ -107,8 +107,8 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task<bool> ProcessText(Metin2 metin)
             {
-                var bm = ScreenShot.SacarScreenshotCoordenadasBM(metin);
-                var text = ProcessInMemory(ref bm);
+                using var bm = ScreenShot.SacarScreenshotCoordenadasBM(metin);
+                var text = ProcessInMemory(bm);
 
                 if (string.IsNullOrWhiteSpace(text))
                 {
@@ -152,8 +152,8 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task<bool> ProcessText(Metin2 metin)
             {
-                var imagePath = await RecrearImagen(metin, metin.ImgChampSelectName);
-                var text = ProcessImageLocal(imagePath);
+                using var bm = ScreenShot.SacarScreenshotChampSelectBM(metin);
+                var text = ProcessInMemory(bm);
 
                 if (text == null)
                 {
@@ -166,9 +166,7 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task TakePic(Metin2 metin)
             {
-                await Task.Delay(50);
-                Console.WriteLine("FOTO CHAMP SELECT\n");
-                ScreenShot.SacarScreenshotChampSelect(metin);
+                throw new NotImplementedException();
             }
         }
 
@@ -181,8 +179,8 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task<bool> ProcessText(Metin2 metin)
             {
-                var bm = ScreenShot.SacarScreenshotEstaMuertoBM(metin);
-                var text = ProcessInMemory(ref bm);
+                using var bm = ScreenShot.SacarScreenshotEstaMuertoBM(metin);
+                var text = ProcessInMemory(bm);
 
                 if (string.IsNullOrWhiteSpace(text))
                 {
@@ -209,8 +207,8 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task<bool> ProcessText(Metin2 metin)
             {
-                var imagePath = await RecrearImagen(metin, metin.ImgLoginName);
-                var text = ProcessImageLocal(imagePath);
+                using var bm = ScreenShot.SacarScreenshotPantallaLoginBM(metin);
+                var text = ProcessInMemory(bm);
 
                 if (text == null)
                 {
@@ -223,9 +221,7 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task TakePic(Metin2 metin)
             {
-                await Task.Delay(50);
-                Console.WriteLine("FOTO LOGIN\n");
-                ScreenShot.SacarScreenshotPantallaLogin(metin);
+                throw new NotImplementedException();
             }
         }
 
@@ -280,8 +276,8 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task<bool> ProcessText(Metin2 metin)
             {
-                var bm = ScreenShot.SacarScreenshotMisionAlquimia(metin);
-                var text = ProcessInMemory(ref bm);
+                using var bm = ScreenShot.SacarScreenshotMisionAlquimiaBM(metin);
+                var text = ProcessInMemory(bm);
 
                 if (string.IsNullOrWhiteSpace(text))
                 {

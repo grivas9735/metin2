@@ -121,8 +121,8 @@ namespace Metin2Bot.Metin2Oficial
                     await User.MostrarMetin(metin.ProcessId);
 
                     //await EvalDonarExp(metin);
-                    await EvalEstaMuerto(metin);
                     await EvalRelogin(metin);
+                    await EvalEstaMuerto(metin);
                     await EvalPocionRoja(metin);
                     await EvalAutocaza(metin);
                     await BuscarFragmentos(metin);
@@ -536,7 +536,6 @@ namespace Metin2Bot.Metin2Oficial
                     await User.ClickAt(metin.StartX + Resolution.ClickLoginOK().X, metin.StartY + Resolution.ClickLoginOK().Y);
                     await Task.Delay(15000);
 
-                    await AccionesImg.PicChampSelect.TakePic(metin);
                     metin.EstaEnChampSelect = await AccionesImg.PicChampSelect.ProcessText(metin);
                     metin.EstaEnPantallaLogin = false;
                 }
@@ -554,10 +553,6 @@ namespace Metin2Bot.Metin2Oficial
             if (DateTime.Now - metin.timerReloginDate >= metin.timerRelogin)
             {
                 Console.WriteLine("VALIDANDO RELOGIN");
-
-                var p1 = AccionesImg.PicLogin.TakePic(metin);
-                var p2 = AccionesImg.PicChampSelect.TakePic(metin);
-                await Task.WhenAll(p1, p2);
 
                 _ = Task.Run(async () =>
                 {

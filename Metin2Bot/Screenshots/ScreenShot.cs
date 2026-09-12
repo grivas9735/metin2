@@ -122,9 +122,37 @@
             return screenshot;
         }
 
-        public static Bitmap SacarScreenshotMisionAlquimia(Metin2 metin)
+        public static Bitmap SacarScreenshotMisionAlquimiaBM(Metin2 metin)
         {
             var captureArea = Resolution.RectScreenshotMisionAlquimia(metin);
+
+            // Tomar el screenshot
+            Bitmap screenshot = new(captureArea.Width, captureArea.Height);
+            using (Graphics g = Graphics.FromImage(screenshot))
+            {
+                g.CopyFromScreen(captureArea.Location, Point.Empty, captureArea.Size);
+            }
+
+            return screenshot;
+        }
+
+        public static Bitmap SacarScreenshotPantallaLoginBM(Metin2 metin)
+        {
+            var captureArea = Resolution.RectScreenshotPantallaLogin(metin);
+
+            // Tomar el screenshot
+            Bitmap screenshot = new(captureArea.Width, captureArea.Height);
+            using (Graphics g = Graphics.FromImage(screenshot))
+            {
+                g.CopyFromScreen(captureArea.Location, Point.Empty, captureArea.Size);
+            }
+
+            return screenshot;
+        }
+
+        public static Bitmap SacarScreenshotChampSelectBM(Metin2 metin)
+        {
+            var captureArea = Resolution.RectScreenshotChampSelect(metin);
 
             // Tomar el screenshot
             Bitmap screenshot = new(captureArea.Width, captureArea.Height);

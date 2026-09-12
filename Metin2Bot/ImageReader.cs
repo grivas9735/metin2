@@ -1,13 +1,11 @@
-﻿using OpenCvSharp;
-using PaddleOCRSharp;
+﻿using Metin2Bot.OCR;
+using OpenCvSharp;
 using Tesseract;
 
 namespace Metin2Bot
 {
     public static class ImageReader
     {
-        private static readonly PaddleOCREngine ocr = new();
-
         public class TextRegion
         {
             public string Text { get; set; } = string.Empty;
@@ -16,12 +14,11 @@ namespace Metin2Bot
             public bool HasCoordinates { get; set; } = true;
         }
 
-        public static string? ProcessInMemory(ref Bitmap bm)
+        public static string? ProcessInMemory(Bitmap bm)
         {
             try
             {
-                var result = ocr.DetectText(bm);
-                bm.Dispose();
+                var result = PaddleOCR.Instance.DetectText(bm);
                 return result.Text;
             }
             catch (Exception ex)
