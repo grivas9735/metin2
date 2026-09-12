@@ -135,8 +135,7 @@ namespace Metin2Bot.Controladores
                 metin.StartX + Resolution.WatchCoords().X,
                 metin.StartY + Resolution.WatchCoords().Y);
 
-            //await AccionesImg.PicCoordenadas.TakePic(metin);
-            await AccionesImg.PicCoordenadas.ProcessText(metin, btn);
+            await AccionesImg.PicCoordenadas.ProcessText(metin);
 
             if (metin.Coordenadas == null)
             {

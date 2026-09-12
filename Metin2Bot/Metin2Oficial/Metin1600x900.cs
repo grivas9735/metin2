@@ -2,6 +2,7 @@
 using Metin2Bot.Screenshots;
 using System.Diagnostics;
 using System.Numerics;
+using static Metin2Bot.ImageReader;
 
 namespace Metin2Bot.Metin2Oficial
 {
@@ -172,6 +173,17 @@ namespace Metin2Bot.Metin2Oficial
                 await Movimiento.MoverPersonaje(metin, new Vector2(624, 522));
                 await Movimiento.MoverPersonaje(metin, new Vector2(623, 512));
 
+                // BUSCAR ALQUIMISTA
+                var encontroAlquimista = await BuscarAlquimista(metin);
+
+                // IR HACIA LA POTERA
+                if (encontroAlquimista)
+                {
+                    await Movimiento.MoverPersonaje(metin, new Vector2(631, 526));
+                    await Movimiento.MoverPersonaje(metin, new Vector2(639, 556));
+                    await Movimiento.MoverPersonaje(metin, new Vector2(674, 564));
+                }
+
                 // 1473,73 portal valle !!
                 await User.MostrarVentanaActual(activeWindow);
             }
@@ -268,11 +280,50 @@ namespace Metin2Bot.Metin2Oficial
                 await AccionesImg.PicFragmentos.TakePic(metin);
                 _ = Task.Run(async () =>
                 {
-                    metin.TextRegion = await AccionesImg.PicFragmentos.ProcessCoordinates(metin, btn);
+                    metin.TextRegion = await AccionesImg.PicFragmentos.ProcessCoordinates(metin);
                 });
 
                 metin.timerFragmentosDate = DateTime.Now;
             }
+        }
+
+        private static async Task<bool> BuscarAlquimista(Metin2 metin)
+        {
+            var textRegion = (TextRegion?)null;
+            var intentosBusquedaAlquimista = 0;
+
+            do
+            {
+                await btn.MoverCamaraE(180);
+                await Task.Delay(200);
+                await AccionesImg.PicAlquimista.TakePic(metin);
+                textRegion = await AccionesImg.PicAlquimista.ProcessCoordinates(metin);
+                intentosBusquedaAlquimista++;
+            } while ((textRegion == null || !textRegion.HasCoordinates) && intentosBusquedaAlquimista < 15);
+           
+            if (textRegion == null)
+            {
+                return false;
+            }
+
+            await User.ClickAt(
+                metin.StartX + textRegion.X + Resolution.ClickAlquimista().X,
+                metin.StartY + textRegion.Y + Resolution.ClickAlquimista().Y);
+
+            await Task.Delay(1000);
+
+            var textoMision = await AccionesImg.PicMisionAlquimia.ProcessText(metin);
+
+            if (textoMision)
+            {
+                await btn.ApretarEnter();
+                await Task.Delay(1000);
+                await btn.ApretarEnter();
+                await Task.Delay(1000);
+                return true;
+            }
+
+            return false;
         }
 
         private static async Task EvalDonarExp(Metin2 metin)
@@ -436,7 +487,7 @@ namespace Metin2Bot.Metin2Oficial
                 await User.ClickAt(metin.StartX + Resolution.ClickRevivir().X, metin.StartY - Resolution.ClickRevivir().Y);
                 await Task.Delay(800);
                 await AccionesImg.PicEstaMuerto.TakePic(metin);
-                metin.EstaMuerto = await AccionesImg.PicEstaMuerto.ProcessText(metin, btn);
+                metin.EstaMuerto = await AccionesImg.PicEstaMuerto.ProcessText(metin);
 
                 if (!metin.EstaMuerto)
                 {
@@ -451,7 +502,7 @@ namespace Metin2Bot.Metin2Oficial
                 await AccionesImg.PicEstaMuerto.TakePic(metin);
                 _ = Task.Run(async () =>
                 {
-                    metin.EstaMuerto = await AccionesImg.PicEstaMuerto.ProcessText(metin, btn);
+                    metin.EstaMuerto = await AccionesImg.PicEstaMuerto.ProcessText(metin);
                 });
             }
         }
@@ -468,7 +519,7 @@ namespace Metin2Bot.Metin2Oficial
                     await Task.Delay(15000);
 
                     await AccionesImg.PicChampSelect.TakePic(metin);
-                    metin.EstaEnChampSelect = await AccionesImg.PicChampSelect.ProcessText(metin, btn);
+                    metin.EstaEnChampSelect = await AccionesImg.PicChampSelect.ProcessText(metin);
                     metin.EstaEnPantallaLogin = false;
                 }
 
@@ -492,8 +543,8 @@ namespace Metin2Bot.Metin2Oficial
 
                 _ = Task.Run(async () =>
                 {
-                    var t1 = AccionesImg.PicLogin.ProcessText(metin, btn);
-                    var t2 = AccionesImg.PicChampSelect.ProcessText(metin, btn);
+                    var t1 = AccionesImg.PicLogin.ProcessText(metin);
+                    var t2 = AccionesImg.PicChampSelect.ProcessText(metin);
                     await Task.WhenAll(t1, t2);
 
                     metin.EstaEnPantallaLogin = t1.Result;

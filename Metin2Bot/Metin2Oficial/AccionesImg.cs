@@ -22,6 +22,9 @@ namespace Metin2Bot.Metin2Oficial
           "collar", "bota", "zapato", "casco", "morad"
         };
 
+        private static List<string> LstAlquimista = new List<string>()
+        { "alqui", "quimis" };
+
         public static List<string> ListaItemsAgarrar()
         {
             var lst = new List<string>();
@@ -35,8 +38,8 @@ namespace Metin2Bot.Metin2Oficial
         public interface IPicture
         {
             Task TakePic(Metin2 metin);
-            Task<bool> ProcessText(Metin2 metin, MiButton btn);
-            Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn);
+            Task<bool> ProcessText(Metin2 metin);
+            Task<TextRegion?> ProcessCoordinates(Metin2 metin);
         }
 
         public static IPicture PicChampSelect 
@@ -71,6 +74,22 @@ namespace Metin2Bot.Metin2Oficial
             }
         }
 
+        public static IPicture PicAlquimista
+        {
+            get
+            {
+                return new PictureAlquimista();
+            }
+        }
+
+        public static IPicture PicMisionAlquimia
+        {
+            get
+            {
+                return new PictureMisionAlquimia();
+            }
+        }
+
         public static IPicture PicCoordenadas
         {
             get
@@ -81,12 +100,12 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PictureCoordenadas : IPicture
         {
-            public Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn)
+            public Task<TextRegion?> ProcessCoordinates(Metin2 metin)
             {
                 throw new NotImplementedException();
             }
 
-            public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
+            public async Task<bool> ProcessText(Metin2 metin)
             {
                 var bm = ScreenShot.SacarScreenshotCoordenadasBM(metin);
                 var text = ProcessInMemory(ref bm);
@@ -126,12 +145,12 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PictureChampSelect : IPicture
         {
-            public Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn)
+            public Task<TextRegion?> ProcessCoordinates(Metin2 metin)
             {
                 throw new NotImplementedException();
             }
 
-            public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
+            public async Task<bool> ProcessText(Metin2 metin)
             {
                 var imagePath = await RecrearImagen(metin, metin.ImgChampSelectName);
                 var text = ProcessImageLocal(imagePath);
@@ -155,12 +174,12 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PictureEstaMuerto : IPicture
         {
-            public Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn)
+            public Task<TextRegion?> ProcessCoordinates(Metin2 metin)
             {
                 throw new NotImplementedException();
             }
 
-            public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
+            public async Task<bool> ProcessText(Metin2 metin)
             {
                 var bm = ScreenShot.SacarScreenshotEstaMuertoBM(metin);
                 var text = ProcessInMemory(ref bm);
@@ -177,17 +196,18 @@ namespace Metin2Bot.Metin2Oficial
 
             public async Task TakePic(Metin2 metin)
             {
+                throw new NotImplementedException();
             }
         }
 
         public class PictureLogin : IPicture
         {
-            public Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn)
+            public Task<TextRegion?> ProcessCoordinates(Metin2 metin)
             {
                 throw new NotImplementedException();
             }
 
-            public async Task<bool> ProcessText(Metin2 metin, MiButton btn)
+            public async Task<bool> ProcessText(Metin2 metin)
             {
                 var imagePath = await RecrearImagen(metin, metin.ImgLoginName);
                 var text = ProcessImageLocal(imagePath);
@@ -211,13 +231,13 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PictureFragmentos : IPicture
         {
-            public async Task<TextRegion?> ProcessCoordinates(Metin2 metin, MiButton btn)
+            public async Task<TextRegion?> ProcessCoordinates(Metin2 metin)
             {
                 var imagePath = await RecrearImagen(metin, metin.ImgFragmentosName);
                 return ProcessImageLocalV2(imagePath, ListaItemsAgarrar());
             }
 
-            public Task<bool> ProcessText(Metin2 metin, MiButton btn)
+            public Task<bool> ProcessText(Metin2 metin)
             {
                 throw new NotImplementedException();
             }
@@ -227,6 +247,56 @@ namespace Metin2Bot.Metin2Oficial
                 await Task.Delay(50);
                 Console.WriteLine("FOTO FRAGMENTOS\n");
                 ScreenShot.SacarScreenshotFragmentos(metin);
+            }
+        }
+
+        public class PictureAlquimista : IPicture
+        {
+            public async Task<TextRegion?> ProcessCoordinates(Metin2 metin)
+            {
+                var imagePath = await RecrearImagen(metin, metin.ImgAlquimistaName);
+                return ProcessImageLocalV2(imagePath, LstAlquimista);
+            }
+
+            public Task<bool> ProcessText(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+
+            public async Task TakePic(Metin2 metin)
+            {
+                await Task.Delay(50);
+                Console.WriteLine("FOTO FRAGMENTOS\n");
+                ScreenShot.SacarScreenshotAlquimista(metin);
+            }
+        }
+
+        public class PictureMisionAlquimia : IPicture
+        {
+            public async Task<TextRegion?> ProcessCoordinates(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+
+            public async Task<bool> ProcessText(Metin2 metin)
+            {
+                var bm = ScreenShot.SacarScreenshotMisionAlquimia(metin);
+                var text = ProcessInMemory(ref bm);
+
+                if (string.IsNullOrWhiteSpace(text))
+                {
+                    return false;
+                }
+
+                return text.Contains("abrir", StringComparison.CurrentCultureIgnoreCase)
+                    || text.Contains("tienda", StringComparison.CurrentCultureIgnoreCase)
+                    || text.Contains("refinamiento", StringComparison.CurrentCultureIgnoreCase)
+                    || text.Contains("cerrar", StringComparison.CurrentCultureIgnoreCase);
+            }
+
+            public async Task TakePic(Metin2 metin)
+            {
+                throw new NotImplementedException();
             }
         }
     }

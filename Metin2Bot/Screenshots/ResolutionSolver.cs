@@ -157,6 +157,16 @@
             return new Coordenadas(0, -100);
         }
 
+        public static Coordenadas ClickAlquimista()
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Coordenadas(0, -85);
+            }
+
+            return new Coordenadas(0, -85);
+        }
+
         #endregion
 
         #region Screenshots
@@ -172,6 +182,16 @@
         }
 
         public static Rectangle RectScreenshotFragmentos(Metin2 metin)
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Rectangle(metin.StartX, metin.StartY - 100, 1500, 820);
+            }
+
+            return new Rectangle(metin.StartX, metin.StartY - 100, 620, 550);
+        }
+
+        public static Rectangle RectScreenshotAlquimista(Metin2 metin)
         {
             if (ResolutionEnum == ResolutionEnum.R1600x900)
             {
@@ -209,6 +229,16 @@
             }
 
             return new Rectangle(metin.StartX + 655, metin.StartY - 50, 58, 15);
+        }
+
+        public static Rectangle RectScreenshotMisionAlquimia(Metin2 metin)
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Rectangle(metin.StartX, metin.StartY - 100, 1500, 820);
+            }
+
+            return new Rectangle(metin.StartX, metin.StartY - 100, 620, 550);
         }
 
         #endregion

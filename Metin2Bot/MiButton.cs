@@ -522,7 +522,7 @@ namespace Metin2Bot
             await PresionarYSoltar(BT7.KEY_I, 100);
         }
 
-        public async Task ApretarEnter(int ms = 1)
+        public async Task ApretarEnter(int ms = 50)
         {
             await PresionarYSoltar(BT7.RETURN, ms);
         }

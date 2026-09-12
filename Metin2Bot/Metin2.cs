@@ -91,6 +91,14 @@ namespace Metin2Bot
             }
         }
 
+        public string ImgAlquimistaName
+        {
+            get
+            {
+                return AppConfig.GetRouteValue("MPs") + @$"\metin_alquim_{Id}.png";
+            }
+        }
+
         public string ImgCoordenadasName
         {
             get
