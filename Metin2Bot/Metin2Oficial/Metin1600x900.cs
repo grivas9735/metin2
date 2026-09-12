@@ -1,7 +1,6 @@
 ﻿using Metin2Bot.Controladores;
 using Metin2Bot.Screenshots;
 using System.Diagnostics;
-using System.Diagnostics.Metrics;
 using System.Numerics;
 using static Metin2Bot.ImageReader;
 
@@ -13,9 +12,6 @@ namespace Metin2Bot.Metin2Oficial
         private static readonly int minutosPausado = 99999;
 
         private static readonly MiButton btn = new();
-
-        private static readonly TimeSpan timerBuffs = TimeSpan.FromSeconds(20);
-        private static DateTime timerBuffsDate = DateTime.Now.AddDays(-1);
 
         public static async Task AwaitShutdown()
         {
@@ -388,7 +384,7 @@ namespace Metin2Bot.Metin2Oficial
 
         private static async Task EvalBuffs(Metin2 metinBuffi)
         {
-            if (DateTime.Now - timerBuffsDate >= timerBuffs)
+            if (DateTime.Now - metinBuffi.timerBuffsDate >= metinBuffi.timerBuffs)
             {
                 Console.WriteLine("BUFFS F1");
                 await btn.PresionarYSoltar(MiButton.BT7.F1);
@@ -398,7 +394,7 @@ namespace Metin2Bot.Metin2Oficial
                 await btn.PresionarYSoltar(MiButton.BT7.F2);
                 await Task.Delay(100);
 
-                timerBuffsDate = DateTime.Now;
+                metinBuffi.timerBuffsDate = DateTime.Now;
             }
         }
 

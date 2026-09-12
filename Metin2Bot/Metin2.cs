@@ -50,6 +50,9 @@ namespace Metin2Bot
         public TimeSpan timerRelogin = TimeSpan.FromSeconds(60);
         public DateTime timerReloginDate = DateTime.Now.AddDays(-1);
 
+        public TimeSpan timerBuffs = TimeSpan.FromSeconds(20);
+        public DateTime timerBuffsDate = DateTime.Now.AddDays(-1);
+
         public TimeSpan timerEstaMuerto = TimeSpan.FromSeconds(10);
         public DateTime timerEstaMuertoDate = DateTime.Now.AddDays(-1);
 
