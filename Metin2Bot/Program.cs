@@ -13,7 +13,7 @@ namespace Metin2Bot
             {
                 try
                 {
-                    //await Metin1600x900.LevearConChami(revivirAlMorir: false);
+                    //await Metin1600x900.LevearConChami(revivirAlMorir: false, apagarAlMorir: false);
                     //await Metin1600x900.LevearAll();
                     await Metin1600x900.Fragmentar();
                     //await Metin1600x900.Idle();

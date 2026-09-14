@@ -33,7 +33,7 @@ namespace Metin2Bot.Metin2Oficial
             }
         }
 
-        public static async Task LevearConChami(bool revivirAlMorir = true)
+        public static async Task LevearConChami(bool revivirAlMorir = false, bool apagarAlMorir = false)
         {
             var activeWindow = User.GetForegroundWindow();
             var metins = MetinFactory.GetLeveleoConChami();
@@ -78,6 +78,10 @@ namespace Metin2Bot.Metin2Oficial
                 if (!revivirAlMorir && metin1.AlgunaVezMurio)
                 {
                     Environment.Exit(0);
+                    if (apagarAlMorir)
+                    {
+                        Shutdown();
+                    }
                 }
 
                 await User.MostrarVentanaActual(activeWindow);
