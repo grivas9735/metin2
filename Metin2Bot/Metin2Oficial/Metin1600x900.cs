@@ -66,7 +66,6 @@ namespace Metin2Bot.Metin2Oficial
                 }
 
                 await User.MostrarMetin(metin2.ProcessId);
-                await Task.Delay(100);
                 await EvalRelogin(metin2);
                 await EvalBuffs(metin2);
 
