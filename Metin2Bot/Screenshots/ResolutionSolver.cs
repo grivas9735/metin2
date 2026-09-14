@@ -167,9 +167,49 @@
             return new Coordenadas(0, -85);
         }
 
+        public static Coordenadas ClickInventario1()
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Coordenadas(640, 110);
+            }
+
+            return new Coordenadas(640, 110);
+        }
+
+        public static Coordenadas ClickInventario2()
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Coordenadas(680, 110);
+            }
+
+            return new Coordenadas(680, 110);
+        }
+
         #endregion
 
         #region Screenshots
+
+        public static Rectangle RectScreenshotTextoInventario(Metin2 metin)
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Rectangle(metin.StartX + 850, metin.StartY + 600, 180, 150);
+            }
+
+            return new Rectangle(metin.StartX + 618, metin.StartY + 75, 150, 20);
+        }
+
+        public static Rectangle RectScreenshotInventario(Metin2 metin)
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Rectangle(metin.StartX + 850, metin.StartY + 600, 180, 150);
+            }
+
+            return new Rectangle(metin.StartX + 618, metin.StartY + 100, 162, 312);
+        }
 
         public static Rectangle RectScreenshotPantallaLogin(Metin2 metin)
         {
@@ -191,7 +231,7 @@
             return new Rectangle(metin.StartX, metin.StartY - 100, 620, 550);
         }
 
-        public static Rectangle RectScreenshotAlquimista(Metin2 metin)
+        public static Rectangle RectScreenshotNPC(Metin2 metin)
         {
             if (ResolutionEnum == ResolutionEnum.R1600x900)
             {

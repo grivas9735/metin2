@@ -2,97 +2,33 @@
 {
     public static class ScreenShot
     {
-        public static void SacarScreenshotPantallaLogin(Metin2 metin)
+        public static Bitmap SacarScreenshotTextoInventarioBM(Metin2 metin)
         {
-            Rectangle captureArea = Resolution.RectScreenshotPantallaLogin(metin);
+            var captureArea = Resolution.RectScreenshotTextoInventario(metin);
 
             // Tomar el screenshot
-            using Bitmap screenshot = new(captureArea.Width, captureArea.Height);
+            Bitmap screenshot = new(captureArea.Width, captureArea.Height);
             using (Graphics g = Graphics.FromImage(screenshot))
             {
                 g.CopyFromScreen(captureArea.Location, Point.Empty, captureArea.Size);
             }
 
-            // Guardar el screenshot para pruebas
-            screenshot.Save(metin.ImgLoginName, System.Drawing.Imaging.ImageFormat.Png);
+            return screenshot;
         }
 
-        public static void SacarScreenshotFragmentos(Metin2 metin)
+        public static Bitmap SacarScreenshotInventarioBM(Metin2 metin)
         {
-            Rectangle captureArea = Resolution.RectScreenshotFragmentos(metin);
+            var captureArea = Resolution.RectScreenshotInventario(metin);
 
             // Tomar el screenshot
-            using Bitmap screenshot = new(captureArea.Width, captureArea.Height);
+            Bitmap screenshot = new(captureArea.Width, captureArea.Height);
             using (Graphics g = Graphics.FromImage(screenshot))
             {
                 g.CopyFromScreen(captureArea.Location, Point.Empty, captureArea.Size);
             }
 
-            // Guardar el screenshot para pruebas
-            screenshot.Save(metin.ImgFragmentosName, System.Drawing.Imaging.ImageFormat.Png);
+            return screenshot;
         }
-
-        public static void SacarScreenshotAlquimista(Metin2 metin)
-        {
-            Rectangle captureArea = Resolution.RectScreenshotAlquimista(metin);
-
-            // Tomar el screenshot
-            using Bitmap screenshot = new(captureArea.Width, captureArea.Height);
-            using (Graphics g = Graphics.FromImage(screenshot))
-            {
-                g.CopyFromScreen(captureArea.Location, Point.Empty, captureArea.Size);
-            }
-
-            // Guardar el screenshot para pruebas
-            screenshot.Save(metin.ImgAlquimistaName, System.Drawing.Imaging.ImageFormat.Png);
-        }
-
-        public static void SacarScreenshotChampSelect(Metin2 metin)
-        {
-            Rectangle captureArea = Resolution.RectScreenshotChampSelect(metin);
-
-            // Tomar el screenshot
-            using Bitmap screenshot = new(captureArea.Width, captureArea.Height);
-            using (Graphics g = Graphics.FromImage(screenshot))
-            {
-                g.CopyFromScreen(captureArea.Location, Point.Empty, captureArea.Size);
-            }
-
-            // Guardar el screenshot para pruebas
-            screenshot.Save(metin.ImgChampSelectName, System.Drawing.Imaging.ImageFormat.Png);
-        }
-
-        public static void SacarScreenshotEstaMuerto(Metin2 metin)
-        {
-            Rectangle captureArea = Resolution.RectScreenshotEstaMuerto(metin);
-
-            // Tomar el screenshot
-            using Bitmap screenshot = new Bitmap(captureArea.Width, captureArea.Height);
-            using (Graphics g = Graphics.FromImage(screenshot))
-            {
-                g.CopyFromScreen(captureArea.Location, Point.Empty, captureArea.Size);
-            }
-
-            // Guardar el screenshot para pruebas
-            screenshot.Save(metin.ImgEstaMuertoName, System.Drawing.Imaging.ImageFormat.Png);
-        }
-
-        public static void SacarScreenshotCoordenadas(Metin2 metin)
-        {
-            Rectangle captureArea = Resolution.RectScreenshotCoordenadas(metin);
-
-            // Tomar el screenshot
-            using Bitmap screenshot = new Bitmap(captureArea.Width, captureArea.Height);
-            using (Graphics g = Graphics.FromImage(screenshot))
-            {
-                g.CopyFromScreen(captureArea.Location, Point.Empty, captureArea.Size);
-            }
-
-            // Guardar el screenshot para pruebas
-            screenshot.Save(metin.ImgCoordenadasName, System.Drawing.Imaging.ImageFormat.Png);
-        }
-
-        #region Bitmaps
 
         public static Bitmap SacarScreenshotFragmentosBM(Metin2 metin)
         {
@@ -108,9 +44,9 @@
             return screenshot;
         }
 
-        public static Bitmap SacarScreenshotAlquimistaBM(Metin2 metin)
+        public static Bitmap SacarScreenshotNPCBM(Metin2 metin)
         {
-            var captureArea = Resolution.RectScreenshotAlquimista(metin);
+            var captureArea = Resolution.RectScreenshotNPC(metin);
 
             // Tomar el screenshot
             Bitmap screenshot = new(captureArea.Width, captureArea.Height);
@@ -191,7 +127,5 @@
 
             return screenshot;
         }
-
-        #endregion
     }
 }

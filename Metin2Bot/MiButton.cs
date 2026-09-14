@@ -588,7 +588,6 @@ namespace Metin2Bot
             array[0] = input;
             SendInput(1u, array, Input.Size);
             input.i_union.keyboardinput.dwFlags = BT5.KEYUP | BT5.SCANCODE;
-            //SendInput(1u, array, Input.Size);
 
             await Task.Delay(ms);
 
@@ -604,64 +603,32 @@ namespace Metin2Bot
             SendInput(1u, array, Input.Size);
         }
 
-        public async Task MoverWA(int tiempo)
-        {
-            MantenerTeclaApretada(BT7.KEY_W);
-            MantenerTeclaApretada(BT7.KEY_A);
-            await Task.Delay(tiempo);
-        }
-
-        public async Task MoverWD(int tiempo)
-        {
-            MantenerTeclaApretada(BT7.KEY_W);
-            MantenerTeclaApretada(BT7.KEY_D);
-            await Task.Delay(tiempo);
-        }
-
-        public async Task MoverSA(int tiempo)
-        {
-            MantenerTeclaApretada(BT7.KEY_S);
-            MantenerTeclaApretada(BT7.KEY_A);
-            await Task.Delay(tiempo);
-        }
-
-        public async Task MoverSD(int tiempo)
-        {
-            MantenerTeclaApretada(BT7.KEY_S);
-            MantenerTeclaApretada(BT7.KEY_D);
-            await Task.Delay(tiempo);
-        }
-
         public async Task MoverW(int tiempo)
         {
-            MantenerTeclaApretada(BT7.KEY_W);
-            await Task.Delay(tiempo);
+            await MantenerTeclaApretada(BT7.KEY_W, tiempo);
         }
 
         public async Task MoverA(int tiempo)
         {
-            MantenerTeclaApretada(BT7.KEY_A);
-            await Task.Delay(tiempo);
+            await MantenerTeclaApretada(BT7.KEY_A, tiempo);
         }
 
         public async Task MoverS(int tiempo)
         {
-            MantenerTeclaApretada(BT7.KEY_S);
-            await Task.Delay(tiempo);
+            await MantenerTeclaApretada(BT7.KEY_S, tiempo);
         }
 
         public async Task MoverD(int tiempo)
         {
-            MantenerTeclaApretada(BT7.KEY_D);
-            await Task.Delay(tiempo);
+            await MantenerTeclaApretada(BT7.KEY_D, tiempo);
         }
 
         public async Task Quieto(int tiempo)
         {
-            SoltarTecla(BT7.KEY_W);
-            SoltarTecla(BT7.KEY_A);
-            SoltarTecla(BT7.KEY_S);
-            SoltarTecla(BT7.KEY_D);
+            await SoltarTecla(BT7.KEY_W, 1);
+            await SoltarTecla(BT7.KEY_A, 1);
+            await SoltarTecla(BT7.KEY_S, 1);
+            await SoltarTecla(BT7.KEY_D, 1);
             await Task.Delay(tiempo);
         }
 
@@ -687,7 +654,7 @@ namespace Metin2Bot
 
 
 
-        public void MantenerTeclaApretada(BT7 tecla)
+        public async Task MantenerTeclaApretada(BT7 tecla, int ms = 50)
         {
             Input[] array = new Input[4];
             Input input = default(Input);
@@ -698,12 +665,13 @@ namespace Metin2Bot
             input.i_union.keyboardinput.dwFlags = BT5.SCANCODE;
             input.i_union.keyboardinput.wScan = tecla;
             array[0] = input;
-            SendInput(1u, array, Input.Size);
+            _ = SendInput(1u, array, Input.Size);
             input.i_union.keyboardinput.dwFlags = BT5.KEYUP | BT5.SCANCODE;
-            SendInput(1u, array, Input.Size);
+            _ = SendInput(1u, array, Input.Size);
+            await Task.Delay(ms);
         }
 
-        public void SoltarTecla(BT7 tecla)
+        public async Task SoltarTecla(BT7 tecla, int ms = 50)
         {
             Input[] array = new Input[4];
             Input input = default(Input);
@@ -716,7 +684,8 @@ namespace Metin2Bot
             input.i_union.keyboardinput.dwFlags = BT5.KEYUP | BT5.SCANCODE;
             input.i_union.keyboardinput.wScan = tecla;
             array[0] = input;
-            SendInput(1u, array, Input.Size);
+            _ = SendInput(1u, array, Input.Size);
+            await Task.Delay(ms);
         }
     }
 }

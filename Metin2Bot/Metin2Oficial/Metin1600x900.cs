@@ -1,7 +1,10 @@
 ﻿using Metin2Bot.Controladores;
 using Metin2Bot.Screenshots;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using System.Net.NetworkInformation;
 using System.Numerics;
+using System.Text.RegularExpressions;
 using static Metin2Bot.ImageReader;
 
 namespace Metin2Bot.Metin2Oficial
@@ -192,12 +195,15 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     await User.MostrarMetin(metin.ProcessId);
 
-                    await EvalDonarExp(metin);
-                    await EvalEstaMuerto(metin);
-                    await EvalRelogin(metin);
-                    await EvalPocionRoja(metin);
-                    await EvalAutocaza(metin);
-                    await BuscarFragmentos(metin);
+                    var inventarioAbierto = await AbrirInventario(metin);
+
+                    if (!inventarioAbierto)
+                        continue;
+
+                    var cantidadPociones = await ContarPociones(metin);
+
+                    // cantidad de pociones requeridas = 55
+                    var a = 2;
                 }
 
                 await User.MostrarVentanaActual(activeWindow);
@@ -245,6 +251,46 @@ namespace Metin2Bot.Metin2Oficial
                     }
                 }
             }
+        }
+
+        public static async Task<bool> AbrirInventario(Metin2 metin)
+        {
+            var inventarioAbierto = await AccionesImg.PicTextoInventario.ProcessText(metin);
+
+            if (!inventarioAbierto)
+            {
+                await btn.PresionarYSoltar(MiButton.BT7.KEY_I);
+                return await AccionesImg.PicTextoInventario.ProcessText(metin);
+            }
+
+            return inventarioAbierto;
+        }
+
+        public static async Task<int> ContarPociones(Metin2 metin)
+        {
+            var pocionesTotales = 0;
+
+            await User.ClickAt(
+                metin.StartX + Resolution.ClickInventario1().X,
+                metin.StartY + Resolution.ClickInventario1().Y);
+
+            await btn.MantenerTeclaApretada(MiButton.BT7.CONTROL, 50);
+            using var bm1 = ScreenShot.SacarScreenshotInventarioBM(metin);
+            var text1 = ProcessInMemory(bm1);
+            await btn.SoltarTecla(MiButton.BT7.CONTROL, 50);
+            pocionesTotales += Regex.Matches(text1 ?? string.Empty, "200").Count;
+
+            await User.ClickAt(
+                metin.StartX + Resolution.ClickInventario2().X,
+                metin.StartY + Resolution.ClickInventario2().Y);
+
+            await btn.MantenerTeclaApretada(MiButton.BT7.CONTROL, 50);
+            using var bm2 = ScreenShot.SacarScreenshotInventarioBM(metin);
+            var text2 = ProcessInMemory(bm2);
+            await btn.SoltarTecla(MiButton.BT7.CONTROL, 50);
+            pocionesTotales += Regex.Matches(text2 ?? string.Empty, "200").Count;
+
+            return pocionesTotales;
         }
 
         public static async Task PerspectivaDesdeArriba(Metin2 metin)
@@ -370,11 +416,11 @@ namespace Metin2Bot.Metin2Oficial
                 Console.WriteLine("DONANDO EXP\n");
 
                 // Abrir menu gremio
-                btn.MantenerTeclaApretada(MiButton.BT7.MENU);
+                await btn.MantenerTeclaApretada(MiButton.BT7.MENU);
                 await Task.Delay(150);
                 await btn.PresionarYSoltar(MiButton.BT7.KEY_G);
                 await Task.Delay(150);
-                btn.SoltarTecla(MiButton.BT7.MENU);
+                await btn.SoltarTecla(MiButton.BT7.MENU);
                 await Task.Delay(150);
 
                 // Click flechita exp
@@ -390,11 +436,11 @@ namespace Metin2Bot.Metin2Oficial
                 await Task.Delay(150);
 
                 // Cerrar ventana gremio
-                btn.MantenerTeclaApretada(MiButton.BT7.MENU);
+                await btn.MantenerTeclaApretada(MiButton.BT7.MENU);
                 await Task.Delay(150);
                 await btn.PresionarYSoltar(MiButton.BT7.KEY_G);
                 await Task.Delay(150);
-                btn.SoltarTecla(MiButton.BT7.MENU);
+                await btn.SoltarTecla(MiButton.BT7.MENU);
                 await Task.Delay(150);
 
                 // Apretar boton en caso de error de 0 exp

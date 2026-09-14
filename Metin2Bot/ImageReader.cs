@@ -18,6 +18,13 @@ namespace Metin2Bot
         {
             try
             {
+                string ruta = Path.Combine(
+                    AppConfig.GetRouteValue("MPs"),
+                    "metin_draft.png"
+                );
+
+                //bm.Save(ruta, System.Drawing.Imaging.ImageFormat.Png);
+
                 var result = PaddleOCR.Instance.DetectText(bm);
                 return result.Text;
             }

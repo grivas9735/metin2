@@ -2,6 +2,7 @@
 using System.Numerics;
 using System.Text.RegularExpressions;
 using static Metin2Bot.ImageReader;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Metin2Bot.Metin2Oficial
 {
@@ -24,6 +25,9 @@ namespace Metin2Bot.Metin2Oficial
 
         private static List<string> LstAlquimista = new List<string>()
         { "alqui", "quimis" };
+
+        private static List<string> LstTiendaGeneral = new List<string>()
+        { "tienda", "general" };
 
         public static List<string> ListaItemsAgarrar()
         {
@@ -94,6 +98,22 @@ namespace Metin2Bot.Metin2Oficial
             get
             {
                 return new PictureCoordenadas();
+            }
+        }
+
+        public static IPicture PicTiendaGeneral
+        {
+            get
+            {
+                return new PictureTiendaGeneral();
+            }
+        }
+
+        public static IPicture PicTextoInventario
+        {
+            get
+            {
+                return new PictureTextoInventario();
             }
         }
 
@@ -245,13 +265,48 @@ namespace Metin2Bot.Metin2Oficial
         {
             public async Task<TextRegion?> ProcessCoordinates(Metin2 metin)
             {
-                using var bm = ScreenShot.SacarScreenshotAlquimistaBM(metin);
+                using var bm = ScreenShot.SacarScreenshotNPCBM(metin);
                 return ProcessInMemoryV2(bm, LstAlquimista);
             }
 
             public Task<bool> ProcessText(Metin2 metin)
             {
                 throw new NotImplementedException();
+            }
+        }
+
+        public class PictureTiendaGeneral : IPicture
+        {
+            public async Task<TextRegion?> ProcessCoordinates(Metin2 metin)
+            {
+                using var bm = ScreenShot.SacarScreenshotNPCBM(metin);
+                return ProcessInMemoryV2(bm, LstTiendaGeneral);
+            }
+
+            public Task<bool> ProcessText(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public class PictureTextoInventario : IPicture
+        {
+            public async Task<TextRegion?> ProcessCoordinates(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+
+            public async Task<bool> ProcessText(Metin2 metin)
+            {
+                using var bm = ScreenShot.SacarScreenshotTextoInventarioBM(metin);
+                var text = ProcessInMemory(bm);
+
+                if (text == null)
+                {
+                    return false;
+                }
+
+                return text.Contains("inventario", StringComparison.CurrentCultureIgnoreCase);
             }
         }
     }
