@@ -29,6 +29,8 @@ namespace Metin2Bot
 
         public bool EstaMuerto { get; set; }
 
+        public bool AlgunaVezMurio { get; set; }
+
         public TextRegion? TextRegion { get; set; }
         public Vector2? Coordenadas { get; set; }
 
@@ -56,7 +58,7 @@ namespace Metin2Bot
         public TimeSpan timerEstaMuerto = TimeSpan.FromSeconds(10);
         public DateTime timerEstaMuertoDate = DateTime.Now.AddDays(-1);
 
-        public TimeSpan timerFragmentos = TimeSpan.FromSeconds(12);
+        public TimeSpan timerFragmentos = TimeSpan.FromSeconds(8);
         public DateTime timerFragmentosDate = DateTime.Now.AddDays(-1);
 
         public TimeSpan timerAutocaza = TimeSpan.FromMinutes(5);

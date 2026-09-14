@@ -25,7 +25,7 @@ namespace Metin2Bot.Metin2Oficial
             Environment.Exit(0);
         }
 
-        public static void IntercambiarMetines(ref Metin2 metin1, ref Metin2? metin2)
+        public static void IntercambiarMetines(ref Metin2 metin1, ref Metin2 metin2)
         {
             if (metin2 != null)
             {
@@ -33,7 +33,7 @@ namespace Metin2Bot.Metin2Oficial
             }
         }
 
-        public static async Task LevearConChami()
+        public static async Task LevearConChami(bool revivirAlMorir = true)
         {
             var activeWindow = User.GetForegroundWindow();
             var metins = MetinFactory.GetLeveleoConChami();
@@ -42,32 +42,44 @@ namespace Metin2Bot.Metin2Oficial
             _ = AwaitPause();
 
             var metin1 = metins.First();
-            var metin2 = metins.Count == 2 ? metins.LastOrDefault() : null;
+            var metin2 = metins.Last();
             IntercambiarMetines(ref metin1, ref metin2);
+
+            await User.MostrarMetin(metin1.ProcessId);
+            await EvalAutocaza(metin1);
 
             while (true)
             {
                 await User.MostrarMetin(metin1.ProcessId);
+
+                await EvalRelogin(metin1);
                 await EvalPocionRoja(metin1);
                 await EvalPocionAzul(metin1);
                 await EvalHabF1(metin1);
                 await EvalHabF2(metin1);
-                await EvalAutocaza(metin1);
-                await EvalEstaMuerto(metin1);
-                await EvalRelogin(metin1);
+                await btn.AgarrarItems();
 
-                if (metin2 != null)
+                if (revivirAlMorir)
                 {
-                    await User.MostrarMetin(metin2.ProcessId);
-                    await Task.Delay(100);
-                    await EvalBuffs(metin2);
-                    await EvalEstaMuerto(metin2);
-                    await EvalRelogin(metin2);
-                    await User.MostrarMetin(metin1.ProcessId);
-                    await Task.Delay(100);
+                    await EvalEstaMuerto(metin1);
+                    await EvalAutocaza(metin1);
                 }
 
-                await btn.AgarrarItems();
+                await User.MostrarMetin(metin2.ProcessId);
+                await Task.Delay(100);
+                await EvalRelogin(metin2);
+                await EvalBuffs(metin2);
+
+                if (revivirAlMorir)
+                {
+                    await EvalEstaMuerto(metin2);
+                }
+
+                if (!revivirAlMorir && metin1.AlgunaVezMurio)
+                {
+                    Environment.Exit(0);
+                }
+
                 await User.MostrarVentanaActual(activeWindow);
                 await Task.Delay(100);
             }
@@ -132,7 +144,7 @@ namespace Metin2Bot.Metin2Oficial
         {
             var activeWindow = User.GetForegroundWindow();
             var metins = MetinFactory.GetAll();
-            
+
             _ = Task.Run(async () =>
             {
                 while (true)
@@ -322,7 +334,7 @@ namespace Metin2Bot.Metin2Oficial
                 textRegion = await AccionesImg.PicAlquimista.ProcessCoordinates(metin);
                 intentosBusquedaAlquimista++;
             } while ((textRegion == null || !textRegion.HasCoordinates) && intentosBusquedaAlquimista < 15);
-           
+
             if (textRegion == null)
             {
                 return false;
@@ -507,6 +519,7 @@ namespace Metin2Bot.Metin2Oficial
         {
             if (metin.EstaMuerto)
             {
+                metin.AlgunaVezMurio = true;
                 Console.WriteLine("REVIVIENDO\n");
                 await User.ClickAt(metin.StartX + Resolution.ClickRevivir().X, metin.StartY - Resolution.ClickRevivir().Y);
                 await Task.Delay(800);
