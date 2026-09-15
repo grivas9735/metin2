@@ -32,6 +32,7 @@ namespace Metin2Bot
         public bool AlgunaVezMurio { get; set; }
 
         public TextRegion? TextRegion { get; set; }
+
         public Vector2? Coordenadas { get; set; }
 
         public TimeSpan timerPocionRoja = TimeSpan.FromSeconds(1);
