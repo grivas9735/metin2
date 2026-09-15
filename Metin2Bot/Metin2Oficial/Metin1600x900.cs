@@ -168,46 +168,26 @@ namespace Metin2Bot.Metin2Oficial
 
                 await PerspectivaDesdeArriba(metin);
 
-                // BUSCAR ALQUIMISTA
                 var encontroAlquimista = await BuscarAlquimista(metin);
 
-                // IR HACIA LA POTERA
-                if (encontroAlquimista)
-                {
-                    await MoverAPotera(metin);
-                }
+                if (!encontroAlquimista)
+                    continue;
 
-                // 1473,73 portal valle !!
+                await MoverAPotera(metin);
+
+                var inventarioAbierto = await AbrirInventario(metin);
+
+                if (!inventarioAbierto)
+                    continue;
+
+                var cantidadPociones = await ContarPociones(metin);
+
+                await BuscarTiendaGeneral(metin, 55 - cantidadPociones);
+
                 await User.MostrarVentanaActual(activeWindow);
             }
 
             Environment.Exit(0);
-        }
-
-        public static async Task Test()
-        {
-            var activeWindow = User.GetForegroundWindow();
-            var metins = MetinFactory.GetAll();
-
-            while (true)
-            {
-                foreach (var metin in metins)
-                {
-                    await User.MostrarMetin(metin.ProcessId);
-
-                    var inventarioAbierto = await AbrirInventario(metin);
-
-                    if (!inventarioAbierto)
-                        continue;
-
-                    var cantidadPociones = await ContarPociones(metin);
-
-                    // cantidad de pociones requeridas = 55
-                    var a = 2;
-                }
-
-                await User.MostrarVentanaActual(activeWindow);
-            }
         }
 
         public static async Task Idle()
@@ -253,6 +233,27 @@ namespace Metin2Bot.Metin2Oficial
             }
         }
 
+        public static async Task Test()
+        {
+            var activeWindow = User.GetForegroundWindow();
+            var metins = MetinFactory.GetAll();
+
+            foreach (var metin in metins)
+            {
+                await User.MostrarMetin(metin.ProcessId);
+
+                var inventarioAbierto = await AbrirInventario(metin);
+
+                if (!inventarioAbierto)
+                    continue;
+
+                var cantidadPociones = await ContarPociones(metin);
+
+                await PerspectivaDesdeArriba(metin);
+                await BuscarTiendaGeneral(metin, 55 - cantidadPociones);
+            }
+        }
+
         public static async Task<bool> AbrirInventario(Metin2 metin)
         {
             var inventarioAbierto = await AccionesImg.PicTextoInventario.ProcessText(metin);
@@ -289,6 +290,10 @@ namespace Metin2Bot.Metin2Oficial
             var text2 = ProcessInMemory(bm2);
             await btn.SoltarTecla(MiButton.BT7.CONTROL, 50);
             pocionesTotales += Regex.Matches(text2 ?? string.Empty, "200").Count;
+
+            await User.ClickAt(
+                metin.StartX + Resolution.ClickInventario1().X,
+                metin.StartY + Resolution.ClickInventario1().Y);
 
             return pocionesTotales;
         }
@@ -368,6 +373,54 @@ namespace Metin2Bot.Metin2Oficial
 
                 metin.timerFragmentosDate = DateTime.Now;
             }
+        }
+
+        private static async Task<bool> BuscarTiendaGeneral(Metin2 metin, int cantidadPocionesAComprar)
+        {
+            TextRegion? textRegion;
+            var intentosBusquedaTiendaGeneral = 0;
+
+            do
+            {
+                Console.WriteLine($"BUSCANDO TIENDA GENERAL {intentosBusquedaTiendaGeneral + 1}\n");
+                await btn.MoverCamaraE(180);
+                await Task.Delay(200);
+                textRegion = await AccionesImg.PicTiendaGeneral.ProcessCoordinates(metin);
+                intentosBusquedaTiendaGeneral++;
+            } while ((textRegion == null || !textRegion.HasCoordinates) && intentosBusquedaTiendaGeneral < 15);
+
+            if (textRegion == null)
+            {
+                return false;
+            }
+
+            await User.ClickAt(
+                metin.StartX + textRegion.X + Resolution.ClickTiendaGeneral().X,
+                metin.StartY + textRegion.Y + Resolution.ClickTiendaGeneral().Y);
+
+            await Task.Delay(1000);
+            await btn.ApretarEnter();
+            await Task.Delay(1000);
+
+            var tiendaAbierta = await AccionesImg.PicTiendaGeneralAbierta.ProcessText(metin);
+
+            if (tiendaAbierta)
+            {
+                var cantidadCompradas = 0;
+                while (cantidadCompradas < cantidadPocionesAComprar)
+                {
+                    await User.RightClickAt(
+                        metin.StartX + Resolution.ClickComprarPocion().X,
+                        metin.StartY + Resolution.ClickComprarPocion().Y);
+
+                    await Task.Delay(500);
+                    cantidadCompradas++;
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         private static async Task<bool> BuscarAlquimista(Metin2 metin)

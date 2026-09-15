@@ -15,11 +15,11 @@ namespace Metin2Bot
                 {
                     //await Metin1600x900.LevearConChami(revivirAlMorir: false, apagarAlMorir: false);
                     //await Metin1600x900.LevearAll();
-                    await Metin1600x900.Fragmentar();
+                    //await Metin1600x900.Fragmentar();
                     //await Metin1600x900.Idle();
                     //await Metin1600x900.Metinear();
+                    await Metin1600x900.BackearFragmenteros();
                     //await Metin1600x900.Test();
-                    //await Metin1600x900.BackearFragmenteros();
                 }
                 catch (Exception ex)
                 {

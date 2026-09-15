@@ -27,7 +27,7 @@ namespace Metin2Bot.Metin2Oficial
         { "alqui", "quimis" };
 
         private static List<string> LstTiendaGeneral = new List<string>()
-        { "tienda", "general" };
+        { "general" };
 
         public static List<string> ListaItemsAgarrar()
         {
@@ -106,6 +106,14 @@ namespace Metin2Bot.Metin2Oficial
             get
             {
                 return new PictureTiendaGeneral();
+            }
+        }
+
+        public static IPicture PicTiendaGeneralAbierta
+        {
+            get
+            {
+                return new PictureTiendaGeneralAbierta();
             }
         }
 
@@ -307,6 +315,29 @@ namespace Metin2Bot.Metin2Oficial
                 }
 
                 return text.Contains("inventario", StringComparison.CurrentCultureIgnoreCase);
+            }
+        }
+
+        public class PictureTiendaGeneralAbierta : IPicture
+        {
+            public async Task<TextRegion?> ProcessCoordinates(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+
+            public async Task<bool> ProcessText(Metin2 metin)
+            {
+                using var bm = ScreenShot.SacarScreenshotTiendaGeneralAbiertaBM(metin);
+                var text = ProcessInMemory(bm);
+
+                if (text == null)
+                {
+                    return false;
+                }
+
+                return text.Contains("comprar", StringComparison.CurrentCultureIgnoreCase)
+                    || text.Contains("vender", StringComparison.CurrentCultureIgnoreCase)
+                    || text.Contains("recomprar", StringComparison.CurrentCultureIgnoreCase);
             }
         }
     }

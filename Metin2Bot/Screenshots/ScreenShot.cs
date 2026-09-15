@@ -2,6 +2,20 @@
 {
     public static class ScreenShot
     {
+        public static Bitmap SacarScreenshotTiendaGeneralAbiertaBM(Metin2 metin)
+        {
+            var captureArea = Resolution.RectScreenshotTiendaGeneralAbierta(metin);
+
+            // Tomar el screenshot
+            Bitmap screenshot = new(captureArea.Width, captureArea.Height);
+            using (Graphics g = Graphics.FromImage(screenshot))
+            {
+                g.CopyFromScreen(captureArea.Location, Point.Empty, captureArea.Size);
+            }
+
+            return screenshot;
+        }
+
         public static Bitmap SacarScreenshotTextoInventarioBM(Metin2 metin)
         {
             var captureArea = Resolution.RectScreenshotTextoInventario(metin);

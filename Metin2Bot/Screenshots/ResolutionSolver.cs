@@ -147,6 +147,16 @@
 
         #region Fragmentar
 
+        public static Coordenadas ClickComprarPocion()
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Coordenadas(420, -25);
+            }
+
+            return new Coordenadas(420, -25);
+        }
+
         public static Coordenadas ClickFragmentarItemPiso()
         {
             if (ResolutionEnum == ResolutionEnum.R1600x900)
@@ -165,6 +175,16 @@
             }
 
             return new Coordenadas(0, -85);
+        }
+
+        public static Coordenadas ClickTiendaGeneral()
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Coordenadas(-10, -85);
+            }
+
+            return new Coordenadas(-10, -85);
         }
 
         public static Coordenadas ClickInventario1()
@@ -190,6 +210,16 @@
         #endregion
 
         #region Screenshots
+
+        public static Rectangle RectScreenshotTiendaGeneralAbierta(Metin2 metin)
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Rectangle(metin.StartX + 850, metin.StartY + 600, 180, 150);
+            }
+
+            return new Rectangle(metin.StartX + 400, metin.StartY + 100, 160, 200);
+        }
 
         public static Rectangle RectScreenshotTextoInventario(Metin2 metin)
         {
