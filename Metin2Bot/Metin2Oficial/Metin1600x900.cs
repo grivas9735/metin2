@@ -235,7 +235,6 @@ namespace Metin2Bot.Metin2Oficial
 
         public static async Task Test()
         {
-            var activeWindow = User.GetForegroundWindow();
             var metins = MetinFactory.GetAll();
 
             foreach (var metin in metins)
