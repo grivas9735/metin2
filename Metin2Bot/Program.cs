@@ -18,7 +18,7 @@ namespace Metin2Bot
                     //await Metin1600x900.Fragmentar();
                     //await Metin1600x900.Idle();
                     //await Metin1600x900.Metinear();
-                    await Metin1600x900.BackearFragmenteros();
+                    await MetinRunner.BackearFragmenteros();
                     //await Metin1600x900.Test();
                 }
                 catch (Exception ex)
