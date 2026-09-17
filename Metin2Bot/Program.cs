@@ -13,13 +13,13 @@ namespace Metin2Bot
             {
                 try
                 {
-                    //await Metin1600x900.LevearConChami(revivirAlMorir: false, apagarAlMorir: false);
-                    //await Metin1600x900.LevearAll();
-                    //await Metin1600x900.Fragmentar();
-                    //await Metin1600x900.Idle();
-                    //await Metin1600x900.Metinear();
-                    await MetinRunner.BackearFragmenteros();
-                    //await Metin1600x900.Test();
+                    //await MetinRunner.LevearConChami(revivirAlMorir: false, apagarAlMorir: false);
+                    //await MetinRunner.LevearAll();
+                    await MetinRunner.Fragmentar();
+                    //await MetinRunner.Idle();
+                    //await MetinRunner.Metinear();
+                    //await MetinRunner.BackearFragmenteros();
+                    //await MetinRunner.Test();
                 }
                 catch (Exception ex)
                 {
