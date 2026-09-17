@@ -4,7 +4,7 @@ namespace Metin2Bot
 {
     public static class MetinFactory
     {
-        private static string WindowName = "METIN2";
+        private static readonly string WindowName = "METIN2";
 
         public static Metin2 GetOne()
         {
@@ -69,11 +69,8 @@ namespace Metin2Bot
         {
             User.GetWindowRect(metin.ProcessId, out RECT rect);
 
-            metin.Rect = rect;
             metin.StartX = rect.Left + 20;
             metin.StartY = rect.Top + 150;
-            metin.Width = rect.Right - rect.Left - 50;
-            metin.Height = rect.Bottom - rect.Top - 250;
         }
     }
 }

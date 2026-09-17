@@ -557,7 +557,7 @@ namespace Metin2Bot
             for (int i = 0; i < cantidad; i++)
             {
                 await PresionarYSoltar(BT7.KEY_1);
-                await Task.Delay(50);
+                await Task.Delay(10);
             }
         }
 

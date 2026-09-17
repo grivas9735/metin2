@@ -1,8 +1,7 @@
 ﻿using Metin2Bot.Controladores;
 using Metin2Bot.Screenshots;
+using Metin2Bot.Singletons;
 using System.Diagnostics;
-using System.Diagnostics.Metrics;
-using System.Net.NetworkInformation;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using static Metin2Bot.ImageReader;
@@ -13,8 +12,6 @@ namespace Metin2Bot.Metin2Oficial
     {
         private static readonly int minutosApagado = 99999; // (60,1) (120,2) (180,3) (240,4) (360,6) (480,8) (600,10)
         private static readonly int minutosPausado = 99999;
-
-        private static readonly MiButton btn = new();
 
         public static async Task AwaitShutdown()
         {
@@ -54,36 +51,29 @@ namespace Metin2Bot.Metin2Oficial
             while (true)
             {
                 await User.MostrarMetin(metin1.ProcessId);
-
                 await EvalRelogin(metin1);
                 await EvalPocionRoja(metin1);
                 await EvalPocionAzul(metin1);
                 await EvalHabF1(metin1);
                 await EvalHabF2(metin1);
-                await btn.AgarrarItems();
+                await MetinKeyboard.Instance.AgarrarItems();
 
                 if (revivirAlMorir)
                 {
-                    await EvalEstaMuerto(metin1);
-                    await EvalAutocaza(metin1);
+                    await EvalEstaMuerto(metin1, activarAutocaza: true);
                 }
 
                 await User.MostrarMetin(metin2.ProcessId);
                 await EvalRelogin(metin2);
                 await EvalBuffs(metin2);
-
-                if (revivirAlMorir)
-                {
-                    await EvalEstaMuerto(metin2);
-                }
+                await EvalEstaMuerto(metin2);
 
                 if (!revivirAlMorir && metin1.AlgunaVezMurio)
                 {
-                    Environment.Exit(0);
                     if (apagarAlMorir)
-                    {
                         Shutdown();
-                    }
+
+                    Environment.Exit(0);
                 }
 
                 await User.MostrarVentanaActual(activeWindow);
@@ -112,7 +102,7 @@ namespace Metin2Bot.Metin2Oficial
                     await EvalAutocaza(metin);
                     await EvalEstaMuerto(metin);
                     await EvalRelogin(metin);
-                    await btn.AgarrarItems();
+                    await MetinKeyboard.Instance.AgarrarItems();
                     await Task.Delay(100);
                 }
 
@@ -155,7 +145,7 @@ namespace Metin2Bot.Metin2Oficial
             {
                 while (true)
                 {
-                    await btn.PocionRoja();
+                    await MetinKeyboard.Instance.PocionRoja();
                     await Task.Delay(1000);
                 }
             });
@@ -164,7 +154,7 @@ namespace Metin2Bot.Metin2Oficial
             {
                 await User.MostrarMetin(metin.ProcessId);
 
-                await MoverAAlquimista(metin);
+                await Movimiento.MoverAAlquimista(metin);
 
                 await PerspectivaDesdeArriba(metin);
 
@@ -173,7 +163,7 @@ namespace Metin2Bot.Metin2Oficial
                 if (!encontroAlquimista)
                     continue;
 
-                await MoverAPotera(metin);
+                await Movimiento.MoverAPotera(metin);
 
                 var inventarioAbierto = await AbrirInventario(metin);
 
@@ -205,7 +195,7 @@ namespace Metin2Bot.Metin2Oficial
                     await User.MostrarMetin(metin.ProcessId);
 
                     await EvalEstaMuerto(metin);
-                    await btn.PocionRoja();
+                    await MetinKeyboard.Instance.PocionRoja();
 
                     await Task.Delay(1000);
                 }
@@ -224,8 +214,8 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     if (User.EsMetinEnPrimerPlano(metin.ProcessId))
                     {
-                        await btn.PocionRoja();
-                        await btn.PocionAzul();
+                        await MetinKeyboard.Instance.PocionRoja();
+                        await MetinKeyboard.Instance.PocionAzul();
 
                         await Task.Delay(100);
                     }
@@ -255,12 +245,12 @@ namespace Metin2Bot.Metin2Oficial
 
         public static async Task<bool> AbrirInventario(Metin2 metin)
         {
-            var inventarioAbierto = await AccionesImg.PicTextoInventario.ProcessText(metin);
+            var inventarioAbierto = AccionesImg.PicTextoInventario.ProcessText(metin);
 
             if (!inventarioAbierto)
             {
-                await btn.PresionarYSoltar(MiButton.BT7.KEY_I);
-                return await AccionesImg.PicTextoInventario.ProcessText(metin);
+                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_I);
+                return AccionesImg.PicTextoInventario.ProcessText(metin);
             }
 
             return inventarioAbierto;
@@ -274,20 +264,20 @@ namespace Metin2Bot.Metin2Oficial
                 metin.StartX + Resolution.ClickInventario1().X,
                 metin.StartY + Resolution.ClickInventario1().Y);
 
-            await btn.MantenerTeclaApretada(MiButton.BT7.CONTROL, 50);
+            await MetinKeyboard.Instance.MantenerTeclaApretada(MiButton.BT7.CONTROL, 50);
             using var bm1 = ScreenShot.SacarScreenshotInventarioBM(metin);
             var text1 = ProcessInMemory(bm1);
-            await btn.SoltarTecla(MiButton.BT7.CONTROL, 50);
+            await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.CONTROL, 50);
             pocionesTotales += Regex.Matches(text1 ?? string.Empty, "200").Count;
 
             await User.ClickAt(
                 metin.StartX + Resolution.ClickInventario2().X,
                 metin.StartY + Resolution.ClickInventario2().Y);
 
-            await btn.MantenerTeclaApretada(MiButton.BT7.CONTROL, 50);
+            await MetinKeyboard.Instance.MantenerTeclaApretada(MiButton.BT7.CONTROL, 50);
             using var bm2 = ScreenShot.SacarScreenshotInventarioBM(metin);
             var text2 = ProcessInMemory(bm2);
-            await btn.SoltarTecla(MiButton.BT7.CONTROL, 50);
+            await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.CONTROL, 50);
             pocionesTotales += Regex.Matches(text2 ?? string.Empty, "200").Count;
 
             await User.ClickAt(
@@ -301,47 +291,10 @@ namespace Metin2Bot.Metin2Oficial
         {
             Console.WriteLine($"ACOMODANDO CAMARA\n");
             await Task.Delay(100);
-            await btn.PresionarYSoltar(MiButton.BT7.KEY_G, 2000);
+            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_G, 2000);
             await Task.Delay(100);
-            await btn.PresionarYSoltar(MiButton.BT7.KEY_F, 2000);
+            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_F, 2000);
             await Task.Delay(100);
-        }
-
-        private static async Task MoverAPotera(Metin2 metin)
-        {
-            await Movimiento.MoverPersonaje(metin, new Vector2(631, 526));
-            await Movimiento.MoverPersonaje(metin, new Vector2(639, 556));
-            await Movimiento.MoverPersonaje(metin, new Vector2(674, 564));
-        }
-
-        private static async Task MoverAAlquimista(Metin2 metin)
-        {
-            await Movimiento.MoverPersonaje(metin, new Vector2(109, 572));
-            await Movimiento.MoverPersonaje(metin, new Vector2(147, 546));
-            await Movimiento.MoverPersonaje(metin, new Vector2(184, 532));
-            await Movimiento.MoverPersonaje(metin, new Vector2(246, 519));
-            await Movimiento.MoverPersonaje(metin, new Vector2(283, 514));
-            await Movimiento.MoverPersonaje(metin, new Vector2(320, 502));
-            await Movimiento.MoverPersonaje(metin, new Vector2(350, 499));
-            await Movimiento.MoverPersonaje(metin, new Vector2(364, 499));
-            await Movimiento.MoverPersonaje(metin, new Vector2(395, 499));
-            await Movimiento.MoverPersonaje(metin, new Vector2(405, 499));
-            await Movimiento.MoverPersonaje(metin, new Vector2(425, 499));
-            await Movimiento.MoverPersonaje(metin, new Vector2(449, 505));
-            await Movimiento.MoverPersonaje(metin, new Vector2(494, 514));
-            await Movimiento.MoverPersonaje(metin, new Vector2(506, 544));
-
-            // ARCO CIUDAD
-            await Movimiento.MoverPersonaje(metin, new Vector2(526, 580));
-            await Movimiento.MoverPersonaje(metin, new Vector2(537, 580));
-            await Movimiento.MoverPersonaje(metin, new Vector2(550, 580));
-
-            // MIRINE Y ALQUIMISTA
-            await Movimiento.MoverPersonaje(metin, new Vector2(596, 569));
-            await Movimiento.MoverPersonaje(metin, new Vector2(611, 553));
-            await Movimiento.MoverPersonaje(metin, new Vector2(611, 529));
-            await Movimiento.MoverPersonaje(metin, new Vector2(624, 522));
-            await Movimiento.MoverPersonaje(metin, new Vector2(623, 512));
         }
 
         private static async Task BuscarFragmentos(Metin2 metin)
@@ -353,7 +306,7 @@ namespace Metin2Bot.Metin2Oficial
                     metin.StartX + metin.TextRegion.X + Resolution.ClickFragmentarItemPiso().X,
                     metin.StartY + metin.TextRegion.Y + Resolution.ClickFragmentarItemPiso().Y,
                     10);
-                await btn.PocionRoja(10);
+                await MetinKeyboard.Instance.PocionRoja(10);
                 await Task.Delay(1000);
 
                 metin.TextRegion = null;
@@ -364,7 +317,7 @@ namespace Metin2Bot.Metin2Oficial
             if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos)
             {
                 Console.WriteLine($"BUSCANDO FRAGMENTOS\n");
-                await btn.MoverCamaraE(180);
+                await MetinKeyboard.Instance.MoverCamaraE(180);
                 _ = Task.Run(async () =>
                 {
                     metin.TextRegion = await AccionesImg.PicFragmentos.ProcessCoordinates(metin);
@@ -382,7 +335,7 @@ namespace Metin2Bot.Metin2Oficial
             do
             {
                 Console.WriteLine($"BUSCANDO TIENDA GENERAL {intentosBusquedaTiendaGeneral + 1}\n");
-                await btn.MoverCamaraE(180);
+                await MetinKeyboard.Instance.MoverCamaraE(180);
                 await Task.Delay(200);
                 textRegion = await AccionesImg.PicTiendaGeneral.ProcessCoordinates(metin);
                 intentosBusquedaTiendaGeneral++;
@@ -398,10 +351,10 @@ namespace Metin2Bot.Metin2Oficial
                 metin.StartY + textRegion.Y + Resolution.ClickTiendaGeneral().Y);
 
             await Task.Delay(1000);
-            await btn.ApretarEnter();
+            await MetinKeyboard.Instance.ApretarEnter();
             await Task.Delay(1000);
 
-            var tiendaAbierta = await AccionesImg.PicTiendaGeneralAbierta.ProcessText(metin);
+            var tiendaAbierta = AccionesImg.PicTiendaGeneralAbierta.ProcessText(metin);
 
             if (tiendaAbierta)
             {
@@ -424,13 +377,13 @@ namespace Metin2Bot.Metin2Oficial
 
         private static async Task<bool> BuscarAlquimista(Metin2 metin)
         {
-            var textRegion = (TextRegion?)null;
+            TextRegion? textRegion;
             var intentosBusquedaAlquimista = 0;
 
             do
             {
                 Console.WriteLine($"BUSCANDO ALQUIMISTA {intentosBusquedaAlquimista + 1}\n");
-                await btn.MoverCamaraE(180);
+                await MetinKeyboard.Instance.MoverCamaraE(180);
                 await Task.Delay(200);
                 textRegion = await AccionesImg.PicAlquimista.ProcessCoordinates(metin);
                 intentosBusquedaAlquimista++;
@@ -447,13 +400,13 @@ namespace Metin2Bot.Metin2Oficial
 
             await Task.Delay(1000);
 
-            var textoMision = await AccionesImg.PicMisionAlquimia.ProcessText(metin);
+            var textoMision = AccionesImg.PicMisionAlquimia.ProcessText(metin);
 
             if (textoMision)
             {
-                await btn.ApretarEnter();
+                await MetinKeyboard.Instance.ApretarEnter();
                 await Task.Delay(1000);
-                await btn.ApretarEnter();
+                await MetinKeyboard.Instance.ApretarEnter();
                 await Task.Delay(1000);
                 return true;
             }
@@ -468,11 +421,11 @@ namespace Metin2Bot.Metin2Oficial
                 Console.WriteLine("DONANDO EXP\n");
 
                 // Abrir menu gremio
-                await btn.MantenerTeclaApretada(MiButton.BT7.MENU);
+                await MetinKeyboard.Instance.MantenerTeclaApretada(MiButton.BT7.MENU);
                 await Task.Delay(150);
-                await btn.PresionarYSoltar(MiButton.BT7.KEY_G);
+                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_G);
                 await Task.Delay(150);
-                await btn.SoltarTecla(MiButton.BT7.MENU);
+                await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.MENU);
                 await Task.Delay(150);
 
                 // Click flechita exp
@@ -480,7 +433,7 @@ namespace Metin2Bot.Metin2Oficial
                 await Task.Delay(150);
 
                 // Apretar 6 veces 9
-                await btn.PresionarYSoltarNVeces(MiButton.BT7.KEY_9, 6);
+                await MetinKeyboard.Instance.PresionarYSoltarNVeces(MiButton.BT7.KEY_9, 6);
                 await Task.Delay(150);
 
                 // Apretar boton OK del cartelito de numero
@@ -488,11 +441,11 @@ namespace Metin2Bot.Metin2Oficial
                 await Task.Delay(150);
 
                 // Cerrar ventana gremio
-                await btn.MantenerTeclaApretada(MiButton.BT7.MENU);
+                await MetinKeyboard.Instance.MantenerTeclaApretada(MiButton.BT7.MENU);
                 await Task.Delay(150);
-                await btn.PresionarYSoltar(MiButton.BT7.KEY_G);
+                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_G);
                 await Task.Delay(150);
-                await btn.SoltarTecla(MiButton.BT7.MENU);
+                await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.MENU);
                 await Task.Delay(150);
 
                 // Apretar boton en caso de error de 0 exp
@@ -508,11 +461,11 @@ namespace Metin2Bot.Metin2Oficial
             if (DateTime.Now - metinBuffi.timerBuffsDate >= metinBuffi.timerBuffs)
             {
                 Console.WriteLine("BUFFS F1");
-                await btn.PresionarYSoltar(MiButton.BT7.F1);
+                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.F1);
                 await Task.Delay(2000);
 
                 Console.WriteLine("BUFFS F2\n");
-                await btn.PresionarYSoltar(MiButton.BT7.F2);
+                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.F2);
                 await Task.Delay(100);
 
                 metinBuffi.timerBuffsDate = DateTime.Now;
@@ -523,7 +476,7 @@ namespace Metin2Bot.Metin2Oficial
         {
             if (DateTime.Now - metin.timerPocionRojaDate >= metin.timerPocionRoja)
             {
-                await btn.PocionRoja();
+                await MetinKeyboard.Instance.PocionRoja();
                 metin.timerPocionRojaDate = DateTime.Now;
             }
         }
@@ -532,7 +485,7 @@ namespace Metin2Bot.Metin2Oficial
         {
             if (DateTime.Now - metin.timerPocionAzulDate >= metin.timerPocionAzul)
             {
-                await btn.PocionAzul();
+                await MetinKeyboard.Instance.PocionAzul();
                 metin.timerPocionAzulDate = DateTime.Now;
             }
         }
@@ -542,8 +495,8 @@ namespace Metin2Bot.Metin2Oficial
             if (DateTime.Now - metin.timerHabF1Date >= metin.timerHabF1)
             {
                 Console.WriteLine("USANDO F1\n");
-                await btn.PresionarYSoltar(MiButton.BT7.F1);
-                await btn.PocionRoja(5);
+                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.F1);
+                await MetinKeyboard.Instance.PocionRoja(5);
                 metin.timerHabF1Date = DateTime.Now;
                 await Task.Delay(4000);
             }
@@ -554,8 +507,8 @@ namespace Metin2Bot.Metin2Oficial
             if (DateTime.Now - metin.timerHabF2Date >= metin.timerHabF2)
             {
                 Console.WriteLine("USANDO F2\n");
-                await btn.PresionarYSoltar(MiButton.BT7.F2);
-                await btn.PocionRoja(5);
+                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.F2);
+                await MetinKeyboard.Instance.PocionRoja(5);
                 metin.timerHabF2Date = DateTime.Now;
                 await Task.Delay(4000);
             }
@@ -576,7 +529,7 @@ namespace Metin2Bot.Metin2Oficial
             await Task.Delay(50);
 
             // ABRIR AUTOCAZA
-            await btn.PresionarYSoltar(MiButton.BT7.KEY_K, 100);
+            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_K, 100);
             await Task.Delay(50);
 
             // DETENER
@@ -595,7 +548,7 @@ namespace Metin2Bot.Metin2Oficial
             await User.ClickAt(metin.StartX + Resolution.ClickAutocazaEmpezar().X, metin.StartY + Resolution.ClickAutocazaEmpezar().Y);
 
             // CERRAR AUTOCAZA
-            await btn.PresionarYSoltar(MiButton.BT7.KEY_K, 100);
+            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_K, 100);
             await Task.Delay(50);
         }
 
@@ -605,18 +558,18 @@ namespace Metin2Bot.Metin2Oficial
             await Task.Delay(50);
 
             // ABRIR AUTOCAZA
-            await btn.PresionarYSoltar(MiButton.BT7.KEY_K, 100);
+            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_K, 100);
             await Task.Delay(50);
 
             // DETENER
             await User.ClickAt(metin.StartX + Resolution.ClickAutocazaDetener().X, metin.StartY + Resolution.ClickAutocazaDetener().Y);
 
             // CERRAR AUTOCAZA
-            await btn.PresionarYSoltar(MiButton.BT7.KEY_K, 100);
+            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_K, 100);
             await Task.Delay(50);
         }
 
-        private static async Task EvalEstaMuerto(Metin2 metin)
+        private static async Task EvalEstaMuerto(Metin2 metin, bool activarAutocaza = false)
         {
             if (metin.EstaMuerto)
             {
@@ -624,12 +577,16 @@ namespace Metin2Bot.Metin2Oficial
                 Console.WriteLine("REVIVIENDO\n");
                 await User.ClickAt(metin.StartX + Resolution.ClickRevivir().X, metin.StartY - Resolution.ClickRevivir().Y);
                 await Task.Delay(800);
-                metin.EstaMuerto = await AccionesImg.PicEstaMuerto.ProcessText(metin);
+                metin.EstaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
 
                 if (!metin.EstaMuerto)
                 {
-                    await btn.PocionRoja(10);
-                    metin.timerAutocazaDate = DateTime.Now.AddDays(-1);
+                    await MetinKeyboard.Instance.PocionRoja(10);
+
+                    if (activarAutocaza)
+                        await IniciarAutocaza(metin);
+                    else
+                        metin.timerAutocazaDate = DateTime.Now.AddDays(-1);
                 }
             }
 
@@ -639,7 +596,7 @@ namespace Metin2Bot.Metin2Oficial
                 metin.timerEstaMuertoDate = DateTime.Now;
                 _ = Task.Run(async () =>
                 {
-                    metin.EstaMuerto = await AccionesImg.PicEstaMuerto.ProcessText(metin);
+                    metin.EstaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
                 });
             }
         }
@@ -650,18 +607,18 @@ namespace Metin2Bot.Metin2Oficial
             {
                 if (metin.EstaEnPantallaLogin)
                 {
-                    await btn.ApretarEnter(100); // Este enter es para sacar cualquier posible cartel de error
+                    await MetinKeyboard.Instance.ApretarEnter(100); // Este enter es para sacar cualquier posible cartel de error
                     await Task.Delay(100);
                     await User.ClickAt(metin.StartX + Resolution.ClickLoginOK().X, metin.StartY + Resolution.ClickLoginOK().Y);
                     await Task.Delay(15000);
 
-                    metin.EstaEnChampSelect = await AccionesImg.PicChampSelect.ProcessText(metin);
+                    metin.EstaEnChampSelect = AccionesImg.PicChampSelect.ProcessText(metin);
                     metin.EstaEnPantallaLogin = false;
                 }
 
                 if (metin.EstaEnChampSelect)
                 {
-                    await btn.ApretarEnter(100);
+                    await MetinKeyboard.Instance.ApretarEnter(100);
                     await Task.Delay(15000);
                     await IniciarAutocaza(metin);
                     metin.EstaEnPantallaLogin = false;
@@ -673,14 +630,10 @@ namespace Metin2Bot.Metin2Oficial
             {
                 Console.WriteLine("VALIDANDO RELOGIN\n");
 
-                _ = Task.Run(async () =>
+                _ = Task.Run(() =>
                 {
-                    var t1 = AccionesImg.PicLogin.ProcessText(metin);
-                    var t2 = AccionesImg.PicChampSelect.ProcessText(metin);
-                    await Task.WhenAll(t1, t2);
-
-                    metin.EstaEnPantallaLogin = t1.Result;
-                    metin.EstaEnChampSelect = t2.Result;
+                    metin.EstaEnPantallaLogin = AccionesImg.PicLogin.ProcessText(metin);
+                    metin.EstaEnChampSelect = AccionesImg.PicChampSelect.ProcessText(metin);
                     metin.timerReloginDate = DateTime.Now;
                 });
             }

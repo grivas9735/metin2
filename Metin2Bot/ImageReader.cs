@@ -1,4 +1,4 @@
-﻿using Metin2Bot.OCR;
+﻿using Metin2Bot.Singletons;
 using OpenCvSharp;
 using Tesseract;
 

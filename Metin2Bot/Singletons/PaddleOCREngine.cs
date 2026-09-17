@@ -1,6 +1,6 @@
 ﻿using PaddleOCRSharp;
 
-namespace Metin2Bot.OCR
+namespace Metin2Bot.Singletons
 {
     public sealed class PaddleOCR
     {

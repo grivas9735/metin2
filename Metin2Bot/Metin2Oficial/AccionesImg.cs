@@ -2,32 +2,26 @@
 using System.Numerics;
 using System.Text.RegularExpressions;
 using static Metin2Bot.ImageReader;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Metin2Bot.Metin2Oficial
 {
     public static class AccionesImg
     {
-        private static List<string> ListFragmentos = new List<string>()
-        { "piedra", "dragon", "dragón", "de pie", "fragm" };
+        private static readonly List<string> ListFragmentos = ["piedra", "dragon", "dragón", "de pie", "fragm"];
 
-        private static List<string> ItemsCity2 = new List<string>()
-        { "ébano", "ebano", "cuerno" };
+        private static readonly List<string> ItemsCity2 = ["ébano", "ebano", "cuerno"];
 
-        private static List<string> ItemsValle = new List<string>()
-        { "cartilla" };
+        private static readonly List<string> ItemsValle = ["cartilla"];
 
-        private static List<string> ItemsSiempre = new List<string>()
-        { "weiliao", "arte guerra", "ao zi", "arte guerra", "arteguerra",
+        private static readonly List<string> ItemsSiempre =
+        [ "weiliao", "arte guerra", "ao zi", "arte guerra", "arteguerra",
           "bola", "polimorf", "wu zi", "luz luna", "luzluna", "pendiente",
           "collar", "bota", "zapato", "casco", "morad"
-        };
+        ];
 
-        private static List<string> LstAlquimista = new List<string>()
-        { "alqui", "quimis" };
+        private static readonly List<string> LstAlquimista = ["alqui", "quimis"];
 
-        private static List<string> LstTiendaGeneral = new List<string>()
-        { "general" };
+        private static readonly List<string> LstTiendaGeneral = ["general"];
 
         public static List<string> ListaItemsAgarrar()
         {
@@ -41,7 +35,7 @@ namespace Metin2Bot.Metin2Oficial
 
         public interface IPicture
         {
-            Task<bool> ProcessText(Metin2 metin);
+            bool ProcessText(Metin2 metin);
             Task<TextRegion?> ProcessCoordinates(Metin2 metin);
         }
 
@@ -132,7 +126,7 @@ namespace Metin2Bot.Metin2Oficial
                 throw new NotImplementedException();
             }
 
-            public async Task<bool> ProcessText(Metin2 metin)
+            public bool ProcessText(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotCoordenadasBM(metin);
                 var text = ProcessInMemory(bm);
@@ -171,7 +165,7 @@ namespace Metin2Bot.Metin2Oficial
                 throw new NotImplementedException();
             }
 
-            public async Task<bool> ProcessText(Metin2 metin)
+            public bool ProcessText(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotChampSelectBM(metin);
                 var text = ProcessInMemory(bm);
@@ -193,7 +187,7 @@ namespace Metin2Bot.Metin2Oficial
                 throw new NotImplementedException();
             }
 
-            public async Task<bool> ProcessText(Metin2 metin)
+            public bool ProcessText(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotEstaMuertoBM(metin);
                 var text = ProcessInMemory(bm);
@@ -216,7 +210,7 @@ namespace Metin2Bot.Metin2Oficial
                 throw new NotImplementedException();
             }
 
-            public async Task<bool> ProcessText(Metin2 metin)
+            public bool ProcessText(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotPantallaLoginBM(metin);
                 var text = ProcessInMemory(bm);
@@ -238,7 +232,7 @@ namespace Metin2Bot.Metin2Oficial
                 throw new NotImplementedException();
             }
 
-            public async Task<bool> ProcessText(Metin2 metin)
+            public bool ProcessText(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotMisionAlquimiaBM(metin);
                 var text = ProcessInMemory(bm);
@@ -263,7 +257,7 @@ namespace Metin2Bot.Metin2Oficial
                 return ProcessInMemoryV2(bm, ListaItemsAgarrar());
             }
 
-            public Task<bool> ProcessText(Metin2 metin)
+            public bool ProcessText(Metin2 metin)
             {
                 throw new NotImplementedException();
             }
@@ -277,7 +271,7 @@ namespace Metin2Bot.Metin2Oficial
                 return ProcessInMemoryV2(bm, LstAlquimista);
             }
 
-            public Task<bool> ProcessText(Metin2 metin)
+            public bool ProcessText(Metin2 metin)
             {
                 throw new NotImplementedException();
             }
@@ -291,7 +285,7 @@ namespace Metin2Bot.Metin2Oficial
                 return ProcessInMemoryV2(bm, LstTiendaGeneral);
             }
 
-            public Task<bool> ProcessText(Metin2 metin)
+            public bool ProcessText(Metin2 metin)
             {
                 throw new NotImplementedException();
             }
@@ -304,7 +298,7 @@ namespace Metin2Bot.Metin2Oficial
                 throw new NotImplementedException();
             }
 
-            public async Task<bool> ProcessText(Metin2 metin)
+            public bool ProcessText(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotTextoInventarioBM(metin);
                 var text = ProcessInMemory(bm);
@@ -325,7 +319,7 @@ namespace Metin2Bot.Metin2Oficial
                 throw new NotImplementedException();
             }
 
-            public async Task<bool> ProcessText(Metin2 metin)
+            public bool ProcessText(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotTiendaGeneralAbiertaBM(metin);
                 var text = ProcessInMemory(bm);

@@ -9,23 +9,15 @@ namespace Metin2Bot
 
         public nint ProcessId { get; set; }
 
-        public RECT Rect { get; set; }
-
         public DateTime StartTime { get; set; }
 
         public int StartX { get; set; }
 
         public int StartY { get; set; }
 
-        public int Width { get; set; }
-
-        public int Height { get; set; }
-
         public bool EstaEnPantallaLogin { get; set; }
 
         public bool EstaEnChampSelect { get; set; }
-
-        public bool PrenderAutocazaPostMuerte { get; set; }
 
         public bool EstaMuerto { get; set; }
 
@@ -64,53 +56,5 @@ namespace Metin2Bot
 
         public TimeSpan timerAutocaza = TimeSpan.FromMinutes(5);
         public DateTime timerAutocazaDate = DateTime.Now.AddDays(-1);
-
-        public string ImgChampSelectName
-        {
-            get
-            {
-                return AppConfig.GetRouteValue("MPs") + @$"\metin_champ_select_{Id}.png";
-            }
-        }
-
-        public string ImgEstaMuertoName
-        {
-            get
-            {
-                return AppConfig.GetRouteValue("MPs") + @$"\metin_esta_muerto_{Id}.png";
-            }
-        }
-
-        public string ImgLoginName
-        {
-            get
-            {
-                return AppConfig.GetRouteValue("MPs") + @$"\metin_login_{Id}.png";
-            }
-        }
-
-        public string ImgFragmentosName
-        {
-            get
-            {
-                return AppConfig.GetRouteValue("MPs") + @$"\metin_frag_{Id}.png";
-            }
-        }
-
-        public string ImgAlquimistaName
-        {
-            get
-            {
-                return AppConfig.GetRouteValue("MPs") + @$"\metin_alquim_{Id}.png";
-            }
-        }
-
-        public string ImgCoordenadasName
-        {
-            get
-            {
-                return AppConfig.GetRouteValue("MPs") + @$"\metin_coords_{Id}.png";
-            }
-        }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using Metin2Bot.Metin2Oficial;
 using Metin2Bot.Screenshots;
+using Metin2Bot.Singletons;
 using System.Numerics;
 
 namespace Metin2Bot.Controladores
 {
     public static class Movimiento
     {
-        private static readonly MiButton btn = new MiButton();
         private static readonly int distanciaMaximaTolerada = 2;
         private static readonly int tiempoMovimientoStep = 150;
 
@@ -16,7 +16,7 @@ namespace Metin2Bot.Controladores
 
             while (Vector2.Distance(destino, posicionActual) > distanciaMaximaTolerada)
             {
-                await btn.Quieto(0);
+                await MetinKeyboard.Instance.Quieto(0);
 
                 posicionActual = await MoverHastaEmpeorar(
                     metin,
@@ -24,12 +24,12 @@ namespace Metin2Bot.Controladores
                     posicionActual,
                     tiempoMovimientoStep,
                     "W",
-                    btn.MoverW);
+                    MetinKeyboard.Instance.MoverW);
 
                 if (Vector2.Distance(destino, posicionActual) <= distanciaMaximaTolerada)
                     break;
 
-                await btn.Quieto(0);
+                await MetinKeyboard.Instance.Quieto(0);
 
                 posicionActual = await MoverHastaEmpeorar(
                     metin,
@@ -37,12 +37,12 @@ namespace Metin2Bot.Controladores
                     posicionActual,
                     tiempoMovimientoStep,
                     "A",
-                    btn.MoverA);
+                    MetinKeyboard.Instance.MoverA);
 
                 if (Vector2.Distance(destino, posicionActual) <= distanciaMaximaTolerada)
                     break;
 
-                await btn.Quieto(0);
+                await MetinKeyboard.Instance.Quieto(0);
 
                 posicionActual = await MoverHastaEmpeorar(
                     metin,
@@ -50,12 +50,12 @@ namespace Metin2Bot.Controladores
                     posicionActual,
                     tiempoMovimientoStep,
                     "S",
-                    btn.MoverS);
+                    MetinKeyboard.Instance.MoverS);
 
                 if (Vector2.Distance(destino, posicionActual) <= distanciaMaximaTolerada)
                     break;
 
-                await btn.Quieto(0);
+                await MetinKeyboard.Instance.Quieto(0);
 
                 posicionActual = await MoverHastaEmpeorar(
                     metin,
@@ -63,10 +63,10 @@ namespace Metin2Bot.Controladores
                     posicionActual,
                     tiempoMovimientoStep,
                     "D",
-                    btn.MoverD);
+                    MetinKeyboard.Instance.MoverD);
             }
 
-            await btn.Quieto(100);
+            await MetinKeyboard.Instance.Quieto(100);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Metin {metin.Id} llegó a ({destino.X},{destino.Y})");
             Console.ResetColor();
@@ -86,7 +86,7 @@ namespace Metin2Bot.Controladores
             {
                 Vector2 posicionAnterior = posicionActual;
 
-                await btn.PocionRoja();
+                await MetinKeyboard.Instance.PocionRoja();
                 await mover(tiempoMovimientoMs);
 
                 posicionActual = await LeerPosicionActualHastaHallarValor(metin);
@@ -129,17 +129,54 @@ namespace Metin2Bot.Controladores
             }
         }
 
+        public static async Task MoverAAlquimista(Metin2 metin)
+        {
+            await Movimiento.MoverPersonaje(metin, new Vector2(109, 572));
+            await Movimiento.MoverPersonaje(metin, new Vector2(147, 546));
+            await Movimiento.MoverPersonaje(metin, new Vector2(184, 532));
+            await Movimiento.MoverPersonaje(metin, new Vector2(246, 519));
+            await Movimiento.MoverPersonaje(metin, new Vector2(283, 514));
+            await Movimiento.MoverPersonaje(metin, new Vector2(320, 502));
+            await Movimiento.MoverPersonaje(metin, new Vector2(350, 499));
+            await Movimiento.MoverPersonaje(metin, new Vector2(364, 499));
+            await Movimiento.MoverPersonaje(metin, new Vector2(395, 499));
+            await Movimiento.MoverPersonaje(metin, new Vector2(405, 499));
+            await Movimiento.MoverPersonaje(metin, new Vector2(425, 499));
+            await Movimiento.MoverPersonaje(metin, new Vector2(449, 505));
+            await Movimiento.MoverPersonaje(metin, new Vector2(494, 514));
+            await Movimiento.MoverPersonaje(metin, new Vector2(506, 544));
+
+            // ARCO CIUDAD
+            await Movimiento.MoverPersonaje(metin, new Vector2(526, 580));
+            await Movimiento.MoverPersonaje(metin, new Vector2(537, 580));
+            await Movimiento.MoverPersonaje(metin, new Vector2(550, 580));
+
+            // MIRINE Y ALQUIMISTA
+            await Movimiento.MoverPersonaje(metin, new Vector2(596, 569));
+            await Movimiento.MoverPersonaje(metin, new Vector2(611, 553));
+            await Movimiento.MoverPersonaje(metin, new Vector2(611, 529));
+            await Movimiento.MoverPersonaje(metin, new Vector2(624, 522));
+            await Movimiento.MoverPersonaje(metin, new Vector2(623, 512));
+        }
+
+        public static async Task MoverAPotera(Metin2 metin)
+        {
+            await Movimiento.MoverPersonaje(metin, new Vector2(631, 526));
+            await Movimiento.MoverPersonaje(metin, new Vector2(639, 556));
+            await Movimiento.MoverPersonaje(metin, new Vector2(674, 564));
+        }
+
         private static async Task<Vector2> LeerPosicionActualHastaHallarValor(Metin2 metin)
         {
             User.MouseToPosition(
                 metin.StartX + Resolution.WatchCoords().X,
                 metin.StartY + Resolution.WatchCoords().Y);
 
-            await AccionesImg.PicCoordenadas.ProcessText(metin);
+            AccionesImg.PicCoordenadas.ProcessText(metin);
 
             if (metin.Coordenadas == null)
             {
-                await btn.MoverCamaraE(20);
+                await MetinKeyboard.Instance.MoverCamaraE(20);
                 await Task.Delay(20);
 
                 Console.WriteLine("Reintentando leer coordenadas...");
