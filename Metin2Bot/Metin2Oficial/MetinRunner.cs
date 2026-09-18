@@ -314,9 +314,9 @@ namespace Metin2Bot.Metin2Oficial
                 Console.WriteLine($"BUSCANDO FRAGMENTOS\n");
                 await MetinKeyboard.Instance.MoverCamaraE(180);
                 await Task.Delay(50);
-                _ = Task.Run(async () =>
+                _ = Task.Run(() =>
                 {
-                    metin.TextRegion = await AccionesImg.PicFragmentos.ProcessCoordinates(metin);
+                    metin.TextRegion = AccionesImg.PicFragmentos.ProcessCoordinates(metin);
                 });
 
                 metin.timerFragmentosDate = DateTime.Now;
@@ -333,7 +333,7 @@ namespace Metin2Bot.Metin2Oficial
                 Console.WriteLine($"BUSCANDO TIENDA GENERAL {intentosBusquedaTiendaGeneral + 1}\n");
                 await MetinKeyboard.Instance.MoverCamaraE(180);
                 await Task.Delay(200);
-                textRegion = await AccionesImg.PicTiendaGeneral.ProcessCoordinates(metin);
+                textRegion = AccionesImg.PicTiendaGeneral.ProcessCoordinates(metin);
                 intentosBusquedaTiendaGeneral++;
             } while ((textRegion == null || !textRegion.HasCoordinates) && intentosBusquedaTiendaGeneral < 15);
 
@@ -381,7 +381,7 @@ namespace Metin2Bot.Metin2Oficial
                 Console.WriteLine($"BUSCANDO ALQUIMISTA {intentosBusquedaAlquimista + 1}\n");
                 await MetinKeyboard.Instance.MoverCamaraE(180);
                 await Task.Delay(200);
-                textRegion = await AccionesImg.PicAlquimista.ProcessCoordinates(metin);
+                textRegion = AccionesImg.PicAlquimista.ProcessCoordinates(metin);
                 intentosBusquedaAlquimista++;
             } while ((textRegion == null || !textRegion.HasCoordinates) && intentosBusquedaAlquimista < 15);
 
