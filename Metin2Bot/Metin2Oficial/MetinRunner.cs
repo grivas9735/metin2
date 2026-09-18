@@ -55,19 +55,15 @@ namespace Metin2Bot.Metin2Oficial
                 await EvalPocionAzul(metin1);
                 await EvalHabF1(metin1);
                 await EvalHabF2(metin1);
+                await EvalEstaMuerto(metin1, activarAutocaza: true);
                 await MetinKeyboard.Instance.AgarrarItems();
-
-                if (revivirAlMorir)
-                {
-                    await EvalEstaMuerto(metin1, activarAutocaza: true);
-                }
 
                 await User.MostrarMetin(metin2.ProcessId);
                 await EvalRelogin(metin2);
                 await EvalBuffs(metin2);
                 await EvalEstaMuerto(metin2);
 
-                if (!revivirAlMorir && metin1.AlgunaVezMurio)
+                if (!revivirAlMorir && metin1.MurioAlgunaVez)
                 {
                     if (apagarAlMorir)
                         Shutdown();
@@ -123,7 +119,7 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     await User.MostrarMetin(metin.ProcessId);
 
-                    //await EvalDonarExp(metin);
+                    await EvalDonarExp(metin);
                     await EvalRelogin(metin);
                     await EvalEstaMuerto(metin);
                     await EvalPocionRoja(metin);
@@ -153,9 +149,9 @@ namespace Metin2Bot.Metin2Oficial
             {
                 await User.MostrarMetin(metin.ProcessId);
 
-                await Movimiento.MoverAAlquimista(metin);
-
                 await PerspectivaDesdeArriba(metin);
+
+                await Movimiento.MoverAAlquimista(metin);
 
                 var encontroAlquimista = await BuscarAlquimista(metin);
 
@@ -317,6 +313,7 @@ namespace Metin2Bot.Metin2Oficial
             {
                 Console.WriteLine($"BUSCANDO FRAGMENTOS\n");
                 await MetinKeyboard.Instance.MoverCamaraE(180);
+                await Task.Delay(50);
                 _ = Task.Run(async () =>
                 {
                     metin.TextRegion = await AccionesImg.PicFragmentos.ProcessCoordinates(metin);
@@ -572,7 +569,7 @@ namespace Metin2Bot.Metin2Oficial
         {
             if (metin.EstaMuerto)
             {
-                metin.AlgunaVezMurio = true;
+                metin.MurioAlgunaVez = true;
                 Console.WriteLine("REVIVIENDO\n");
                 await User.ClickAt(metin.StartX + Resolution.ClickRevivir().X, metin.StartY - Resolution.ClickRevivir().Y);
                 await Task.Delay(800);
@@ -593,7 +590,7 @@ namespace Metin2Bot.Metin2Oficial
             {
                 Console.WriteLine("VALIDANDO ESTA MUERTO\n");
                 metin.timerEstaMuertoDate = DateTime.Now;
-                _ = Task.Run(async () =>
+                _ = Task.Run(() =>
                 {
                     metin.EstaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
                 });

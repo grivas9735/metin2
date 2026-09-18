@@ -21,7 +21,7 @@ namespace Metin2Bot
 
         public bool EstaMuerto { get; set; }
 
-        public bool AlgunaVezMurio { get; set; }
+        public bool MurioAlgunaVez { get; set; }
 
         public TextRegion? TextRegion { get; set; }
 
