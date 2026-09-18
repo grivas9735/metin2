@@ -69,16 +69,12 @@ namespace Metin2Bot
             {
                 var result = PaddleOCR.Instance.DetectText(bm);
 
-                // Si no detectó nada, salimos
+                // Verificación de nulos
                 if (result == null || result.TextBlocks == null) return null;
 
-                TextRegion? txtRegion = null;
-
-                // 1. Emulamos tu 'ExtractCoordinates' transformando los bloques de Paddle a tus TextRegions
-                // Calculamos el X e Y como el centro de la caja delimitadora (como haces en Tesseract)
+                // 1. Mapeo de bloques a TextRegion
                 var regiones = result.TextBlocks.Select(block =>
                 {
-                    // BoxPoints[0] es Arriba-Izquierda, BoxPoints[2] es Abajo-Derecha
                     var ancho = block.BoxPoints[1].X - block.BoxPoints[0].X;
                     var alto = block.BoxPoints[3].Y - block.BoxPoints[0].Y;
 
@@ -86,19 +82,20 @@ namespace Metin2Bot
                     {
                         Text = block.Text.Trim(),
                         HasCoordinates = true,
-                        // Calculamos el centro exacto igual que tu código Tesseract
                         X = block.BoxPoints[0].X + (ancho / 2),
                         Y = block.BoxPoints[0].Y + (alto / 2)
                     };
                 }).ToList();
 
-                // 2. Misma lógica de búsqueda exacta que tu código Tesseract (1 solo foreach)
+                TextRegion? txtRegion = null;
+
+                // 2. Búsqueda de coincidencia
                 foreach (var palabra in palabras)
                 {
-                    txtRegion = regiones.FirstOrDefault(x => x.Text.Contains(palabra, StringComparison.CurrentCultureIgnoreCase));
-
-                    if (txtRegion != null)
+                    var coincidencia = regiones.FirstOrDefault(x => x.Text.Contains(palabra, StringComparison.CurrentCultureIgnoreCase));
+                    if (coincidencia != null)
                     {
+                        txtRegion = coincidencia; // Mantiene el Text especifico de la region
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine($"{palabra}");
                         Console.ResetColor();
@@ -106,17 +103,15 @@ namespace Metin2Bot
                     }
                 }
 
-                // 3. Lógica de fallback si no encuentra la palabra
+                // 3. Fallback si no hubo coincidencia
                 if (txtRegion == null)
                 {
                     txtRegion = new TextRegion
                     {
-                        HasCoordinates = false
+                        HasCoordinates = false,
+                        Text = result.Text ?? string.Empty
                     };
                 }
-
-                // Le asignamos el texto completo encontrado en la imagen
-                txtRegion.Text = result.Text;
 
                 return txtRegion;
             }
