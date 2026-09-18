@@ -571,7 +571,11 @@ namespace Metin2Bot.Metin2Oficial
             {
                 metin.MurioAlgunaVez = true;
                 Console.WriteLine("REVIVIENDO\n");
-                await User.ClickAt(metin.StartX + Resolution.ClickRevivir().X, metin.StartY - Resolution.ClickRevivir().Y);
+
+                await User.ClickAt(
+                    metin.StartX + Resolution.ClickRevivir().X, 
+                    metin.StartY - Resolution.ClickRevivir().Y);
+
                 await Task.Delay(800);
                 metin.EstaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
 
@@ -605,7 +609,11 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     await MetinKeyboard.Instance.ApretarEnter(100); // Este enter es para sacar cualquier posible cartel de error
                     await Task.Delay(100);
-                    await User.ClickAt(metin.StartX + Resolution.ClickLoginOK().X, metin.StartY + Resolution.ClickLoginOK().Y);
+                    
+                    await User.ClickAt(
+                        metin.StartX + Resolution.ClickLoginOK().X, 
+                        metin.StartY + Resolution.ClickLoginOK().Y);
+
                     await Task.Delay(15000);
 
                     metin.EstaEnChampSelect = AccionesImg.PicChampSelect.ProcessText(metin);
