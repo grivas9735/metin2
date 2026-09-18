@@ -88,8 +88,9 @@ namespace Metin2Bot.Metin2Oficial
                 if (bm == null) return false;
 
                 var text = ProcessInMemory(bm);
-                return text != null && (text.Contains("seleccionar", StringComparison.CurrentCultureIgnoreCase)
-                                     || text.Contains("personaje", StringComparison.CurrentCultureIgnoreCase));
+                return text != null 
+                    && (text.Contains("seleccionar", StringComparison.CurrentCultureIgnoreCase)
+                        || text.Contains("personaje", StringComparison.CurrentCultureIgnoreCase));
             }
         }
 
@@ -122,8 +123,10 @@ namespace Metin2Bot.Metin2Oficial
                 if (bm == null) return false;
 
                 var text = ProcessInMemory(bm);
-                return text != null && text.Contains("ok", StringComparison.CurrentCultureIgnoreCase)
-                                    && text.Contains("salir", StringComparison.CurrentCultureIgnoreCase);
+
+                return text != null 
+                    && text.Contains("ok", StringComparison.CurrentCultureIgnoreCase)
+                    && text.Contains("salir", StringComparison.CurrentCultureIgnoreCase);
             }
         }
 
@@ -190,7 +193,8 @@ namespace Metin2Bot.Metin2Oficial
                 if (bm == null) return false;
 
                 var text = ProcessInMemory(bm);
-                return text != null && text.Contains("inventario", StringComparison.CurrentCultureIgnoreCase);
+                return text != null 
+                    && text.Contains("inventario", StringComparison.CurrentCultureIgnoreCase);
             }
         }
 
@@ -204,9 +208,10 @@ namespace Metin2Bot.Metin2Oficial
                 if (bm == null) return false;
 
                 var text = ProcessInMemory(bm);
-                return text != null && (text.Contains("comprar", StringComparison.CurrentCultureIgnoreCase)
-                                     || text.Contains("vender", StringComparison.CurrentCultureIgnoreCase)
-                                     || text.Contains("recomprar", StringComparison.CurrentCultureIgnoreCase));
+                return text != null 
+                    && (text.Contains("comprar", StringComparison.CurrentCultureIgnoreCase)
+                        || text.Contains("vender", StringComparison.CurrentCultureIgnoreCase)
+                        || text.Contains("recomprar", StringComparison.CurrentCultureIgnoreCase));
             }
         }
     }
