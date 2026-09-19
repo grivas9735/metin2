@@ -245,6 +245,7 @@ namespace Metin2Bot.Metin2Oficial
             if (!inventarioAbierto)
             {
                 await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_I);
+                await Task.Delay(50);
                 return AccionesImg.PicTextoInventario.ProcessText(metin);
             }
 
