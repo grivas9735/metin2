@@ -1,8 +1,10 @@
 ﻿using Metin2Bot.Controladores;
 using Metin2Bot.Screenshots;
 using Metin2Bot.Singletons;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using static Metin2Bot.ImageReader;
 
 namespace Metin2Bot.Metin2Oficial
@@ -112,6 +114,8 @@ namespace Metin2Bot.Metin2Oficial
 
             _ = AwaitShutdown();
             _ = AwaitPause();
+
+            await PrepararFragmenteros(metins);
 
             while (true)
             {
@@ -245,7 +249,7 @@ namespace Metin2Bot.Metin2Oficial
             if (!inventarioAbierto)
             {
                 await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_I);
-                await Task.Delay(50);
+                await Task.Delay(100);
                 return AccionesImg.PicTextoInventario.ProcessText(metin);
             }
 
@@ -286,11 +290,11 @@ namespace Metin2Bot.Metin2Oficial
         public static async Task PerspectivaDesdeArriba(Metin2 metin)
         {
             Console.WriteLine($"ACOMODANDO CAMARA\n");
-            await Task.Delay(100);
-            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_G, 2000);
-            await Task.Delay(100);
-            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_F, 2000);
-            await Task.Delay(100);
+            await Task.Delay(50);
+            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_G, 1800);
+            await Task.Delay(50);
+            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_F, 1500);
+            await Task.Delay(50);
         }
 
         private static async Task BuscarFragmentos(Metin2 metin)
@@ -641,6 +645,18 @@ namespace Metin2Bot.Metin2Oficial
                     metin.EstaEnChampSelect = AccionesImg.PicChampSelect.ProcessText(metin);
                     metin.timerReloginDate = DateTime.Now;
                 });
+            }
+        }
+
+        private static async Task PrepararFragmenteros(List<Metin2> metins)
+        {
+            foreach (var metin in metins)
+            {
+                await User.MostrarMetin(metin.ProcessId);
+
+                await PerspectivaDesdeArriba(metin);
+
+                await AbrirInventario(metin);
             }
         }
 

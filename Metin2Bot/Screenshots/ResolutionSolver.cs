@@ -181,10 +181,10 @@
         {
             if (ResolutionEnum == ResolutionEnum.R1600x900)
             {
-                return new Coordenadas(-10, -85);
+                return new Coordenadas(-5, -85);
             }
 
-            return new Coordenadas(-10, -85);
+            return new Coordenadas(-5, -85);
         }
 
         public static Coordenadas ClickInventario1()
