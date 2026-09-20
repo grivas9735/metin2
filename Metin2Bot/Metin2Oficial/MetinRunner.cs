@@ -155,6 +155,8 @@ namespace Metin2Bot.Metin2Oficial
 
                 await PerspectivaDesdeArriba(metin);
 
+                await CerrarInventario(metin);
+
                 await Movimiento.MoverAAlquimista(metin);
 
                 var encontroAlquimista = await BuscarAlquimista(metin);
@@ -254,6 +256,17 @@ namespace Metin2Bot.Metin2Oficial
             }
 
             return inventarioAbierto;
+        }
+
+        public static async Task CerrarInventario(Metin2 metin)
+        {
+            var inventarioAbierto = AccionesImg.PicTextoInventario.ProcessText(metin);
+
+            if (inventarioAbierto)
+            {
+                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_I);
+                await Task.Delay(50);
+            }
         }
 
         public static async Task<int> ContarPociones(Metin2 metin)
