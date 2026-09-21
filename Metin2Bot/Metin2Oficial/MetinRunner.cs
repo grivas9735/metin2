@@ -240,7 +240,8 @@ namespace Metin2Bot.Metin2Oficial
                 var cantidadPociones = await ContarPociones(metin);
 
                 await PerspectivaDesdeArriba(metin);
-                await BuscarTiendaGeneral(metin, 55 - cantidadPociones);
+                await BuscarTiendaGeneral(metin);
+                await ComprarPociones(metin, 55 - cantidadPociones);
             }
         }
 
@@ -280,6 +281,7 @@ namespace Metin2Bot.Metin2Oficial
             await MetinKeyboard.Instance.MantenerTeclaApretada(MiButton.BT7.CONTROL, 50);
             using var bm1 = ScreenShot.SacarScreenshotInventarioBM(metin);
             var text1 = ProcessInMemory(bm1);
+            await Task.Delay(100);
             await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.CONTROL, 50);
             pocionesTotales += Regex.Matches(text1 ?? string.Empty, "200").Count;
 
@@ -290,6 +292,7 @@ namespace Metin2Bot.Metin2Oficial
             await MetinKeyboard.Instance.MantenerTeclaApretada(MiButton.BT7.CONTROL, 50);
             using var bm2 = ScreenShot.SacarScreenshotInventarioBM(metin);
             var text2 = ProcessInMemory(bm2);
+            await Task.Delay(100);
             await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.CONTROL, 50);
             pocionesTotales += Regex.Matches(text2 ?? string.Empty, "200").Count;
 
@@ -341,7 +344,7 @@ namespace Metin2Bot.Metin2Oficial
             }
         }
 
-        private static async Task<bool> BuscarTiendaGeneral(Metin2 metin, int cantidadPocionesAComprar)
+        private static async Task<bool> BuscarTiendaGeneral(Metin2 metin)
         {
             TextRegion? textRegion;
             var intentosBusquedaTiendaGeneral = 0;
@@ -368,25 +371,21 @@ namespace Metin2Bot.Metin2Oficial
             await MetinKeyboard.Instance.ApretarEnter();
             await Task.Delay(1000);
 
-            var tiendaAbierta = AccionesImg.PicTiendaGeneralAbierta.ProcessText(metin);
+            return AccionesImg.PicTiendaGeneralAbierta.ProcessText(metin);
+        }
 
-            if (tiendaAbierta)
+        private static async Task ComprarPociones(Metin2 metin, int cantidadPocionesAComprar)
+        {
+            var cantidadCompradas = 0;
+            while (cantidadCompradas < cantidadPocionesAComprar && cantidadPocionesAComprar < 55 /*tope de seguridad*/)
             {
-                var cantidadCompradas = 0;
-                while (cantidadCompradas < cantidadPocionesAComprar)
-                {
-                    await User.RightClickAt(
-                        metin.StartX + Resolution.ClickComprarPocion().X,
-                        metin.StartY + Resolution.ClickComprarPocion().Y);
+                await User.RightClickAt(
+                    metin.StartX + Resolution.ClickComprarPocion().X,
+                    metin.StartY + Resolution.ClickComprarPocion().Y);
 
-                    await Task.Delay(500);
-                    cantidadCompradas++;
-                }
-
-                return true;
+                await Task.Delay(500);
+                cantidadCompradas++;
             }
-
-            return false;
         }
 
         private static async Task<bool> BuscarAlquimista(Metin2 metin)
