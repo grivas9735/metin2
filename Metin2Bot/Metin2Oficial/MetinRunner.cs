@@ -173,7 +173,9 @@ namespace Metin2Bot.Metin2Oficial
 
                 var cantidadPociones = await ContarPociones(metin);
 
-                await BuscarTiendaGeneral(metin, 55 - cantidadPociones);
+                await BuscarTiendaGeneral(metin);
+
+                await ComprarPociones(metin, 55 - cantidadPociones);
 
                 await User.MostrarVentanaActual(activeWindow);
             }
@@ -241,7 +243,6 @@ namespace Metin2Bot.Metin2Oficial
 
                 await PerspectivaDesdeArriba(metin);
                 await BuscarTiendaGeneral(metin);
-                await ComprarPociones(metin, 55 - cantidadPociones);
             }
         }
 
@@ -376,6 +377,8 @@ namespace Metin2Bot.Metin2Oficial
 
         private static async Task ComprarPociones(Metin2 metin, int cantidadPocionesAComprar)
         {
+            await Task.Delay(500);
+
             var cantidadCompradas = 0;
             while (cantidadCompradas < cantidadPocionesAComprar && cantidadPocionesAComprar < 55 /*tope de seguridad*/)
             {
