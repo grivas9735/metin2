@@ -39,7 +39,7 @@ namespace Metin2Bot
         public TimeSpan timerHabF1 = TimeSpan.FromSeconds(118);
         public DateTime timerHabF1Date = DateTime.Now.AddDays(-1);
         
-        public TimeSpan timerHabF2 = TimeSpan.FromSeconds(65);
+        public TimeSpan timerHabF2 = TimeSpan.FromSeconds(66);
         public DateTime timerHabF2Date = DateTime.Now.AddDays(-1);
 
         public TimeSpan timerRelogin = TimeSpan.FromSeconds(60);
