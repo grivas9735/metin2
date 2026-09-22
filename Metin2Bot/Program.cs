@@ -20,6 +20,7 @@ namespace Metin2Bot
                     //await MetinRunner.Metinear();
                     //await MetinRunner.BackearFragmenteros();
                     //await MetinRunner.Test();
+                    //await MetinRunner.Pescar();
                 }
                 catch (Exception ex)
                 {

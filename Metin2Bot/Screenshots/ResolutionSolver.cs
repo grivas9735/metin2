@@ -211,6 +211,16 @@
 
         #region Screenshots
 
+        public static Rectangle RectScreenshotPesca(Metin2 metin)
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Rectangle(metin.StartX + 850, metin.StartY + 600, 180, 150);
+            }
+
+            return new Rectangle(metin.StartX + 410, metin.StartY + 50, 300, 270);
+        }
+
         public static Rectangle RectScreenshotTiendaGeneralAbierta(Metin2 metin)
         {
             if (ResolutionEnum == ResolutionEnum.R1600x900)

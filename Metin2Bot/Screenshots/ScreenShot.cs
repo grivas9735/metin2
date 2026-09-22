@@ -26,5 +26,6 @@
         public static Bitmap SacarScreenshotMisionAlquimiaBM(Metin2 metin) => CapturarRegion(Resolution.RectScreenshotMisionAlquimia(metin));
         public static Bitmap SacarScreenshotPantallaLoginBM(Metin2 metin) => CapturarRegion(Resolution.RectScreenshotPantallaLogin(metin));
         public static Bitmap SacarScreenshotChampSelectBM(Metin2 metin) => CapturarRegion(Resolution.RectScreenshotChampSelect(metin));
+        public static Bitmap SacarScreenshotPescaBM(Metin2 metin) => CapturarRegion(Resolution.RectScreenshotPesca(metin));
     }
 }

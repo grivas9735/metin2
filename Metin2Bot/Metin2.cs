@@ -56,5 +56,8 @@ namespace Metin2Bot
 
         public TimeSpan timerAutocaza = TimeSpan.FromMinutes(5);
         public DateTime timerAutocazaDate = DateTime.Now.AddDays(-1);
+
+        public TimeSpan timerPesca = TimeSpan.FromSeconds(2);
+        public DateTime timerPescaDate = DateTime.Now.AddDays(-1);
     }
 }
