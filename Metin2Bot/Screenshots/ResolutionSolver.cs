@@ -271,6 +271,26 @@
             return new Rectangle(metin.StartX, metin.StartY - 100, 620, 550);
         }
 
+        public static Rectangle RectScreenshotPiedraMetin(Metin2 metin)
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Rectangle(metin.StartX, metin.StartY - 100, 1500, 820);
+            }
+
+            return new Rectangle(metin.StartX, metin.StartY - 60, 620, 500);
+        }
+
+        public static Rectangle RectScreenshotNombrePiedraMetin(Metin2 metin)
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Rectangle(metin.StartX, metin.StartY - 100, 1500, 820);
+            }
+
+            return new Rectangle(metin.StartX + 100, metin.StartY - 120, 520, 50);
+        }
+
         public static Rectangle RectScreenshotNPC(Metin2 metin)
         {
             if (ResolutionEnum == ResolutionEnum.R1600x900)

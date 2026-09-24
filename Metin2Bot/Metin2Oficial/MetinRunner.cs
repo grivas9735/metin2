@@ -57,14 +57,14 @@ namespace Metin2Bot.Metin2Oficial
                 await EvalRelogin(metin1);
                 await EvalPocionRoja(metin1);
                 await EvalPocionAzul(metin1);
-                await EvalHabF1(metin1);
-                await EvalHabF2(metin1);
+                await Habilidades.EvalHabF1(metin1);
+                await Habilidades.EvalHabF2(metin1);
                 await EvalEstaMuerto(metin1, activarAutocaza: true);
                 await MetinKeyboard.Instance.AgarrarItems();
 
                 await User.MostrarMetin(metin2.ProcessId);
                 await EvalRelogin(metin2);
-                await EvalBuffs(metin2);
+                await Habilidades.EvalBuffs(metin2);
                 await EvalEstaMuerto(metin2);
 
                 if (!revivirAlMorir && metin1.MurioAlgunaVez)
@@ -96,8 +96,8 @@ namespace Metin2Bot.Metin2Oficial
 
                     await EvalPocionRoja(metin);
                     await EvalPocionAzul(metin);
-                    await EvalHabF1(metin);
-                    await EvalHabF2(metin);
+                    await Habilidades.EvalHabF1(metin);
+                    await Habilidades.EvalHabF2(metin);
                     await EvalAutocaza(metin);
                     await EvalEstaMuerto(metin);
                     await EvalRelogin(metin);
@@ -212,20 +212,31 @@ namespace Metin2Bot.Metin2Oficial
         public static async Task Metinear()
         {
             var metins = MetinFactory.GetAll();
+            var metin = metins[0];
 
-            while (true)
+            await User.MostrarMetin(metin.ProcessId);
+
+            var (encontroMetin, coordenadaX, coordenadaY) = await BuscarMetin(metin);
+
+            if (encontroMetin)
             {
-                foreach (var metin in metins)
-                {
-                    if (User.EsMetinEnPrimerPlano(metin.ProcessId))
-                    {
-                        await MetinKeyboard.Instance.PocionRoja();
-                        await MetinKeyboard.Instance.PocionAzul();
+                await Habilidades.BajarseDelCaballo();
+                await Habilidades.UsarAura();
+                await Habilidades.UsarBerserk();
+                await Habilidades.SubirseAlCaballo();
 
-                        await Task.Delay(100);
-                    }
+                await User.ClickAt(coordenadaX, coordenadaY, 50);
+
+                while (true)
+                {
+                    var (seleccionado, hp) = AccionesImg.PicNombrePiedraMetin.ProcessMobHP(metin);
+
+                    Console.WriteLine($"{seleccionado}: {hp}");
+                    await Task.Delay(100);
                 }
             }
+
+            Environment.Exit(0);
         }
 
         public static async Task Test()
@@ -257,7 +268,6 @@ namespace Metin2Bot.Metin2Oficial
 
             do
             {
-
                 var bm = ScreenShot.SacarScreenshotPescaBM(metin);
                 var path = @"C:\Users\Gon\repos\MetinFishingCV\resources\metin_fishing.png";
 
@@ -290,6 +300,44 @@ namespace Metin2Bot.Metin2Oficial
                     metin.StartY + fish.Y + 50 + 5);
 
             } while (true);
+        }
+
+        public static async Task<(bool, int, int)> BuscarMetin(Metin2 metin)
+        {
+            var encontroMetin = false;
+            var seleccionado = false;
+            var timeoutBusqueda = 0;
+            var coordenadaX = 0;
+            var coordenadaY = 0;
+
+            do
+            {
+                await MetinKeyboard.Instance.MoverCamaraE(250);
+                await Task.Delay(100);
+
+                metin.TextRegion = AccionesImg.PicPiedraMetin.ProcessCoordinates(metin);
+
+                if (metin.TextRegion != null && metin.TextRegion.HasCoordinates)
+                {
+                    encontroMetin = true;
+                    var timeoutSeleccionado = 0;
+
+                    do
+                    {
+                        coordenadaX = metin.StartX + metin.TextRegion.X + 15;
+                        coordenadaY = metin.StartY + metin.TextRegion.Y + -80 + (timeoutSeleccionado * 20);
+                        await User.RightClickAt(coordenadaX, coordenadaY, 50);
+                        await Task.Delay(1000);
+
+                        seleccionado = AccionesImg.PicNombrePiedraMetin.ProcessText(metin);
+                        timeoutSeleccionado++;
+                    } while (!seleccionado && timeoutSeleccionado < 15);
+                }
+
+                await Task.Delay(50);
+            } while (!encontroMetin && timeoutBusqueda < 12);
+
+            return (encontroMetin && seleccionado, coordenadaX, coordenadaY);
         }
 
         public static async Task<bool> AbrirInventario(Metin2 metin)
@@ -518,22 +566,6 @@ namespace Metin2Bot.Metin2Oficial
             }
         }
 
-        private static async Task EvalBuffs(Metin2 metinBuffi)
-        {
-            if (DateTime.Now - metinBuffi.timerBuffsDate >= metinBuffi.timerBuffs)
-            {
-                Console.WriteLine("BUFFS F1");
-                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.F1);
-                await Task.Delay(2000);
-
-                Console.WriteLine("BUFFS F2\n");
-                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.F2);
-                await Task.Delay(100);
-
-                metinBuffi.timerBuffsDate = DateTime.Now;
-            }
-        }
-
         private static async Task EvalPocionRoja(Metin2 metin)
         {
             if (DateTime.Now - metin.timerPocionRojaDate >= metin.timerPocionRoja)
@@ -549,30 +581,6 @@ namespace Metin2Bot.Metin2Oficial
             {
                 await MetinKeyboard.Instance.PocionAzul();
                 metin.timerPocionAzulDate = DateTime.Now;
-            }
-        }
-
-        private static async Task EvalHabF1(Metin2 metin)
-        {
-            if (DateTime.Now - metin.timerHabF1Date >= metin.timerHabF1)
-            {
-                Console.WriteLine("USANDO F1\n");
-                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.F1);
-                await MetinKeyboard.Instance.PocionRoja(5);
-                metin.timerHabF1Date = DateTime.Now;
-                await Task.Delay(4000);
-            }
-        }
-
-        private static async Task EvalHabF2(Metin2 metin)
-        {
-            if (DateTime.Now - metin.timerHabF2Date >= metin.timerHabF2)
-            {
-                Console.WriteLine("USANDO F2\n");
-                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.F2);
-                await MetinKeyboard.Instance.PocionRoja(5);
-                metin.timerHabF2Date = DateTime.Now;
-                await Task.Delay(4000);
             }
         }
 

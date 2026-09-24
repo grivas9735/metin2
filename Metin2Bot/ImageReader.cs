@@ -14,17 +14,21 @@ namespace Metin2Bot
             public bool HasCoordinates { get; set; } = true;
         }
 
+        private static void GuardarImg(Bitmap bm)
+        {
+            string ruta = Path.Combine(
+                AppConfig.GetRouteValue("MPs"),
+                "metin_draft.png"
+            );
+
+            bm.Save(ruta, System.Drawing.Imaging.ImageFormat.Png);
+        }
+
         public static string? ProcessInMemory(Bitmap bm)
         {
             try
             {
-                string ruta = Path.Combine(
-                    AppConfig.GetRouteValue("MPs"),
-                    "metin_draft.png"
-                );
-
-                //bm.Save(ruta, System.Drawing.Imaging.ImageFormat.Png);
-
+                //GuardarImg(bm);
                 var result = PaddleOCR.Instance.DetectText(bm);
                 return result.Text;
             }
@@ -67,6 +71,7 @@ namespace Metin2Bot
         {
             try
             {
+                //GuardarImg(bm);
                 var result = PaddleOCR.Instance.DetectText(bm);
 
                 // Verificación de nulos
