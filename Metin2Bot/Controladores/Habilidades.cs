@@ -51,7 +51,7 @@ namespace Metin2Bot.Controladores
             await MetinKeyboard.Instance.MantenerTeclaApretada(MiButton.BT7.CONTROL);
             await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_G);
             await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.CONTROL);
-            await Task.Delay(10);
+            await Task.Delay(800);
         }
 
         public static async Task SubirseAlCaballo()
@@ -61,29 +61,21 @@ namespace Metin2Bot.Controladores
             await MetinKeyboard.Instance.MantenerTeclaApretada(MiButton.BT7.CONTROL);
             await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_G);
             await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.CONTROL);
-            await Task.Delay(10);
+            await Task.Delay(800);
         }
 
         public static async Task UsarAura()
         {
             Console.WriteLine("USANDO AURA\n");
-
-            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.F1);
-            await MetinKeyboard.Instance.PocionRoja(5);
-
-            await Task.Delay(10);
-            await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.KEY_G);
-            await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.CONTROL);
-
-            await Task.Delay(3500);
+            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.F2);
+            await Task.Delay(3200);
         }
 
         public static async Task UsarBerserk()
         {
             Console.WriteLine("USANDO BERSERK\n");
-            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.F2);
-            await MetinKeyboard.Instance.PocionRoja(5);
-            await Task.Delay(3500);
+            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.F1);
+            await Task.Delay(3200);
         }
     }
 }

@@ -143,6 +143,36 @@
             return new Coordenadas(500, 370);
         }
 
+        public static Coordenadas ClickESC()
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Coordenadas(900, 670);
+            }
+
+            return new Coordenadas(780, 460);
+        }
+
+        public static Coordenadas ClickSalir()
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Coordenadas(900, 670);
+            }
+
+            return new Coordenadas(400, 235);
+        }
+
+        public static Coordenadas ClickChannel(int channel)
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Coordenadas(900, 670);
+            }
+
+            return new Coordenadas(500, 38 + channel * 18);
+        }
+
         #endregion
 
         #region Fragmentar

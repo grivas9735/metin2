@@ -5,6 +5,7 @@ using OpenCvSharp;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using System.Numerics;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static Metin2Bot.ImageReader;
@@ -216,23 +217,26 @@ namespace Metin2Bot.Metin2Oficial
 
             await User.MostrarMetin(metin.ProcessId);
 
-            var (encontroMetin, coordenadaX, coordenadaY) = await BuscarMetin(metin);
+            var channel = 1;
+            var pathing = new List<(int, int)>() 
+            { 
+                (100, 100),
+                (200, 200)
+            };
 
-            if (encontroMetin)
+            await CambiarCH(metin, 1);
+
+            foreach (var punto in pathing)
             {
-                await Habilidades.BajarseDelCaballo();
-                await Habilidades.UsarAura();
-                await Habilidades.UsarBerserk();
-                await Habilidades.SubirseAlCaballo();
+                await Movimiento.MoverPersonaje(metin, new Vector2(punto.Item1, punto.Item2));
 
-                await User.ClickAt(coordenadaX, coordenadaY, 50);
+                var (encontroMetin, coordenadaX, coordenadaY) = await BuscarMetin(metin);
 
-                while (true)
+                if (encontroMetin)
                 {
-                    var (seleccionado, hp) = AccionesImg.PicNombrePiedraMetin.ProcessMobHP(metin);
-
-                    Console.WriteLine($"{seleccionado}: {hp}");
-                    await Task.Delay(100);
+                    await MatarMetin(metin, coordenadaX, coordenadaY);
+                    channel = channel == 6 ? 1 : channel + 1;
+                    break;
                 }
             }
 
@@ -327,7 +331,7 @@ namespace Metin2Bot.Metin2Oficial
                         coordenadaX = metin.StartX + metin.TextRegion.X + 15;
                         coordenadaY = metin.StartY + metin.TextRegion.Y + -80 + (timeoutSeleccionado * 20);
                         await User.RightClickAt(coordenadaX, coordenadaY, 50);
-                        await Task.Delay(1000);
+                        await Task.Delay(1200);
 
                         seleccionado = AccionesImg.PicNombrePiedraMetin.ProcessText(metin);
                         timeoutSeleccionado++;
@@ -338,6 +342,82 @@ namespace Metin2Bot.Metin2Oficial
             } while (!encontroMetin && timeoutBusqueda < 12);
 
             return (encontroMetin && seleccionado, coordenadaX, coordenadaY);
+        }
+
+        public static async Task MatarMetin(Metin2 metin, int coordenadaX, int coordenadaY)
+        {
+            await Habilidades.BajarseDelCaballo();
+            await Habilidades.UsarAura();
+            await Habilidades.UsarBerserk();
+            await Habilidades.SubirseAlCaballo();
+
+            await User.ClickAt(coordenadaX, coordenadaY, 50);
+            await Task.Delay(1200);
+
+            var estaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
+            var (seleccionado, hp) = AccionesImg.PicNombrePiedraMetin.ProcessMobHP(metin);
+
+            while (!estaMuerto && seleccionado)
+            {
+                Console.WriteLine($"{seleccionado}: {hp}");
+                await MetinKeyboard.Instance.AgarrarItems();
+                await MetinKeyboard.Instance.PocionRoja();
+
+                estaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
+                (seleccionado, hp) = AccionesImg.PicNombrePiedraMetin.ProcessMobHP(metin);
+
+                await Task.Delay(50);
+            }
+
+            if (estaMuerto)
+                Environment.Exit(0);
+
+            var cronometro = Stopwatch.StartNew();
+
+            while (cronometro.Elapsed < TimeSpan.FromSeconds(45))
+            {
+                Console.WriteLine($"AGARRANDO ITEMS METIN");
+                await MetinKeyboard.Instance.AgarrarItems();
+                await MetinKeyboard.Instance.PocionRoja();
+                await Task.Delay(100);
+            }
+
+            cronometro.Stop();
+        }
+
+        public static async Task CambiarCH(Metin2 metin, int channel)
+        {
+            //await Salir(metin);
+            var channels = new List<int>() { 1, 2, 3, 4, 5, 6 };
+
+            foreach (var ch in channels)
+            {
+                await User.ClickAt(
+                    metin.StartX + Resolution.ClickChannel(ch).X,
+                    metin.StartY + Resolution.ClickChannel(ch).Y,
+                    50);
+
+                await Task.Delay(500);
+            }
+
+            await Task.Delay(10);
+        }
+
+        public static async Task Salir(Metin2 metin)
+        {
+            await User.ClickAt(
+                metin.StartX + Resolution.ClickESC().X,
+                metin.StartY + Resolution.ClickESC().Y,
+                50);
+
+            await Task.Delay(200);
+
+            await User.ClickAt(
+                metin.StartX + Resolution.ClickSalir().X,
+                metin.StartY + Resolution.ClickSalir().Y,
+                50);
+
+            await Task.Delay(TimeSpan.FromSeconds(10));
         }
 
         public static async Task<bool> AbrirInventario(Metin2 metin)
