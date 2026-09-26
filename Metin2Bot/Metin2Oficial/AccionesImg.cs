@@ -8,8 +8,8 @@ namespace Metin2Bot.Metin2Oficial
     public static class AccionesImg
     {
         private static readonly List<string> ListFragmentos = ["piedra", "dragon", "dragón", "de pie", "fragm"];
-        private static readonly List<string> ItemsCity2 = ["ébano", "ebano", "cuerno"];
-        private static readonly List<string> ItemsValle = ["cartilla"];
+        private static readonly List<string> ItemsCity2 = ["ébano", "ebano", "cuerno", "dirk"];
+        private static readonly List<string> ItemsValle = ["cartilla", "dirk"];
         private static readonly List<string> ItemsSiempre =
         [
             "weiliao", "arte guerra", "ao zi", "arte guerra", "arteguerra",
