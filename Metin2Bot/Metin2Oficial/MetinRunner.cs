@@ -510,11 +510,7 @@ namespace Metin2Bot.Metin2Oficial
                 Console.WriteLine($"BUSCANDO FRAGMENTOS\n");
                 await MetinKeyboard.Instance.MoverCamaraE(180);
                 await Task.Delay(50);
-                _ = Task.Run(() =>
-                {
-                    metin.TextRegion = AccionesImg.PicFragmentos.ProcessCoordinates(metin);
-                });
-
+                metin.TextRegion = AccionesImg.PicFragmentos.ProcessCoordinates(metin);
                 metin.timerFragmentosDate = DateTime.Now;
             }
         }
@@ -748,10 +744,7 @@ namespace Metin2Bot.Metin2Oficial
             {
                 Console.WriteLine("VALIDANDO ESTA MUERTO\n");
                 metin.timerEstaMuertoDate = DateTime.Now;
-                _ = Task.Run(() =>
-                {
-                    metin.EstaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
-                });
+                metin.EstaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
             }
         }
 
@@ -787,13 +780,9 @@ namespace Metin2Bot.Metin2Oficial
             if (DateTime.Now - metin.timerReloginDate >= metin.timerRelogin)
             {
                 Console.WriteLine("VALIDANDO RELOGIN\n");
-
-                _ = Task.Run(() =>
-                {
-                    metin.EstaEnPantallaLogin = AccionesImg.PicLogin.ProcessText(metin);
-                    metin.EstaEnChampSelect = AccionesImg.PicChampSelect.ProcessText(metin);
-                    metin.timerReloginDate = DateTime.Now;
-                });
+                metin.EstaEnPantallaLogin = AccionesImg.PicLogin.ProcessText(metin);
+                metin.EstaEnChampSelect = AccionesImg.PicChampSelect.ProcessText(metin);
+                metin.timerReloginDate = DateTime.Now;
             }
         }
 
