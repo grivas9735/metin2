@@ -146,15 +146,6 @@ namespace Metin2Bot.Metin2Oficial
             var activeWindow = User.GetForegroundWindow();
             var metins = MetinFactory.GetAll();
 
-            _ = Task.Run(async () =>
-            {
-                while (true)
-                {
-                    await MetinKeyboard.Instance.PocionRoja();
-                    await Task.Delay(1000);
-                }
-            });
-
             foreach (var metin in metins)
             {
                 await User.MostrarMetin(metin.ProcessId);
