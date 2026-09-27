@@ -160,13 +160,6 @@ namespace Metin2Bot.Metin2Oficial
 
                 await CerrarInventario(metin);
 
-                await Movimiento.MoverAAlquimista(metin);
-
-                var encontroAlquimista = await BuscarAlquimista(metin);
-
-                if (!encontroAlquimista)
-                    continue;
-
                 await Movimiento.MoverAPotera(metin);
 
                 var inventarioAbierto = await AbrirInventario(metin);
@@ -179,6 +172,18 @@ namespace Metin2Bot.Metin2Oficial
                 await BuscarTiendaGeneral(metin);
 
                 await ComprarPociones(metin, 55 - cantidadPociones);
+
+                await MetinKeyboard.Instance.ApretarEscape();
+
+                await CerrarInventario(metin);
+
+                await Movimiento.MoverAAlquimista(metin);
+
+                var encontroAlquimista = await BuscarAlquimista(metin);
+
+                if (!encontroAlquimista)
+                    continue;
+
 
                 await User.MostrarVentanaActual(activeWindow);
             }

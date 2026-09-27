@@ -129,7 +129,7 @@ namespace Metin2Bot.Controladores
             }
         }
 
-        public static async Task MoverAAlquimista(Metin2 metin)
+        public static async Task MoverAPotera(Metin2 metin)
         {
             await Movimiento.MoverPersonaje(metin, new Vector2(109, 572));
             await Movimiento.MoverPersonaje(metin, new Vector2(147, 546));
@@ -151,19 +151,19 @@ namespace Metin2Bot.Controladores
             await Movimiento.MoverPersonaje(metin, new Vector2(537, 580));
             await Movimiento.MoverPersonaje(metin, new Vector2(550, 580));
 
-            // MIRINE Y ALQUIMISTA
+            // MIRINE Y POTERA
             await Movimiento.MoverPersonaje(metin, new Vector2(596, 569));
-            await Movimiento.MoverPersonaje(metin, new Vector2(611, 553));
-            await Movimiento.MoverPersonaje(metin, new Vector2(611, 529));
-            await Movimiento.MoverPersonaje(metin, new Vector2(624, 522));
-            await Movimiento.MoverPersonaje(metin, new Vector2(623, 512));
+            await Movimiento.MoverPersonaje(metin, new Vector2(627, 576));
+            await Movimiento.MoverPersonaje(metin, new Vector2(655, 571));
+            await Movimiento.MoverPersonaje(metin, new Vector2(674, 564));
         }
 
-        public static async Task MoverAPotera(Metin2 metin)
+        public static async Task MoverAAlquimista(Metin2 metin)
         {
-            await Movimiento.MoverPersonaje(metin, new Vector2(631, 526));
-            await Movimiento.MoverPersonaje(metin, new Vector2(639, 556));
-            await Movimiento.MoverPersonaje(metin, new Vector2(674, 564));
+            await Movimiento.MoverPersonaje(metin, new Vector2(661, 554));
+            await Movimiento.MoverPersonaje(metin, new Vector2(655, 516));
+            await Movimiento.MoverPersonaje(metin, new Vector2(623, 510));
+
         }
 
         private static async Task<Vector2> LeerPosicionActualHastaHallarValor(Metin2 metin)

@@ -507,9 +507,9 @@ namespace Metin2Bot
             SendInput(1u, array, Input.Size);
         }
 
-        public async Task ApretarEscape(int ms = 1)
+        public async Task ApretarEscape()
         {
-            await PresionarYSoltar(BT7.ESCAPE, ms);
+            await PresionarYSoltar(BT7.ESCAPE);
         }
 
         public async Task AgarrarItems()
