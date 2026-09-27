@@ -2,6 +2,7 @@
 using Metin2Bot.Metin2Oficial;
 using Metin2Bot.Singletons;
 using System.Diagnostics;
+using static Metin2Bot.User;
 
 namespace Metin2Bot.Operaciones
 {
@@ -28,37 +29,45 @@ namespace Metin2Bot.Operaciones
         {
             var encontroMetin = false;
             var seleccionado = false;
-            var timeoutBusqueda = 0;
             var coordenadaX = 0;
             var coordenadaY = 0;
 
-            do
+            await User.MoverCamaraConMouse(metin, 100, DireccionCamara.Abajo, 100);
+            await Task.Delay(100);
+
+            await User.MoverCamaraConMouse(metin, 500, DireccionCamara.Arriba, 5);
+            await Task.Delay(100);
+
+            for (int i = 0; i < 3 && !encontroMetin; i++)
             {
-                await MetinKeyboard.Instance.MoverCamaraE(250);
+                await User.MoverCamaraConMouse(metin, i * 160, DireccionCamara.Arriba, 5);
                 await Task.Delay(100);
 
-                metin.TextRegion = AccionesImg.PicPiedraMetin.ProcessCoordinates(metin);
-
-                if (metin.TextRegion != null && metin.TextRegion.HasCoordinates)
+                for (int  j = 0; j < 10 && !encontroMetin; j++)
                 {
-                    encontroMetin = true;
-                    var timeoutSeleccionado = 0;
+                    await MoverCamaraConMouse(metin, 50, DireccionCamara.Derecha, 15);
+                    await Task.Delay(100);
 
-                    do
+                    metin.TextRegion = AccionesImg.PicPiedraMetin.ProcessCoordinates(metin);
+
+                    if (metin.TextRegion != null && metin.TextRegion.HasCoordinates)
                     {
-                        coordenadaX = metin.StartX + metin.TextRegion.X + 15;
-                        coordenadaY = metin.StartY + metin.TextRegion.Y + -80 + (timeoutSeleccionado * 20);
-                        await User.RightClickAt(coordenadaX, coordenadaY, 50);
-                        await Task.Delay(1200);
+                        encontroMetin = true;
+                        var timeoutSeleccionado = 0;
 
-                        seleccionado = AccionesImg.PicNombrePiedraMetin.ProcessText(metin);
-                        timeoutSeleccionado++;
-                    } while (!seleccionado && timeoutSeleccionado < 15);
+                        do
+                        {
+                            coordenadaX = metin.StartX + metin.TextRegion.X + 15;
+                            coordenadaY = metin.StartY + metin.TextRegion.Y + -80 + (timeoutSeleccionado * 20);
+                            await User.RightClickAt(coordenadaX, coordenadaY, 50);
+                            await Task.Delay(1200);
+
+                            seleccionado = AccionesImg.PicNombrePiedraMetin.ProcessText(metin);
+                            timeoutSeleccionado++;
+                        } while (!seleccionado && timeoutSeleccionado < 15);
+                    }
                 }
-
-                await Task.Delay(50);
-                timeoutBusqueda++;
-            } while (!encontroMetin && timeoutBusqueda < 20);
+            }
 
             return (encontroMetin && seleccionado, coordenadaX, coordenadaY);
         }

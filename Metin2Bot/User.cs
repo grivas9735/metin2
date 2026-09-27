@@ -50,6 +50,77 @@ namespace Metin2Bot
             Cursor.Position = new Point(x, y);
         }
 
+        public enum DireccionCamara
+        {
+            Izquierda = 0,
+            Derecha = 1,
+            Arriba = 2,
+            Abajo = 3,
+        }
+
+        public static async Task MoverCamaraConMouse(
+            Metin2 metin,
+            int tiempoEnMilisegundos,
+            DireccionCamara direccion,
+            int velocidad)
+        {
+            MouseToPosition(metin.StartX + 100, metin.StartY + 100);
+            await Task.Delay(10);
+
+            const uint MOUSEEVENTF_MOVE = 0x0001;
+            const uint MOUSEEVENTF_RIGHTDOWN = 0x0008;
+            const uint MOUSEEVENTF_RIGHTUP = 0x0010;
+
+            mouse_event(
+                MOUSEEVENTF_RIGHTDOWN,
+                0, 0, 0, 0);
+
+            try
+            {
+                DateTime inicio = DateTime.UtcNow;
+
+                while ((DateTime.UtcNow - inicio).TotalMilliseconds < tiempoEnMilisegundos)
+                {
+                    int dx = 0;
+                    int dy = 0;
+
+                    switch (direccion)
+                    {
+                        case DireccionCamara.Izquierda:
+                            dx = -velocidad;
+                            break;
+
+                        case DireccionCamara.Derecha:
+                            dx = velocidad;
+                            break;
+
+                        case DireccionCamara.Arriba:
+                            dy = -velocidad;
+                            break;
+
+                        case DireccionCamara.Abajo:
+                            dy = velocidad;
+                            break;
+                    }
+
+                    mouse_event(
+                        MOUSEEVENTF_MOVE,
+                        unchecked((uint)dx),
+                        unchecked((uint)dy),
+                        0,
+                        0);
+
+                    await Task.Delay(10);
+                }
+            }
+            finally
+            {
+                mouse_event(
+                    MOUSEEVENTF_RIGHTUP,
+                    0, 0, 0, 0);
+            }
+        }
+
         public static async Task ClickAt(int x, int y, int ms = 40)
         {
             Cursor.Position = new Point(x, y);

@@ -10,6 +10,7 @@ using System.Numerics;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static Metin2Bot.ImageReader;
+using static Metin2Bot.User;
 
 namespace Metin2Bot.Metin2Oficial
 {
