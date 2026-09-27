@@ -229,13 +229,20 @@ namespace Metin2Bot.Operaciones
 
         public static async Task CambiarCH(Metin2 metin, int channel)
         {
-            await Salir(metin);
+            var contadorTimeouts = 0;
+            var timeoutSalir = 15;
+            var timeoutChampSelect = 120;
 
-            var estaEnPantallaLogin = AccionesImg.PicLogin.ProcessText(metin);
-
-            if (!estaEnPantallaLogin)
+            do
             {
-                throw new Exception("Se esperaba que este en pantalla de login");
+                await Salir(metin);
+                contadorTimeouts++;
+            } while (!AccionesImg.PicLogin.ProcessText(metin) && contadorTimeouts < timeoutSalir);
+
+            if (contadorTimeouts == timeoutSalir)
+            {
+                Console.WriteLine("Se esperaba que este en pantalla login");
+                Environment.Exit(0);
             }
 
             await User.ClickAt(
@@ -258,18 +265,25 @@ namespace Metin2Bot.Operaciones
             await Task.Delay(100);
             await MetinKeyboard.Instance.ApretarEnter();
 
-            await Task.Delay(TimeSpan.FromSeconds(10));
+            await Task.Delay(TimeSpan.FromSeconds(8));
 
-            var estaEnChampSelect = AccionesImg.PicChampSelect.ProcessText(metin);
+            contadorTimeouts = 0;
 
-            if (!estaEnChampSelect)
+            do
             {
-                throw new Exception("Se esperaba que este en pantalla de seleccion de campeon");
+                await Task.Delay(TimeSpan.FromSeconds(1));
+                contadorTimeouts++;
+            } while (!AccionesImg.PicLogin.ProcessText(metin) && contadorTimeouts < timeoutChampSelect);
+
+            if (contadorTimeouts == timeoutChampSelect)
+            {
+                Console.WriteLine("Se esperaba que este en champ select");
+                Environment.Exit(0);
             }
 
             await Task.Delay(100);
             await MetinKeyboard.Instance.ApretarEnter();
-            await Task.Delay(TimeSpan.FromSeconds(10));
+            await Task.Delay(TimeSpan.FromSeconds(15));
         }
 
         public static async Task Salir(Metin2 metin)
@@ -279,14 +293,14 @@ namespace Metin2Bot.Operaciones
                 metin.StartY + Resolution.ClickESC().Y,
                 50);
 
-            await Task.Delay(200);
+            await Task.Delay(500);
 
             await User.ClickAt(
                 metin.StartX + Resolution.ClickSalir().X,
                 metin.StartY + Resolution.ClickSalir().Y,
                 50);
 
-            await Task.Delay(TimeSpan.FromSeconds(11));
+            await Task.Delay(TimeSpan.FromSeconds(12));
         }
     }
 }
