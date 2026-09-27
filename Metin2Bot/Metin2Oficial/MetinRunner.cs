@@ -1,6 +1,5 @@
 ﻿using Metin2Bot.Controladores;
 using Metin2Bot.Operaciones;
-using Metin2Bot.Screenshots;
 using Metin2Bot.Singletons;
 using System.Diagnostics;
 using System.Numerics;
@@ -179,6 +178,47 @@ namespace Metin2Bot.Metin2Oficial
             Environment.Exit(0);
         }
 
+        public static async Task Metinear()
+        {
+            try
+            {
+                var metins = MetinFactory.GetAll();
+                var metin = metins[0];
+
+                await User.MostrarMetin(metin.ProcessId);
+
+                var channel = channelInicio;
+
+                while (true)
+                {
+                    foreach (var punto in Metineo.PathingTierraFuego())
+                    {
+                        if (AccionesImg.PicEstaMuerto.ProcessText(metin))
+                            Environment.Exit(0);
+
+                        await Cliente.CerrarInventario(metin);
+                        await Movimiento.Cabalgar(metin, new Vector2(punto.Item1, punto.Item2));
+
+                        var (encontroMetin, coordenadaX, coordenadaY) = await Metineo.BuscarMetin(metin);
+
+                        if (encontroMetin)
+                        {
+                            await Metineo.MatarMetin(metin, coordenadaX, coordenadaY);
+                            break;
+                        }
+                    }
+
+                    channel = channel == 6 ? 1 : channel + 1;
+                    await Cliente.CambiarCH(metin, channel);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en metineo: {ex.Message}");
+                Environment.Exit(0);
+            }
+        }
+
         public static async Task Idle()
         {
             var activeWindow = User.GetForegroundWindow();
@@ -200,46 +240,6 @@ namespace Metin2Bot.Metin2Oficial
                 }
 
                 await User.MostrarVentanaActual(activeWindow);
-            }
-        }
-
-        public static async Task Metinear()
-        {
-            try
-            {
-                var metins = MetinFactory.GetAll();
-                var metin = metins[0];
-
-                await User.MostrarMetin(metin.ProcessId);
-
-                var channel = channelInicio;
-
-                while (true)
-                {
-                    foreach (var punto in Metineo.PathingTierraFuego())
-                    {
-                        if (AccionesImg.PicEstaMuerto.ProcessText(metin))
-                            Environment.Exit(0);
-
-                        await Movimiento.Cabalgar(metin, new Vector2(punto.Item1, punto.Item2));
-
-                        var (encontroMetin, coordenadaX, coordenadaY) = await Metineo.BuscarMetin(metin);
-
-                        if (encontroMetin)
-                        {
-                            await Metineo.MatarMetin(metin, coordenadaX, coordenadaY);
-                            break;
-                        }
-                    }
-
-                    channel = channel == 6 ? 1 : channel + 1;
-                    await Cliente.CambiarCH(metin, channel);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error en metineo: {ex.Message}");
-                Environment.Exit(0);
             }
         }
 
