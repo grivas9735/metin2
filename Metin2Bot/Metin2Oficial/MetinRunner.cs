@@ -47,14 +47,14 @@ namespace Metin2Bot.Metin2Oficial
             IntercambiarMetines(ref metin1, ref metin2);
 
             await User.MostrarMetin(metin1.ProcessId);
-            await EvalAutocaza(metin1);
+            await Cliente.EvalAutocaza(metin1);
 
             while (true)
             {
                 await User.MostrarMetin(metin1.ProcessId);
                 await Cliente.EvalRelogin(metin1);
-                await EvalPocionRoja(metin1);
-                await EvalPocionAzul(metin1);
+                await Cliente.EvalPocionRoja(metin1);
+                await Cliente.EvalPocionAzul(metin1);
                 await Habilidades.EvalHabF1(metin1);
                 await Habilidades.EvalHabF2(metin1);
                 await Cliente.EvalEstaMuerto(metin1, activarAutocaza: true);
@@ -92,11 +92,11 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     await User.MostrarMetin(metin.ProcessId);
 
-                    await EvalPocionRoja(metin);
-                    await EvalPocionAzul(metin);
+                    await Cliente.EvalPocionRoja(metin);
+                    await Cliente.EvalPocionAzul(metin);
                     await Habilidades.EvalHabF1(metin);
                     await Habilidades.EvalHabF2(metin);
-                    await EvalAutocaza(metin);
+                    await Cliente.EvalAutocaza(metin);
                     await Cliente.EvalEstaMuerto(metin);
                     await Cliente.EvalRelogin(metin);
                     await MetinKeyboard.Instance.AgarrarItems();
@@ -123,11 +123,11 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     await User.MostrarMetin(metin.ProcessId);
 
-                    await EvalDonarExp(metin);
+                    await Cliente.EvalDonarExp(metin);
                     await Cliente.EvalRelogin(metin);
                     await Cliente.EvalEstaMuerto(metin);
-                    await EvalPocionRoja(metin);
-                    await EvalAutocaza(metin);
+                    await Cliente.EvalPocionRoja(metin);
+                    await Cliente.EvalAutocaza(metin);
                     await Fragmenteo.BuscarFragmentos(metin);
                 }
 
@@ -250,75 +250,6 @@ namespace Metin2Bot.Metin2Oficial
             foreach (var metin in metins)
             {
                 await User.MostrarMetin(metin.ProcessId);
-            }
-        }
-
-        private static async Task EvalDonarExp(Metin2 metin)
-        {
-            if (DateTime.Now - metin.timerDonarExpDate >= metin.timerDonarExp)
-            {
-                Console.WriteLine("DONANDO EXP\n");
-
-                // Abrir menu gremio
-                await MetinKeyboard.Instance.MantenerTeclaApretada(MiButton.BT7.MENU);
-                await Task.Delay(150);
-                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_G);
-                await Task.Delay(150);
-                await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.MENU);
-                await Task.Delay(150);
-
-                // Click flechita exp
-                await User.ClickAt(metin.StartX + Resolution.ClickFlechitaExp().X, metin.StartY + Resolution.ClickFlechitaExp().Y);
-                await Task.Delay(150);
-
-                // Apretar 6 veces 9
-                await MetinKeyboard.Instance.PresionarYSoltarNVeces(MiButton.BT7.KEY_9, 6);
-                await Task.Delay(150);
-
-                // Apretar boton OK del cartelito de numero
-                await User.ClickAt(metin.StartX + Resolution.ClickBotonOkDonar().X, metin.StartY - Resolution.ClickBotonOkDonar().Y);
-                await Task.Delay(150);
-
-                // Cerrar ventana gremio
-                await MetinKeyboard.Instance.MantenerTeclaApretada(MiButton.BT7.MENU);
-                await Task.Delay(150);
-                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_G);
-                await Task.Delay(150);
-                await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.MENU);
-                await Task.Delay(150);
-
-                // Apretar boton en caso de error de 0 exp
-                await User.ClickAt(metin.StartX + Resolution.ClickBotonErrorDonarExp().X, metin.StartY + Resolution.ClickBotonErrorDonarExp().Y);
-                await Task.Delay(150);
-
-                metin.timerDonarExpDate = DateTime.Now;
-            }
-        }
-
-        private static async Task EvalPocionRoja(Metin2 metin)
-        {
-            if (DateTime.Now - metin.timerPocionRojaDate >= metin.timerPocionRoja)
-            {
-                await MetinKeyboard.Instance.PocionRoja();
-                metin.timerPocionRojaDate = DateTime.Now;
-            }
-        }
-
-        private static async Task EvalPocionAzul(Metin2 metin)
-        {
-            if (DateTime.Now - metin.timerPocionAzulDate >= metin.timerPocionAzul)
-            {
-                await MetinKeyboard.Instance.PocionAzul();
-                metin.timerPocionAzulDate = DateTime.Now;
-            }
-        }
-
-        private static async Task EvalAutocaza(Metin2 metin)
-        {
-            if (DateTime.Now - metin.timerAutocazaDate >= metin.timerAutocaza)
-            {
-                await Cliente.IniciarAutocaza(metin);
-                metin.timerAutocazaDate = DateTime.Now;
             }
         }
 

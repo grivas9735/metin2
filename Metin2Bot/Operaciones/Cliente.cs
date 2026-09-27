@@ -62,6 +62,75 @@ namespace Metin2Bot.Operaciones
             await Task.Delay(50);
         }
 
+        public static async Task EvalDonarExp(Metin2 metin)
+        {
+            if (DateTime.Now - metin.timerDonarExpDate >= metin.timerDonarExp)
+            {
+                Console.WriteLine("DONANDO EXP\n");
+
+                // Abrir menu gremio
+                await MetinKeyboard.Instance.MantenerTeclaApretada(MiButton.BT7.MENU);
+                await Task.Delay(150);
+                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_G);
+                await Task.Delay(150);
+                await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.MENU);
+                await Task.Delay(150);
+
+                // Click flechita exp
+                await User.ClickAt(metin.StartX + Resolution.ClickFlechitaExp().X, metin.StartY + Resolution.ClickFlechitaExp().Y);
+                await Task.Delay(150);
+
+                // Apretar 6 veces 9
+                await MetinKeyboard.Instance.PresionarYSoltarNVeces(MiButton.BT7.KEY_9, 6);
+                await Task.Delay(150);
+
+                // Apretar boton OK del cartelito de numero
+                await User.ClickAt(metin.StartX + Resolution.ClickBotonOkDonar().X, metin.StartY - Resolution.ClickBotonOkDonar().Y);
+                await Task.Delay(150);
+
+                // Cerrar ventana gremio
+                await MetinKeyboard.Instance.MantenerTeclaApretada(MiButton.BT7.MENU);
+                await Task.Delay(150);
+                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_G);
+                await Task.Delay(150);
+                await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.MENU);
+                await Task.Delay(150);
+
+                // Apretar boton en caso de error de 0 exp
+                await User.ClickAt(metin.StartX + Resolution.ClickBotonErrorDonarExp().X, metin.StartY + Resolution.ClickBotonErrorDonarExp().Y);
+                await Task.Delay(150);
+
+                metin.timerDonarExpDate = DateTime.Now;
+            }
+        }
+
+        public static async Task EvalPocionRoja(Metin2 metin)
+        {
+            if (DateTime.Now - metin.timerPocionRojaDate >= metin.timerPocionRoja)
+            {
+                await MetinKeyboard.Instance.PocionRoja();
+                metin.timerPocionRojaDate = DateTime.Now;
+            }
+        }
+
+        public static async Task EvalPocionAzul(Metin2 metin)
+        {
+            if (DateTime.Now - metin.timerPocionAzulDate >= metin.timerPocionAzul)
+            {
+                await MetinKeyboard.Instance.PocionAzul();
+                metin.timerPocionAzulDate = DateTime.Now;
+            }
+        }
+
+        public static async Task EvalAutocaza(Metin2 metin)
+        {
+            if (DateTime.Now - metin.timerAutocazaDate >= metin.timerAutocaza)
+            {
+                await Cliente.IniciarAutocaza(metin);
+                metin.timerAutocazaDate = DateTime.Now;
+            }
+        }
+
         public static async Task EvalEstaMuerto(Metin2 metin, bool activarAutocaza = false)
         {
             if (metin.EstaMuerto)
