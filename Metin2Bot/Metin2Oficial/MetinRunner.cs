@@ -2,15 +2,8 @@
 using Metin2Bot.Operaciones;
 using Metin2Bot.Screenshots;
 using Metin2Bot.Singletons;
-using OpenCvSharp;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Metrics;
 using System.Numerics;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using static Metin2Bot.ImageReader;
-using static Metin2Bot.User;
 
 namespace Metin2Bot.Metin2Oficial
 {
@@ -59,18 +52,18 @@ namespace Metin2Bot.Metin2Oficial
             while (true)
             {
                 await User.MostrarMetin(metin1.ProcessId);
-                await EvalRelogin(metin1);
+                await Cliente.EvalRelogin(metin1);
                 await EvalPocionRoja(metin1);
                 await EvalPocionAzul(metin1);
                 await Habilidades.EvalHabF1(metin1);
                 await Habilidades.EvalHabF2(metin1);
-                await EvalEstaMuerto(metin1, activarAutocaza: true);
+                await Cliente.EvalEstaMuerto(metin1, activarAutocaza: true);
                 await MetinKeyboard.Instance.AgarrarItems();
 
                 await User.MostrarMetin(metin2.ProcessId);
-                await EvalRelogin(metin2);
+                await Cliente.EvalRelogin(metin2);
                 await Habilidades.EvalBuffs(metin2);
-                await EvalEstaMuerto(metin2);
+                await Cliente.EvalEstaMuerto(metin2);
 
                 if (!revivirAlMorir && metin1.MurioAlgunaVez)
                 {
@@ -104,8 +97,8 @@ namespace Metin2Bot.Metin2Oficial
                     await Habilidades.EvalHabF1(metin);
                     await Habilidades.EvalHabF2(metin);
                     await EvalAutocaza(metin);
-                    await EvalEstaMuerto(metin);
-                    await EvalRelogin(metin);
+                    await Cliente.EvalEstaMuerto(metin);
+                    await Cliente.EvalRelogin(metin);
                     await MetinKeyboard.Instance.AgarrarItems();
                     await Task.Delay(100);
                 }
@@ -122,7 +115,7 @@ namespace Metin2Bot.Metin2Oficial
             _ = AwaitShutdown();
             _ = AwaitPause();
 
-            await PrepararFragmenteros(metins);
+            await Fragmenteo.PrepararFragmenteros(metins);
 
             while (true)
             {
@@ -131,11 +124,11 @@ namespace Metin2Bot.Metin2Oficial
                     await User.MostrarMetin(metin.ProcessId);
 
                     await EvalDonarExp(metin);
-                    await EvalRelogin(metin);
-                    await EvalEstaMuerto(metin);
+                    await Cliente.EvalRelogin(metin);
+                    await Cliente.EvalEstaMuerto(metin);
                     await EvalPocionRoja(metin);
                     await EvalAutocaza(metin);
-                    await BuscarFragmentos(metin);
+                    await Fragmenteo.BuscarFragmentos(metin);
                 }
 
                 await User.MostrarVentanaActual(activeWindow);
@@ -151,30 +144,30 @@ namespace Metin2Bot.Metin2Oficial
             {
                 await User.MostrarMetin(metin.ProcessId);
 
-                await PerspectivaDesdeArriba(metin);
+                await Cliente.PerspectivaDesdeArriba(metin);
 
-                await CerrarInventario(metin);
+                await Cliente.CerrarInventario(metin);
 
                 await Movimiento.MoverAPotera(metin);
 
-                var inventarioAbierto = await AbrirInventario(metin);
+                var inventarioAbierto = await Cliente.AbrirInventario(metin);
 
                 if (!inventarioAbierto)
                     continue;
 
-                var cantidadPociones = await ContarPociones(metin);
+                var cantidadPociones = await Fragmenteo.ContarPociones(metin);
 
-                await BuscarTiendaGeneral(metin);
+                await Fragmenteo.BuscarTiendaGeneral(metin);
 
-                await ComprarPociones(metin, 55 - cantidadPociones);
+                await Fragmenteo.ComprarPociones(metin, 55 - cantidadPociones);
 
                 await MetinKeyboard.Instance.ApretarEscape();
 
-                await CerrarInventario(metin);
+                await Cliente.CerrarInventario(metin);
 
                 await Movimiento.MoverAAlquimista(metin);
 
-                var encontroAlquimista = await BuscarAlquimista(metin);
+                var encontroAlquimista = await Fragmenteo.BuscarAlquimista(metin);
 
                 if (!encontroAlquimista)
                     continue;
@@ -200,7 +193,7 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     await User.MostrarMetin(metin.ProcessId);
 
-                    await EvalEstaMuerto(metin);
+                    await Cliente.EvalEstaMuerto(metin);
                     await MetinKeyboard.Instance.PocionRoja();
 
                     await Task.Delay(1000);
@@ -225,6 +218,9 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     foreach (var punto in Metineo.PathingTierraFuego())
                     {
+                        if (AccionesImg.PicEstaMuerto.ProcessText(metin))
+                            Environment.Exit(0);
+
                         await Movimiento.Cabalgar(metin, new Vector2(punto.Item1, punto.Item2));
 
                         var (encontroMetin, coordenadaX, coordenadaY) = await Metineo.BuscarMetin(metin);
@@ -254,240 +250,7 @@ namespace Metin2Bot.Metin2Oficial
             foreach (var metin in metins)
             {
                 await User.MostrarMetin(metin.ProcessId);
-
-                var inventarioAbierto = await AbrirInventario(metin);
-
-                if (!inventarioAbierto)
-                    continue;
-
-                var cantidadPociones = await ContarPociones(metin);
-
-                await PerspectivaDesdeArriba(metin);
-                await BuscarTiendaGeneral(metin);
             }
-        }
-
-        public static async Task Pescar()
-        {
-            var metins = MetinFactory.GetAll();
-            var metin = metins[0];
-
-            await User.MostrarMetin(metin.ProcessId);
-
-            do
-            {
-                var bm = ScreenShot.SacarScreenshotPescaBM(metin);
-                var path = @"C:\Users\Gon\repos\MetinFishingCV\resources\metin_fishing.png";
-
-                bm.Save(path, System.Drawing.Imaging.ImageFormat.Png);
-                using Mat image = Cv2.ImRead(path);
-
-                var isFishable = FishingDetector.IsFishable(image);
-
-                var fish = FishingDetector.DetectObjectColor(
-                    image,
-                    new Scalar(73, 99, 116),
-                    new Scalar(144, 154, 132));
-
-                Console.WriteLine($"X: {fish.X}");
-                Console.WriteLine($"Y: {fish.Y}");
-                Console.WriteLine($"Width: {fish.Width}");
-                Console.WriteLine($"Height: {fish.Height}");
-                Console.WriteLine($"Is Fishable: {isFishable}");
-
-                if (isFishable && DateTime.Now - metin.timerPescaDate >= metin.timerPesca)
-                {
-                    await User.ClickAt(
-                        metin.StartX + fish.X + 410 + 5,
-                        metin.StartY + fish.Y + 50 + 5, 1);
-                    metin.timerPescaDate = DateTime.Now;
-                }
-
-                User.MouseToPosition(
-                    metin.StartX + fish.X + 410 + 5,
-                    metin.StartY + fish.Y + 50 + 5);
-
-            } while (true);
-        }
-
-        public static async Task<bool> AbrirInventario(Metin2 metin)
-        {
-            var inventarioAbierto = AccionesImg.PicTextoInventario.ProcessText(metin);
-
-            if (!inventarioAbierto)
-            {
-                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_I);
-                await Task.Delay(100);
-                return AccionesImg.PicTextoInventario.ProcessText(metin);
-            }
-
-            return inventarioAbierto;
-        }
-
-        public static async Task CerrarInventario(Metin2 metin)
-        {
-            var inventarioAbierto = AccionesImg.PicTextoInventario.ProcessText(metin);
-
-            if (inventarioAbierto)
-            {
-                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_I);
-                await Task.Delay(50);
-            }
-        }
-
-        public static async Task<int> ContarPociones(Metin2 metin)
-        {
-            var pocionesTotales = 0;
-
-            await User.ClickAt(
-                metin.StartX + Resolution.ClickInventario1().X,
-                metin.StartY + Resolution.ClickInventario1().Y);
-
-            await MetinKeyboard.Instance.MantenerTeclaApretada(MiButton.BT7.CONTROL, 50);
-            using var bm1 = ScreenShot.SacarScreenshotInventarioBM(metin);
-            var text1 = ProcessInMemory(bm1);
-            await Task.Delay(100);
-            await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.CONTROL, 50);
-            pocionesTotales += Regex.Matches(text1 ?? string.Empty, "200").Count;
-
-            await User.ClickAt(
-                metin.StartX + Resolution.ClickInventario2().X,
-                metin.StartY + Resolution.ClickInventario2().Y);
-
-            await MetinKeyboard.Instance.MantenerTeclaApretada(MiButton.BT7.CONTROL, 50);
-            using var bm2 = ScreenShot.SacarScreenshotInventarioBM(metin);
-            var text2 = ProcessInMemory(bm2);
-            await Task.Delay(100);
-            await MetinKeyboard.Instance.SoltarTecla(MiButton.BT7.CONTROL, 50);
-            pocionesTotales += Regex.Matches(text2 ?? string.Empty, "200").Count;
-
-            await User.ClickAt(
-                metin.StartX + Resolution.ClickInventario1().X,
-                metin.StartY + Resolution.ClickInventario1().Y);
-
-            return pocionesTotales;
-        }
-
-        public static async Task PerspectivaDesdeArriba(Metin2 metin)
-        {
-            Console.WriteLine($"ACOMODANDO CAMARA\n");
-            await Task.Delay(50);
-            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_G, 1800);
-            await Task.Delay(50);
-            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_F, 1500);
-            await Task.Delay(50);
-        }
-
-        private static async Task BuscarFragmentos(Metin2 metin)
-        {
-            if (metin.TextRegion != null && metin.TextRegion.HasCoordinates)
-            {
-                await DetenerAutocaza(metin);
-                await User.ClickAt(
-                    metin.StartX + metin.TextRegion.X + Resolution.ClickFragmentarItemPiso().X,
-                    metin.StartY + metin.TextRegion.Y + Resolution.ClickFragmentarItemPiso().Y,
-                    10);
-                await MetinKeyboard.Instance.PocionRoja(10);
-                await Task.Delay(1000);
-
-                metin.TextRegion = null;
-                metin.timerAutocazaDate = DateTime.Now.AddDays(-1);
-                return;
-            }
-
-            if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos)
-            {
-                Console.WriteLine($"BUSCANDO FRAGMENTOS\n");
-                await MetinKeyboard.Instance.MoverCamaraE(180);
-                await Task.Delay(50);
-                metin.TextRegion = AccionesImg.PicFragmentos.ProcessCoordinates(metin);
-                metin.timerFragmentosDate = DateTime.Now;
-            }
-        }
-
-        private static async Task<bool> BuscarTiendaGeneral(Metin2 metin)
-        {
-            TextRegion? textRegion;
-            var intentosBusquedaTiendaGeneral = 0;
-
-            do
-            {
-                Console.WriteLine($"BUSCANDO TIENDA GENERAL {intentosBusquedaTiendaGeneral + 1}\n");
-                await MetinKeyboard.Instance.MoverCamaraE(180);
-                await Task.Delay(200);
-                textRegion = AccionesImg.PicTiendaGeneral.ProcessCoordinates(metin);
-                intentosBusquedaTiendaGeneral++;
-            } while ((textRegion == null || !textRegion.HasCoordinates) && intentosBusquedaTiendaGeneral < 15);
-
-            if (textRegion == null)
-            {
-                return false;
-            }
-
-            await User.ClickAt(
-                metin.StartX + textRegion.X + Resolution.ClickTiendaGeneral().X,
-                metin.StartY + textRegion.Y + Resolution.ClickTiendaGeneral().Y);
-
-            await Task.Delay(1000);
-            await MetinKeyboard.Instance.ApretarEnter();
-            await Task.Delay(1000);
-
-            return AccionesImg.PicTiendaGeneralAbierta.ProcessText(metin);
-        }
-
-        private static async Task ComprarPociones(Metin2 metin, int cantidadPocionesAComprar)
-        {
-            await Task.Delay(500);
-
-            var cantidadCompradas = 0;
-            while (cantidadCompradas < cantidadPocionesAComprar && cantidadPocionesAComprar < 55 /*tope de seguridad*/)
-            {
-                await User.RightClickAt(
-                    metin.StartX + Resolution.ClickComprarPocion().X,
-                    metin.StartY + Resolution.ClickComprarPocion().Y);
-
-                await Task.Delay(500);
-                cantidadCompradas++;
-            }
-        }
-
-        private static async Task<bool> BuscarAlquimista(Metin2 metin)
-        {
-            TextRegion? textRegion;
-            var intentosBusquedaAlquimista = 0;
-
-            do
-            {
-                Console.WriteLine($"BUSCANDO ALQUIMISTA {intentosBusquedaAlquimista + 1}\n");
-                await MetinKeyboard.Instance.MoverCamaraE(180);
-                await Task.Delay(200);
-                textRegion = AccionesImg.PicAlquimista.ProcessCoordinates(metin);
-                intentosBusquedaAlquimista++;
-            } while ((textRegion == null || !textRegion.HasCoordinates) && intentosBusquedaAlquimista < 15);
-
-            if (textRegion == null)
-            {
-                return false;
-            }
-
-            await User.ClickAt(
-                metin.StartX + textRegion.X + Resolution.ClickAlquimista().X,
-                metin.StartY + textRegion.Y + Resolution.ClickAlquimista().Y);
-
-            await Task.Delay(1000);
-
-            var textoMision = AccionesImg.PicMisionAlquimia.ProcessText(metin);
-
-            if (textoMision)
-            {
-                await MetinKeyboard.Instance.ApretarEnter();
-                await Task.Delay(1000);
-                await MetinKeyboard.Instance.ApretarEnter();
-                await Task.Delay(1000);
-                return true;
-            }
-
-            return false;
         }
 
         private static async Task EvalDonarExp(Metin2 metin)
@@ -554,137 +317,8 @@ namespace Metin2Bot.Metin2Oficial
         {
             if (DateTime.Now - metin.timerAutocazaDate >= metin.timerAutocaza)
             {
-                await IniciarAutocaza(metin);
+                await Cliente.IniciarAutocaza(metin);
                 metin.timerAutocazaDate = DateTime.Now;
-            }
-        }
-
-        private static async Task IniciarAutocaza(Metin2 metin)
-        {
-            Console.WriteLine("ACTIVANDO AUTOCAZA\n");
-            await Task.Delay(50);
-
-            // ABRIR AUTOCAZA
-            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_K, 100);
-            await Task.Delay(50);
-
-            // DETENER
-            await User.ClickAt(metin.StartX + Resolution.ClickAutocazaDetener().X, metin.StartY + Resolution.ClickAutocazaDetener().Y);
-
-            // RESETEAR
-            await User.ClickAt(metin.StartX + Resolution.ClickAutocazaResetear().X, metin.StartY + Resolution.ClickAutocazaResetear().Y);
-
-            // ATACAR
-            await User.ClickAt(metin.StartX + Resolution.ClickAutocazaAtacar().X, metin.StartY + Resolution.ClickAutocazaAtacar().Y);
-
-            // ALCANCE
-            await User.ClickAt(metin.StartX + Resolution.ClickAutocazaAlcance().X, metin.StartY + Resolution.ClickAutocazaAlcance().Y);
-
-            // EMPEZAR
-            await User.ClickAt(metin.StartX + Resolution.ClickAutocazaEmpezar().X, metin.StartY + Resolution.ClickAutocazaEmpezar().Y);
-
-            // CERRAR AUTOCAZA
-            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_K, 100);
-            await Task.Delay(50);
-        }
-
-        private static async Task DetenerAutocaza(Metin2 metin)
-        {
-            Console.WriteLine("DETENIENDO AUTOCAZA\n");
-            await Task.Delay(50);
-
-            // ABRIR AUTOCAZA
-            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_K, 100);
-            await Task.Delay(50);
-
-            // DETENER
-            await User.ClickAt(metin.StartX + Resolution.ClickAutocazaDetener().X, metin.StartY + Resolution.ClickAutocazaDetener().Y);
-
-            // CERRAR AUTOCAZA
-            await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_K, 100);
-            await Task.Delay(50);
-        }
-
-        private static async Task EvalEstaMuerto(Metin2 metin, bool activarAutocaza = false)
-        {
-            if (metin.EstaMuerto)
-            {
-                metin.MurioAlgunaVez = true;
-                Console.WriteLine("REVIVIENDO\n");
-
-                await User.ClickAt(
-                    metin.StartX + Resolution.ClickRevivir().X, 
-                    metin.StartY - Resolution.ClickRevivir().Y);
-
-                await Task.Delay(800);
-                metin.EstaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
-
-                if (!metin.EstaMuerto)
-                {
-                    await MetinKeyboard.Instance.PocionRoja(10);
-
-                    if (activarAutocaza)
-                        await IniciarAutocaza(metin);
-                    else
-                        metin.timerAutocazaDate = DateTime.Now.AddDays(-1);
-                }
-            }
-
-            if (DateTime.Now - metin.timerEstaMuertoDate >= metin.timerEstaMuerto && !metin.EstaMuerto)
-            {
-                Console.WriteLine("VALIDANDO ESTA MUERTO\n");
-                metin.timerEstaMuertoDate = DateTime.Now;
-                metin.EstaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
-            }
-        }
-
-        private static async Task EvalRelogin(Metin2 metin)
-        {
-            if (metin.EstaEnPantallaLogin || metin.EstaEnChampSelect)
-            {
-                if (metin.EstaEnPantallaLogin)
-                {
-                    await MetinKeyboard.Instance.ApretarEnter(100); // Este enter es para sacar cualquier posible cartel de error
-                    await Task.Delay(100);
-                    
-                    await User.ClickAt(
-                        metin.StartX + Resolution.ClickLoginOK().X, 
-                        metin.StartY + Resolution.ClickLoginOK().Y);
-
-                    await Task.Delay(15000);
-
-                    metin.EstaEnChampSelect = AccionesImg.PicChampSelect.ProcessText(metin);
-                    metin.EstaEnPantallaLogin = false;
-                }
-
-                if (metin.EstaEnChampSelect)
-                {
-                    await MetinKeyboard.Instance.ApretarEnter(100);
-                    await Task.Delay(15000);
-                    await IniciarAutocaza(metin);
-                    metin.EstaEnPantallaLogin = false;
-                    metin.EstaEnChampSelect = false;
-                }
-            }
-
-            if (DateTime.Now - metin.timerReloginDate >= metin.timerRelogin)
-            {
-                Console.WriteLine("VALIDANDO RELOGIN\n");
-                metin.EstaEnPantallaLogin = AccionesImg.PicLogin.ProcessText(metin);
-                metin.EstaEnChampSelect = AccionesImg.PicChampSelect.ProcessText(metin);
-                metin.timerReloginDate = DateTime.Now;
-            }
-        }
-
-        private static async Task PrepararFragmenteros(List<Metin2> metins)
-        {
-            foreach (var metin in metins)
-            {
-                await User.MostrarMetin(metin.ProcessId);
-
-                await PerspectivaDesdeArriba(metin);
-
-                await AbrirInventario(metin);
             }
         }
 

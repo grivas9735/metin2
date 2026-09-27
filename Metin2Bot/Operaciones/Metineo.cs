@@ -10,8 +10,8 @@ namespace Metin2Bot.Operaciones
     {
         public static List<(int, int)> PathingTierraFuego()
         {
-            return new List<(int, int)>()
-            {
+            return
+            [
                 (600, 464),
                 (594, 428),
                 (594, 383),
@@ -22,7 +22,7 @@ namespace Metin2Bot.Operaciones
                 (659, 493),
                 (623, 447),
                 (600, 464)
-            };
+            ];
         }
 
         public static async Task<(bool, int, int)> BuscarMetin(Metin2 metin)
@@ -35,17 +35,17 @@ namespace Metin2Bot.Operaciones
             await User.MoverCamaraConMouse(metin, 100, DireccionCamara.Abajo, 100);
             await Task.Delay(100);
 
-            await User.MoverCamaraConMouse(metin, 500, DireccionCamara.Arriba, 5);
+            await User.MoverCamaraConMouse(metin, 650, DireccionCamara.Arriba, 5);
             await Task.Delay(100);
 
             for (int i = 0; i < 3 && !encontroMetin; i++)
             {
-                await User.MoverCamaraConMouse(metin, i * 160, DireccionCamara.Arriba, 5);
+                await User.MoverCamaraConMouse(metin, i * 150, DireccionCamara.Arriba, 5);
                 await Task.Delay(100);
 
-                for (int  j = 0; j < 10 && !encontroMetin; j++)
+                for (int  j = 0; j < 15 && !encontroMetin; j++)
                 {
-                    await MoverCamaraConMouse(metin, 50, DireccionCamara.Derecha, 15);
+                    await MoverCamaraConMouse(metin, 30, DireccionCamara.Derecha, 15);
                     await Task.Delay(100);
 
                     metin.TextRegion = AccionesImg.PicPiedraMetin.ProcessCoordinates(metin);
@@ -80,11 +80,24 @@ namespace Metin2Bot.Operaciones
             await Habilidades.SubirseAlCaballo();
             await MetinKeyboard.Instance.PocionAzul();
 
+            // Este do-while es por si se mete un mob en el medio mientras tiro habs
+            do
+            {
+                await User.RightClickAt(coordenadaX, coordenadaY, 50);
+                await Task.Delay(1200);
+            } while (!AccionesImg.PicNombrePiedraMetin.ProcessText(metin));
+
             await User.ClickAt(coordenadaX, coordenadaY, 50);
             await Task.Delay(1200);
 
             var estaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
             var (seleccionado, hp) = AccionesImg.PicNombrePiedraMetin.ProcessMobHP(metin);
+
+            if (!estaMuerto && seleccionado && hp < 90)
+            {
+                Console.WriteLine($"SKIPEANDO METIN PORQUE YA LE ESTABAN PEGANDO");
+                return;
+            }
 
             while (!estaMuerto && seleccionado)
             {
@@ -95,7 +108,7 @@ namespace Metin2Bot.Operaciones
                 estaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
                 (seleccionado, hp) = AccionesImg.PicNombrePiedraMetin.ProcessMobHP(metin);
 
-                await Task.Delay(50);
+                await Task.Delay(100);
             }
 
             if (estaMuerto)
