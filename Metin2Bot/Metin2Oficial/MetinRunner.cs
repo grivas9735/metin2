@@ -159,11 +159,7 @@ namespace Metin2Bot.Metin2Oficial
 
                 await Movimiento.MoverAAlquimista(metin);
 
-                var encontroAlquimista = await Fragmenteo.BuscarAlquimista(metin);
-
-                if (!encontroAlquimista)
-                    continue;
-
+                await Fragmenteo.BuscarAlquimista(metin);
 
                 await User.MostrarVentanaActual(activeWindow);
             }
