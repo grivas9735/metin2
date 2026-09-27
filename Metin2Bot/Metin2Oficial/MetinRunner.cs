@@ -149,18 +149,11 @@ namespace Metin2Bot.Metin2Oficial
 
                 await Movimiento.MoverAPotera(metin);
 
-                var inventarioAbierto = await Cliente.AbrirInventario(metin);
-
-                if (!inventarioAbierto)
-                    continue;
+                await Fragmenteo.BuscarTiendaGeneral(metin);
 
                 var cantidadPociones = await Fragmenteo.ContarPociones(metin);
 
-                await Fragmenteo.BuscarTiendaGeneral(metin);
-
                 await Fragmenteo.ComprarPociones(metin, 55 - cantidadPociones);
-
-                await MetinKeyboard.Instance.ApretarEscape();
 
                 await Cliente.CerrarInventario(metin);
 
