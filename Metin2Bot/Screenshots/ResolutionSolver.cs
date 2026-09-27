@@ -163,6 +163,26 @@
             return new Coordenadas(400, 235);
         }
 
+        public static Coordenadas ClickIberia()
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Coordenadas(900, 670);
+            }
+
+            return new Coordenadas(250, 125);
+        }
+
+        public static Coordenadas ClickOtroServer()
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Coordenadas(900, 670);
+            }
+
+            return new Coordenadas(250, 145);
+        }
+
         public static Coordenadas ClickChannel(int channel)
         {
             if (ResolutionEnum == ResolutionEnum.R1600x900)

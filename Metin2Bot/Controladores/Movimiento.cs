@@ -7,10 +7,22 @@ namespace Metin2Bot.Controladores
 {
     public static class Movimiento
     {
-        private static readonly int distanciaMaximaTolerada = 2;
-        private static readonly int tiempoMovimientoStep = 150;
 
-        public static async Task MoverPersonaje(Metin2 metin, Vector2 destino)
+        public static async Task Caminar(Metin2 metin, Vector2 destino)
+        {
+            var tiempoMovimientoStep = 150;
+            var distanciaMaximaTolerada = 2;
+            await MoverPersonaje(metin, destino, tiempoMovimientoStep, distanciaMaximaTolerada);
+        }
+
+        public static async Task Cabalgar(Metin2 metin, Vector2 destino)
+        {
+            var tiempoMovimientoStep = 500;
+            var distanciaMaximaTolerada = 5;
+            await MoverPersonaje(metin, destino, tiempoMovimientoStep, distanciaMaximaTolerada);
+        }
+
+        private static async Task MoverPersonaje(Metin2 metin, Vector2 destino, int tiempoMovimientoStep, int distanciaMaximaTolerada)
         {
             Vector2 posicionActual = await LeerPosicionActualHastaHallarValor(metin);
 
@@ -24,6 +36,7 @@ namespace Metin2Bot.Controladores
                     posicionActual,
                     tiempoMovimientoStep,
                     "W",
+                    distanciaMaximaTolerada,
                     MetinKeyboard.Instance.MoverW);
 
                 if (Vector2.Distance(destino, posicionActual) <= distanciaMaximaTolerada)
@@ -37,6 +50,7 @@ namespace Metin2Bot.Controladores
                     posicionActual,
                     tiempoMovimientoStep,
                     "A",
+                    distanciaMaximaTolerada,
                     MetinKeyboard.Instance.MoverA);
 
                 if (Vector2.Distance(destino, posicionActual) <= distanciaMaximaTolerada)
@@ -50,6 +64,7 @@ namespace Metin2Bot.Controladores
                     posicionActual,
                     tiempoMovimientoStep,
                     "S",
+                    distanciaMaximaTolerada,
                     MetinKeyboard.Instance.MoverS);
 
                 if (Vector2.Distance(destino, posicionActual) <= distanciaMaximaTolerada)
@@ -63,6 +78,7 @@ namespace Metin2Bot.Controladores
                     posicionActual,
                     tiempoMovimientoStep,
                     "D",
+                    distanciaMaximaTolerada,
                     MetinKeyboard.Instance.MoverD);
             }
 
@@ -78,6 +94,7 @@ namespace Metin2Bot.Controladores
             Vector2 posicionActual,
             int tiempoMovimientoMs,
             string direccion,
+            int distanciaMaximaTolerada,
             Func<int, Task> mover)
         {
             var contadorMismaPosicion = 0;
@@ -131,38 +148,38 @@ namespace Metin2Bot.Controladores
 
         public static async Task MoverAPotera(Metin2 metin)
         {
-            await Movimiento.MoverPersonaje(metin, new Vector2(109, 572));
-            await Movimiento.MoverPersonaje(metin, new Vector2(147, 546));
-            await Movimiento.MoverPersonaje(metin, new Vector2(184, 532));
-            await Movimiento.MoverPersonaje(metin, new Vector2(246, 519));
-            await Movimiento.MoverPersonaje(metin, new Vector2(283, 514));
-            await Movimiento.MoverPersonaje(metin, new Vector2(320, 502));
-            await Movimiento.MoverPersonaje(metin, new Vector2(350, 499));
-            await Movimiento.MoverPersonaje(metin, new Vector2(364, 499));
-            await Movimiento.MoverPersonaje(metin, new Vector2(395, 499));
-            await Movimiento.MoverPersonaje(metin, new Vector2(405, 499));
-            await Movimiento.MoverPersonaje(metin, new Vector2(425, 499));
-            await Movimiento.MoverPersonaje(metin, new Vector2(449, 505));
-            await Movimiento.MoverPersonaje(metin, new Vector2(494, 514));
-            await Movimiento.MoverPersonaje(metin, new Vector2(506, 544));
+            await Movimiento.Caminar(metin, new Vector2(109, 572));
+            await Movimiento.Caminar(metin, new Vector2(147, 546));
+            await Movimiento.Caminar(metin, new Vector2(184, 532));
+            await Movimiento.Caminar(metin, new Vector2(246, 519));
+            await Movimiento.Caminar(metin, new Vector2(283, 514));
+            await Movimiento.Caminar(metin, new Vector2(320, 502));
+            await Movimiento.Caminar(metin, new Vector2(350, 499));
+            await Movimiento.Caminar(metin, new Vector2(364, 499));
+            await Movimiento.Caminar(metin, new Vector2(395, 499));
+            await Movimiento.Caminar(metin, new Vector2(405, 499));
+            await Movimiento.Caminar(metin, new Vector2(425, 499));
+            await Movimiento.Caminar(metin, new Vector2(449, 505));
+            await Movimiento.Caminar(metin, new Vector2(494, 514));
+            await Movimiento.Caminar(metin, new Vector2(506, 544));
 
             // ARCO CIUDAD
-            await Movimiento.MoverPersonaje(metin, new Vector2(526, 580));
-            await Movimiento.MoverPersonaje(metin, new Vector2(537, 580));
-            await Movimiento.MoverPersonaje(metin, new Vector2(550, 580));
+            await Movimiento.Caminar(metin, new Vector2(526, 580));
+            await Movimiento.Caminar(metin, new Vector2(537, 580));
+            await Movimiento.Caminar(metin, new Vector2(550, 580));
 
             // MIRINE Y POTERA
-            await Movimiento.MoverPersonaje(metin, new Vector2(596, 569));
-            await Movimiento.MoverPersonaje(metin, new Vector2(627, 576));
-            await Movimiento.MoverPersonaje(metin, new Vector2(655, 571));
-            await Movimiento.MoverPersonaje(metin, new Vector2(674, 564));
+            await Movimiento.Caminar(metin, new Vector2(596, 569));
+            await Movimiento.Caminar(metin, new Vector2(627, 576));
+            await Movimiento.Caminar(metin, new Vector2(655, 571));
+            await Movimiento.Caminar(metin, new Vector2(674, 564));
         }
 
         public static async Task MoverAAlquimista(Metin2 metin)
         {
-            await Movimiento.MoverPersonaje(metin, new Vector2(661, 554));
-            await Movimiento.MoverPersonaje(metin, new Vector2(655, 516));
-            await Movimiento.MoverPersonaje(metin, new Vector2(623, 510));
+            await Movimiento.Caminar(metin, new Vector2(661, 554));
+            await Movimiento.Caminar(metin, new Vector2(655, 516));
+            await Movimiento.Caminar(metin, new Vector2(623, 510));
 
         }
 
