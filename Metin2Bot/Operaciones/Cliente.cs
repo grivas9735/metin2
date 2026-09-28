@@ -273,7 +273,7 @@ namespace Metin2Bot.Operaciones
             {
                 await Task.Delay(TimeSpan.FromSeconds(1));
                 contadorTimeouts++;
-            } while (!AccionesImg.PicLogin.ProcessText(metin) && contadorTimeouts < timeoutChampSelect);
+            } while (!AccionesImg.PicChampSelect.ProcessText(metin) && contadorTimeouts < timeoutChampSelect);
 
             if (contadorTimeouts == timeoutChampSelect)
             {

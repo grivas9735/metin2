@@ -192,6 +192,7 @@ namespace Metin2Bot.Metin2Oficial
 
                         if (encontroMetin)
                         {
+                            await Cliente.AbrirInventario(metin);
                             await Metineo.MatarMetin(metin, coordenadaX, coordenadaY);
                             break;
                         }

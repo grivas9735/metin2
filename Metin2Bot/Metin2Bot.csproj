@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="IronOcr" Version="2025.2.3" />
     <PackageReference Include="OpenCvSharp4" Version="4.13.0.20260627" />
+    <PackageReference Include="OpenCvSharp4.Extensions" Version="4.13.0.20260627" />
     <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.13.0.20260627" />
     <PackageReference Include="PaddleOCRSharp.Full" Version="6.2.0">
       <GeneratePathProperty>True</GeneratePathProperty>

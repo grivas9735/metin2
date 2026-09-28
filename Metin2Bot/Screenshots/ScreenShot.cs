@@ -29,5 +29,6 @@
         public static Bitmap SacarScreenshotPescaBM(Metin2 metin) => CapturarRegion(Resolution.RectScreenshotPesca(metin));
         public static Bitmap SacarScreenshotPiedraMetinBM(Metin2 metin) => CapturarRegion(Resolution.RectScreenshotPiedraMetin(metin));
         public static Bitmap SacarScreenshotNombrePiedraMetinBM(Metin2 metin) => CapturarRegion(Resolution.RectScreenshotNombrePiedraMetin(metin));
+        public static Bitmap SacarScreenshotMinimapaBM(Metin2 metin) => CapturarRegion(Resolution.RectScreenshotMinimapa(metin));
     }
 }

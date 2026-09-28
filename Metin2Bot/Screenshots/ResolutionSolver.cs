@@ -261,6 +261,16 @@
 
         #region Screenshots
 
+        public static Rectangle RectScreenshotMinimapa(Metin2 metin)
+        {
+            if (ResolutionEnum == ResolutionEnum.R1600x900)
+            {
+                return new Rectangle(metin.StartX + 850, metin.StartY + 600, 180, 150);
+            }
+
+            return new Rectangle(metin.StartX + 660, metin.StartY - 110, 120, 120);
+        }
+
         public static Rectangle RectScreenshotPesca(Metin2 metin)
         {
             if (ResolutionEnum == ResolutionEnum.R1600x900)
