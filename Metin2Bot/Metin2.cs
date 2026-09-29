@@ -51,7 +51,7 @@ namespace Metin2Bot
         public TimeSpan timerEstaMuerto = TimeSpan.FromSeconds(10);
         public DateTime timerEstaMuertoDate = DateTime.Now.AddDays(-1);
 
-        public TimeSpan timerFragmentos = TimeSpan.FromSeconds(8);
+        public TimeSpan timerFragmentos = TimeSpan.FromSeconds(10);
         public DateTime timerFragmentosDate = DateTime.Now.AddDays(-1);
 
         public TimeSpan timerAutocaza = TimeSpan.FromMinutes(5);
