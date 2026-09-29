@@ -8,23 +8,6 @@ namespace Metin2Bot.Operaciones
 {
     public static class Metineo
     {
-        public static List<(int, int)> PathingTierraFuego()
-        {
-            return
-            [
-                (600, 464),
-                (594, 428),
-                (594, 383),
-                (634, 383),
-                (660, 408),
-                (700, 426),
-                (664, 457),
-                (659, 493),
-                (623, 447),
-                (600, 464)
-            ];
-        }
-
         public static async Task<(bool, int, int)> BuscarMetin(Metin2 metin)
         {
             var encontroMetin = false;

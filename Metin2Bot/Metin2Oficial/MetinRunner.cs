@@ -1,5 +1,7 @@
 ﻿using Metin2Bot.Controladores;
 using Metin2Bot.Operaciones;
+using Metin2Bot.Pathings;
+using Metin2Bot.Screenshots;
 using Metin2Bot.Singletons;
 using System.Diagnostics;
 using System.Numerics;
@@ -12,6 +14,7 @@ namespace Metin2Bot.Metin2Oficial
         private static readonly int minutosPausado = 99999;
 
         private static readonly int channelInicio = 1;
+        private static readonly PathingMetineo pathing = new PathingTierraDeFuegoCirculo();
 
         public static async Task AwaitShutdown()
         {
@@ -180,7 +183,23 @@ namespace Metin2Bot.Metin2Oficial
 
                 while (true)
                 {
-                    foreach (var punto in Metineo.PathingTierraFuego())
+                    await Cliente.CerrarInventario(metin);
+
+                    User.MouseToPosition(
+                        metin.StartX + Resolution.WatchCoords().X,
+                        metin.StartY + Resolution.WatchCoords().Y);
+
+                    await Task.Delay(50);
+                    AccionesImg.PicCoordenadas.ProcessText(metin);
+                    await Task.Delay(50);
+
+                    pathing.Inicializar();
+                    if (metin.Coordenadas != null)
+                    {
+                        pathing.Inicializar((int)metin.Coordenadas.Value.X, (int)metin.Coordenadas.Value.Y);
+                    }
+
+                    while (pathing.ObtenerSiguientePunto(out var punto))
                     {
                         if (AccionesImg.PicEstaMuerto.ProcessText(metin))
                             Environment.Exit(0);
