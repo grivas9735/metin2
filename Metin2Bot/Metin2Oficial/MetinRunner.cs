@@ -128,7 +128,7 @@ namespace Metin2Bot.Metin2Oficial
                     await Cliente.EvalDonarExp(metin);
                     await Cliente.EvalRelogin(metin);
                     await Cliente.EvalEstaMuerto(metin);
-                    await Cliente.EvalPocionRoja(metin);
+                    await Cliente.EvalPocionRoja(metin, 3);
                     await Cliente.EvalAutocaza(metin);
                     await Fragmenteo.BuscarFragmentos(metin);
                 }

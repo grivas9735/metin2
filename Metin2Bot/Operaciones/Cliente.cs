@@ -104,11 +104,15 @@ namespace Metin2Bot.Operaciones
             }
         }
 
-        public static async Task EvalPocionRoja(Metin2 metin)
+        public static async Task EvalPocionRoja(Metin2 metin, int? cantidad = null)
         {
             if (DateTime.Now - metin.timerPocionRojaDate >= metin.timerPocionRoja)
             {
-                await MetinKeyboard.Instance.PocionRoja();
+                if (cantidad.HasValue)
+                    await MetinKeyboard.Instance.PocionRoja(cantidad.Value);
+                else
+                    await MetinKeyboard.Instance.PocionRoja();
+
                 metin.timerPocionRojaDate = DateTime.Now;
             }
         }
