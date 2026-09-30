@@ -151,7 +151,6 @@ namespace Metin2Bot.Operaciones
 
                 if (!metin.EstaMuerto)
                 {
-                    metin.EstaMuertoBM = null;
                     await MetinKeyboard.Instance.PocionRoja(10);
 
                     if (activarAutocaza)
@@ -161,7 +160,7 @@ namespace Metin2Bot.Operaciones
                 }
             }
 
-            if (DateTime.Now - metin.timerEstaMuertoDate >= metin.timerEstaMuerto && !metin.EstaMuerto && metin.EstaMuertoBM == null)
+            if (DateTime.Now - metin.timerEstaMuertoDate >= metin.timerEstaMuerto && !metin.EstaMuerto)
             {
                 Console.WriteLine($"VALIDANDO ESTA MUERTO {metin.Id}\n");
                 AccionesImg.PicEstaMuertoSplit.Capture(metin);

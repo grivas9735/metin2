@@ -21,12 +21,11 @@ namespace Metin2Bot.Operaciones
                 await Task.Delay(1000);
 
                 metin.TextRegion = null;
-                metin.FragmentosBM = null;
                 metin.timerAutocazaDate = DateTime.Now.AddDays(-1);
                 return;
             }
 
-            if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos && metin.FragmentosBM == null)
+            if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos)
             {
                 Console.WriteLine($"BUSCANDO FRAGMENTOS {metin.Id}\n");
                 await MetinKeyboard.Instance.MoverCamaraE(180);
@@ -36,6 +35,7 @@ namespace Metin2Bot.Operaciones
                 {
                     metin.TextRegion = AccionesImg.PicFragmentosSplit.ProcessCoordinates(metin);
                     metin.timerFragmentosDate = DateTime.Now;
+                    metin.FragmentosBM = null;
                 });
             }
         }
