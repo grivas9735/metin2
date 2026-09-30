@@ -113,7 +113,7 @@ namespace Metin2Bot.Metin2Oficial
                 if (bm == null) return false;
 
                 var text = ProcessInMemory(bm);
-                return text != null 
+                return text != null
                     && (text.Contains("seleccionar", StringComparison.CurrentCultureIgnoreCase)
                         || text.Contains("personaje", StringComparison.CurrentCultureIgnoreCase));
             }
@@ -169,7 +169,7 @@ namespace Metin2Bot.Metin2Oficial
 
                 var text = ProcessInMemory(bm);
 
-                return text != null 
+                return text != null
                     && text.Contains("ok", StringComparison.CurrentCultureIgnoreCase)
                     && text.Contains("salir", StringComparison.CurrentCultureIgnoreCase);
             }
@@ -209,20 +209,13 @@ namespace Metin2Bot.Metin2Oficial
         {
             public void Capture(Metin2 metin)
             {
-                metin.FragmentosBM = ScreenShot.SacarScreenshotFragmentosBM(metin);
+                throw new NotImplementedException();
             }
 
             public TextRegion? ProcessCoordinates(Metin2 metin)
             {
-                if (metin.FragmentosBM != null)
-                {
-                    var txtRegion = ProcessInMemoryV2(metin.FragmentosBM, ListaItemsAgarrar);
-                    metin.FragmentosBM.Dispose();
-                    metin.FragmentosBM = null;
-                    return txtRegion;
-                }
-
-                return null;
+                using var bm = ScreenShot.SacarScreenshotFragmentosBM(metin);
+                return bm == null ? null : ProcessInMemoryV2(bm, ListaItemsAgarrar);
             }
 
             public (bool, double) ProcessMobHP(Metin2 metin)
@@ -295,7 +288,7 @@ namespace Metin2Bot.Metin2Oficial
                 if (bm == null) return false;
 
                 var text = ProcessInMemory(bm);
-                return text != null 
+                return text != null
                     && text.Contains("inventario", StringComparison.CurrentCultureIgnoreCase);
             }
         }
@@ -320,7 +313,7 @@ namespace Metin2Bot.Metin2Oficial
                 if (bm == null) return false;
 
                 var text = ProcessInMemory(bm);
-                return text != null 
+                return text != null
                     && (text.Contains("comprar", StringComparison.CurrentCultureIgnoreCase)
                         || text.Contains("vender", StringComparison.CurrentCultureIgnoreCase)
                         || text.Contains("recomprar", StringComparison.CurrentCultureIgnoreCase));

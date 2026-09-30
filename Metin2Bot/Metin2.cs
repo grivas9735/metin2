@@ -27,12 +27,6 @@ namespace Metin2Bot
 
         public Vector2? Coordenadas { get; set; }
 
-        #region Bitmaps
-
-        public Bitmap? FragmentosBM { get; set; }
-
-        #endregion
-
         public TimeSpan timerPocionRoja = TimeSpan.FromSeconds(1);
         public DateTime timerPocionRojaDate = DateTime.Now.AddDays(-1);
 
