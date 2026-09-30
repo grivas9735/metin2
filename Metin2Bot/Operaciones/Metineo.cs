@@ -59,16 +59,25 @@ namespace Metin2Bot.Operaciones
         {
             await Habilidades.BajarseDelCaballo();
             await Habilidades.UsarAura();
-            await Habilidades.UsarBerserk();
+            //await Habilidades.UsarBerserk();
             await Habilidades.SubirseAlCaballo();
             await MetinKeyboard.Instance.PocionAzul();
 
+            int cont = 0;
+            int timeoutSeleccionMetin = 30;
             // Este do-while es por si se mete un mob en el medio mientras tiro habs
             do
             {
                 await User.RightClickAt(coordenadaX, coordenadaY, 50);
                 await Task.Delay(1200);
-            } while (!AccionesImg.PicNombrePiedraMetin.ProcessText(metin));
+                cont++;
+            } while (!AccionesImg.PicNombrePiedraMetin.ProcessText(metin) && cont < timeoutSeleccionMetin);
+
+            if (cont == timeoutSeleccionMetin)
+            {
+                Console.WriteLine($"SKIPEANDO METIN PORQUE NO SE PUDO VOLVER A SELECCIONAR");
+                return;
+            }
 
             await User.ClickAt(coordenadaX, coordenadaY, 50);
             await Task.Delay(1200);

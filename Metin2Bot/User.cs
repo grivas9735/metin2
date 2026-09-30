@@ -65,7 +65,7 @@ namespace Metin2Bot
             int velocidad)
         {
             MouseToPosition(metin.StartX + 100, metin.StartY + 100);
-            await Task.Delay(10);
+            await Task.Delay(50);
 
             const uint MOUSEEVENTF_MOVE = 0x0001;
             const uint MOUSEEVENTF_RIGHTDOWN = 0x0008;
