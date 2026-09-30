@@ -39,9 +39,11 @@ namespace Metin2Bot.Metin2Oficial
 
         // Instancias estáticas únicas (reutilización de memoria)
         public static PictureChampSelect PicChampSelect { get; } = new PictureChampSelect();
+        public static PictureChampSelectSplit PicChampSelectSplit { get; } = new PictureChampSelectSplit();
         public static PictureEstaMuerto PicEstaMuerto { get; } = new PictureEstaMuerto();
         public static PictureEstaMuertoSplit PicEstaMuertoSplit { get; } = new PictureEstaMuertoSplit();
         public static PictureLogin PicLogin { get; } = new PictureLogin();
+        public static PictureLoginSplit PicLoginSplit { get; } = new PictureLoginSplit();
         public static PictureFragmentosSplit PicFragmentosSplit { get; } = new PictureFragmentosSplit();
         public static PictureAlquimista PicAlquimista { get; } = new PictureAlquimista();
         public static PictureMisionAlquimia PicMisionAlquimia { get; } = new PictureMisionAlquimia();
@@ -97,6 +99,29 @@ namespace Metin2Bot.Metin2Oficial
             }
         }
 
+        public class PictureChampSelectSplit : ICapture, ICaptureContainsText
+        {
+            public void Capture(Metin2 metin)
+            {
+                metin.ChampSelectBM = ScreenShot.SacarScreenshotChampSelectBM(metin);
+            }
+
+            public bool ContainsText(Metin2 metin)
+            {
+                if (metin.ChampSelectBM == null)
+                {
+                    return false;
+                }
+
+                var text = ProcessInMemory(metin.ChampSelectBM);
+
+                if (string.IsNullOrWhiteSpace(text)) return false;
+
+                return text.Contains("seleccionar", StringComparison.CurrentCultureIgnoreCase)
+                    || text.Contains("personaje", StringComparison.CurrentCultureIgnoreCase);
+            }
+        }
+
         public class PictureEstaMuerto : ICaptureContainsText
         {
             public bool ContainsText(Metin2 metin)
@@ -144,6 +169,29 @@ namespace Metin2Bot.Metin2Oficial
                 using var bm = ScreenShot.SacarScreenshotPantallaLoginBM(metin);
 
                 var text = ProcessInMemory(bm);
+
+                if (string.IsNullOrWhiteSpace(text)) return false;
+
+                return text.Contains("ok", StringComparison.CurrentCultureIgnoreCase)
+                    && text.Contains("salir", StringComparison.CurrentCultureIgnoreCase);
+            }
+        }
+
+        public class PictureLoginSplit : ICapture, ICaptureContainsText
+        {
+            public void Capture(Metin2 metin)
+            {
+                metin.LoginBM = ScreenShot.SacarScreenshotPantallaLoginBM(metin);
+            }
+
+            public bool ContainsText(Metin2 metin)
+            {
+                if (metin.LoginBM == null)
+                {
+                    return false;
+                }
+
+                var text = ProcessInMemory(metin.LoginBM);
 
                 if (string.IsNullOrWhiteSpace(text)) return false;
 

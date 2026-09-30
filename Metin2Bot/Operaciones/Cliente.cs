@@ -8,7 +8,7 @@ namespace Metin2Bot.Operaciones
     {
         public static async Task PerspectivaDesdeArriba(Metin2 metin)
         {
-            Console.WriteLine($"ACOMODANDO CAMARA\n");
+            Console.WriteLine($"ACOMODANDO CAMARA {metin.Id}\n");
             await Task.Delay(50);
             await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_G, 1800);
             await Task.Delay(50);
@@ -18,7 +18,7 @@ namespace Metin2Bot.Operaciones
 
         public static async Task IniciarAutocaza(Metin2 metin)
         {
-            Console.WriteLine("ACTIVANDO AUTOCAZA\n");
+            Console.WriteLine($"ACTIVANDO AUTOCAZA {metin.Id}\n");
             await Task.Delay(50);
 
             // ABRIR AUTOCAZA
@@ -47,7 +47,7 @@ namespace Metin2Bot.Operaciones
 
         public static async Task DetenerAutocaza(Metin2 metin)
         {
-            Console.WriteLine("DETENIENDO AUTOCAZA\n");
+            Console.WriteLine($"DETENIENDO AUTOCAZA {metin.Id}\n");
             await Task.Delay(50);
 
             // ABRIR AUTOCAZA
@@ -66,7 +66,7 @@ namespace Metin2Bot.Operaciones
         {
             if (DateTime.Now - metin.timerDonarExpDate >= metin.timerDonarExp)
             {
-                Console.WriteLine("DONANDO EXP\n");
+                Console.WriteLine($"DONANDO EXP {metin.Id}\n");
 
                 // Abrir menu gremio
                 await MetinKeyboard.Instance.MantenerTeclaApretada(MiButton.BT7.MENU);
@@ -204,8 +204,13 @@ namespace Metin2Bot.Operaciones
             if (DateTime.Now - metin.timerReloginDate >= metin.timerRelogin)
             {
                 Console.WriteLine($"VALIDANDO RELOGIN {metin.Id}\n");
-                metin.EstaEnPantallaLogin = AccionesImg.PicLogin.ContainsText(metin);
-                metin.EstaEnChampSelect = AccionesImg.PicChampSelect.ContainsText(metin);
+                AccionesImg.PicLoginSplit.Capture(metin);
+                AccionesImg.PicChampSelectSplit.Capture(metin);
+                _ = Task.Run(() =>
+                {
+                    metin.EstaEnPantallaLogin = AccionesImg.PicLoginSplit.ContainsText(metin);
+                    metin.EstaEnChampSelect = AccionesImg.PicChampSelectSplit.ContainsText(metin);
+                });
                 metin.timerReloginDate = DateTime.Now;
             }
         }
