@@ -21,13 +21,14 @@ namespace Metin2Bot.Operaciones
                 await Task.Delay(1000);
 
                 metin.TextRegion = null;
+                metin.FragmentosBM = null;
                 metin.timerAutocazaDate = DateTime.Now.AddDays(-1);
                 return;
             }
 
-            if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos)
+            if (DateTime.Now - metin.timerFragmentosDate >= metin.timerFragmentos && metin.FragmentosBM == null)
             {
-                Console.WriteLine($"BUSCANDO FRAGMENTOS\n");
+                Console.WriteLine($"BUSCANDO FRAGMENTOS {metin.Id}\n");
                 await MetinKeyboard.Instance.MoverCamaraE(180);
                 await Task.Delay(50);
                 AccionesImg.PicFragmentosSplit.Capture(metin);

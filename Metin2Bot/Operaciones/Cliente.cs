@@ -140,7 +140,7 @@ namespace Metin2Bot.Operaciones
             if (metin.EstaMuerto)
             {
                 metin.MurioAlgunaVez = true;
-                Console.WriteLine("REVIVIENDO\n");
+                Console.WriteLine($"REVIVIENDO {metin.Id}\n");
 
                 await User.ClickAt(
                     metin.StartX + Resolution.ClickRevivir().X,
@@ -151,6 +151,7 @@ namespace Metin2Bot.Operaciones
 
                 if (!metin.EstaMuerto)
                 {
+                    metin.EstaMuertoBM = null;
                     await MetinKeyboard.Instance.PocionRoja(10);
 
                     if (activarAutocaza)
@@ -160,9 +161,9 @@ namespace Metin2Bot.Operaciones
                 }
             }
 
-            if (DateTime.Now - metin.timerEstaMuertoDate >= metin.timerEstaMuerto && !metin.EstaMuerto)
+            if (DateTime.Now - metin.timerEstaMuertoDate >= metin.timerEstaMuerto && !metin.EstaMuerto && metin.EstaMuertoBM == null)
             {
-                Console.WriteLine("VALIDANDO ESTA MUERTO\n");
+                Console.WriteLine($"VALIDANDO ESTA MUERTO {metin.Id}\n");
                 AccionesImg.PicEstaMuertoSplit.Capture(metin);
                 _ = Task.Run(() =>
                 {
@@ -203,7 +204,7 @@ namespace Metin2Bot.Operaciones
 
             if (DateTime.Now - metin.timerReloginDate >= metin.timerRelogin)
             {
-                Console.WriteLine("VALIDANDO RELOGIN\n");
+                Console.WriteLine($"VALIDANDO RELOGIN {metin.Id}\n");
                 metin.EstaEnPantallaLogin = AccionesImg.PicLogin.ContainsText(metin);
                 metin.EstaEnChampSelect = AccionesImg.PicChampSelect.ContainsText(metin);
                 metin.timerReloginDate = DateTime.Now;

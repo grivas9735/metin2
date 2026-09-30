@@ -213,9 +213,7 @@ namespace Metin2Bot.Metin2Oficial
                     return null;
                 }
 
-                var textRegion = ProcessInMemoryV2(metin.FragmentosBM, ListaItemsAgarrar);
-                metin.FragmentosBM = null;
-                return textRegion;
+                return ProcessInMemoryV2(metin.FragmentosBM, ListaItemsAgarrar);
             }
         }
 
