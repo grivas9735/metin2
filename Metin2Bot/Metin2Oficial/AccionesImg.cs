@@ -40,8 +40,9 @@ namespace Metin2Bot.Metin2Oficial
         // Instancias estáticas únicas (reutilización de memoria)
         public static PictureChampSelect PicChampSelect { get; } = new PictureChampSelect();
         public static PictureEstaMuerto PicEstaMuerto { get; } = new PictureEstaMuerto();
+        public static PictureEstaMuertoSplit PicEstaMuertoSplit { get; } = new PictureEstaMuertoSplit();
         public static PictureLogin PicLogin { get; } = new PictureLogin();
-        public static PictureFragmentos PicFragmentos { get; } = new PictureFragmentos();
+        public static PictureFragmentosSplit PicFragmentosSplit { get; } = new PictureFragmentosSplit();
         public static PictureAlquimista PicAlquimista { get; } = new PictureAlquimista();
         public static PictureMisionAlquimia PicMisionAlquimia { get; } = new PictureMisionAlquimia();
         public static PictureCoordenadas PicCoordenadas { get; } = new PictureCoordenadas();
@@ -103,6 +104,30 @@ namespace Metin2Bot.Metin2Oficial
                 using var bm = ScreenShot.SacarScreenshotEstaMuertoBM(metin);
 
                 var text = ProcessInMemory(bm);
+
+                if (string.IsNullOrWhiteSpace(text)) return false;
+
+                return text.Contains("volver", StringComparison.CurrentCultureIgnoreCase)
+                    || text.Contains("empezar", StringComparison.CurrentCultureIgnoreCase)
+                    || text.Contains("ciudad", StringComparison.CurrentCultureIgnoreCase);
+            }
+        }
+
+        public class PictureEstaMuertoSplit : ICapture, ICaptureContainsText
+        {
+            public void Capture(Metin2 metin)
+            {
+                metin.EstaMuertoBM = ScreenShot.SacarScreenshotEstaMuertoBM(metin);
+            }
+
+            public bool ContainsText(Metin2 metin)
+            {
+                if (metin.EstaMuertoBM == null)
+                {
+                    return false;
+                }
+
+                var text = ProcessInMemory(metin.EstaMuertoBM);
 
                 if (string.IsNullOrWhiteSpace(text)) return false;
 
@@ -174,7 +199,7 @@ namespace Metin2Bot.Metin2Oficial
             }
         }
 
-        public class PictureFragmentos : ICapture, ICaptureProcessCoordinates
+        public class PictureFragmentosSplit : ICapture, ICaptureProcessCoordinates
         {
             public void Capture(Metin2 metin)
             {

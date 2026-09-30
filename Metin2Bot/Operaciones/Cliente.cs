@@ -163,8 +163,12 @@ namespace Metin2Bot.Operaciones
             if (DateTime.Now - metin.timerEstaMuertoDate >= metin.timerEstaMuerto && !metin.EstaMuerto)
             {
                 Console.WriteLine("VALIDANDO ESTA MUERTO\n");
-                metin.timerEstaMuertoDate = DateTime.Now;
-                metin.EstaMuerto = AccionesImg.PicEstaMuerto.ContainsText(metin);
+                AccionesImg.PicEstaMuertoSplit.Capture(metin);
+                _ = Task.Run(() =>
+                {
+                    metin.EstaMuerto = AccionesImg.PicEstaMuertoSplit.ContainsText(metin);
+                    metin.timerEstaMuertoDate = DateTime.Now;
+                });
             }
         }
 

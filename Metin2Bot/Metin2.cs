@@ -31,6 +31,8 @@ namespace Metin2Bot
 
         public Bitmap? FragmentosBM { get; set; }
 
+        public Bitmap? EstaMuertoBM { get; set; }
+
         #endregion
 
         public TimeSpan timerPocionRoja = TimeSpan.FromSeconds(1);
