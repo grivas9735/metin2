@@ -125,8 +125,6 @@ namespace Metin2Bot.Metin2Oficial
                 {
                     await User.MostrarMetin(metin.ProcessId);
 
-                    Console.WriteLine($"---------------- Metin {metin.Id} ------------------");
-
                     await Cliente.EvalDonarExp(metin);
                     await Cliente.EvalRelogin(metin);
                     await Cliente.EvalEstaMuerto(metin);
