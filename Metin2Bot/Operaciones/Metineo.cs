@@ -45,7 +45,7 @@ namespace Metin2Bot.Operaciones
                             await User.RightClickAt(coordenadaX, coordenadaY, 50);
                             await Task.Delay(1200);
 
-                            seleccionado = AccionesImg.PicNombrePiedraMetin.ProcessText(metin);
+                            seleccionado = AccionesImg.PicNombrePiedraMetin.ContainsText(metin);
                             timeoutSeleccionado++;
                         } while (!seleccionado && timeoutSeleccionado < 15);
                     }
@@ -71,7 +71,7 @@ namespace Metin2Bot.Operaciones
                 await User.RightClickAt(coordenadaX, coordenadaY, 50);
                 await Task.Delay(1200);
                 cont++;
-            } while (!AccionesImg.PicNombrePiedraMetin.ProcessText(metin) && cont < timeoutSeleccionMetin);
+            } while (!AccionesImg.PicNombrePiedraMetin.ContainsText(metin) && cont < timeoutSeleccionMetin);
 
             if (cont == timeoutSeleccionMetin)
             {
@@ -82,7 +82,7 @@ namespace Metin2Bot.Operaciones
             await User.ClickAt(coordenadaX, coordenadaY, 50);
             await Task.Delay(1200);
 
-            var estaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
+            var estaMuerto = AccionesImg.PicEstaMuerto.ContainsText(metin);
             var (seleccionado, hp) = AccionesImg.PicNombrePiedraMetin.ProcessMobHP(metin);
 
             if (!estaMuerto && seleccionado && hp < 90)
@@ -97,7 +97,7 @@ namespace Metin2Bot.Operaciones
                 await MetinKeyboard.Instance.AgarrarItems();
                 await MetinKeyboard.Instance.PocionRoja();
 
-                estaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
+                estaMuerto = AccionesImg.PicEstaMuerto.ContainsText(metin);
                 (seleccionado, hp) = AccionesImg.PicNombrePiedraMetin.ProcessMobHP(metin);
 
                 await Task.Delay(100);

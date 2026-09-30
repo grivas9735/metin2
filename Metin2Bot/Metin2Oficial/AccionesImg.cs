@@ -1,4 +1,5 @@
-﻿using Metin2Bot.Screenshots;
+﻿using Metin2Bot.Captures.Interfaces;
+using Metin2Bot.Screenshots;
 using System.Numerics;
 using System.Text.RegularExpressions;
 using static Metin2Bot.ImageReader;
@@ -37,34 +38,22 @@ namespace Metin2Bot.Metin2Oficial
         }
 
         // Instancias estáticas únicas (reutilización de memoria)
-        public static IPicture PicChampSelect { get; } = new PictureChampSelect();
-        public static IPicture PicEstaMuerto { get; } = new PictureEstaMuerto();
-        public static IPicture PicLogin { get; } = new PictureLogin();
-        public static IPicture PicFragmentos { get; } = new PictureFragmentos();
-        public static IPicture PicAlquimista { get; } = new PictureAlquimista();
-        public static IPicture PicMisionAlquimia { get; } = new PictureMisionAlquimia();
-        public static IPicture PicCoordenadas { get; } = new PictureCoordenadas();
-        public static IPicture PicTiendaGeneral { get; } = new PictureTiendaGeneral();
-        public static IPicture PicTiendaGeneralAbierta { get; } = new PictureTiendaGeneralAbierta();
-        public static IPicture PicTextoInventario { get; } = new PictureTextoInventario();
-        public static IPicture PicPiedraMetin { get; } = new PicturePiedraMetin();
-        public static IPicture PicNombrePiedraMetin { get; } = new PictureNombrePiedraMetin();
+        public static PictureChampSelect PicChampSelect { get; } = new PictureChampSelect();
+        public static PictureEstaMuerto PicEstaMuerto { get; } = new PictureEstaMuerto();
+        public static PictureLogin PicLogin { get; } = new PictureLogin();
+        public static PictureFragmentos PicFragmentos { get; } = new PictureFragmentos();
+        public static PictureAlquimista PicAlquimista { get; } = new PictureAlquimista();
+        public static PictureMisionAlquimia PicMisionAlquimia { get; } = new PictureMisionAlquimia();
+        public static PictureCoordenadas PicCoordenadas { get; } = new PictureCoordenadas();
+        public static PictureTiendaGeneral PicTiendaGeneral { get; } = new PictureTiendaGeneral();
+        public static PictureTiendaGeneralAbierta PicTiendaGeneralAbierta { get; } = new PictureTiendaGeneralAbierta();
+        public static PictureTextoInventario PicTextoInventario { get; } = new PictureTextoInventario();
+        public static PicturePiedraMetin PicPiedraMetin { get; } = new PicturePiedraMetin();
+        public static PictureNombrePiedraMetin PicNombrePiedraMetin { get; } = new PictureNombrePiedraMetin();
 
-        public class PictureCoordenadas : IPicture
+        public class PictureCoordenadas : ICaptureContainsText
         {
-            public void Capture(Metin2 metin)
-            {
-                throw new NotImplementedException();
-            }
-
-            public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
-
-            public (bool, double) ProcessMobHP(Metin2 metin)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool ProcessText(Metin2 metin)
+            public bool ContainsText(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotCoordenadasBM(metin);
                 if (bm == null) return false;
@@ -92,45 +81,26 @@ namespace Metin2Bot.Metin2Oficial
             }
         }
 
-        public class PictureChampSelect : IPicture
+        public class PictureChampSelect : ICaptureContainsText
         {
-            public void Capture(Metin2 metin)
-            {
-                throw new NotImplementedException();
-            }
-
-            public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
-
-            public (bool, double) ProcessMobHP(Metin2 metin)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool ProcessText(Metin2 metin)
+            public bool ContainsText(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotChampSelectBM(metin);
-                if (bm == null) return false;
 
                 var text = ProcessInMemory(bm);
-                return text != null
-                    && (text.Contains("seleccionar", StringComparison.CurrentCultureIgnoreCase)
-                        || text.Contains("personaje", StringComparison.CurrentCultureIgnoreCase));
+
+                if (string.IsNullOrWhiteSpace(text)) return false;
+
+                return text.Contains("seleccionar", StringComparison.CurrentCultureIgnoreCase)
+                    || text.Contains("personaje", StringComparison.CurrentCultureIgnoreCase);
             }
         }
 
-        public class PictureEstaMuerto : IPicture
+        public class PictureEstaMuerto : ICaptureContainsText
         {
-            public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
-
-            public (bool, double) ProcessMobHP(Metin2 metin)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool ProcessText(Metin2 metin)
+            public bool ContainsText(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotEstaMuertoBM(metin);
-                if (bm == null) return false;
 
                 var text = ProcessInMemory(bm);
 
@@ -142,41 +112,26 @@ namespace Metin2Bot.Metin2Oficial
             }
         }
 
-        public class PictureLogin : IPicture
+        public class PictureLogin : ICaptureContainsText
         {
-            public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
-
-            public (bool, double) ProcessMobHP(Metin2 metin)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool ProcessText(Metin2 metin)
+            public bool ContainsText(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotPantallaLoginBM(metin);
-                if (bm == null) return false;
 
                 var text = ProcessInMemory(bm);
 
-                return text != null
-                    && text.Contains("ok", StringComparison.CurrentCultureIgnoreCase)
+                if (string.IsNullOrWhiteSpace(text)) return false;
+
+                return text.Contains("ok", StringComparison.CurrentCultureIgnoreCase)
                     && text.Contains("salir", StringComparison.CurrentCultureIgnoreCase);
             }
         }
 
-        public class PictureMisionAlquimia : IPicture
+        public class PictureMisionAlquimia : ICaptureContainsText
         {
-            public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
-
-            public (bool, double) ProcessMobHP(Metin2 metin)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool ProcessText(Metin2 metin)
+            public bool ContainsText(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotMisionAlquimiaBM(metin);
-                if (bm == null) return false;
 
                 var text = ProcessInMemory(bm);
 
@@ -189,136 +144,106 @@ namespace Metin2Bot.Metin2Oficial
             }
         }
 
-        public class PictureFragmentos : IPicture
+        public class PictureTextoInventario : ICaptureContainsText
         {
-            public TextRegion? ProcessCoordinates(Metin2 metin)
-            {
-                using var bm = ScreenShot.SacarScreenshotFragmentosBM(metin);
-                return bm == null ? null : ProcessInMemoryV2(bm, ListaItemsAgarrar);
-            }
-
-            public (bool, double) ProcessMobHP(Metin2 metin)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool ProcessText(Metin2 metin) => throw new NotImplementedException();
-        }
-
-        public class PictureAlquimista : IPicture
-        {
-            public TextRegion? ProcessCoordinates(Metin2 metin)
-            {
-                using var bm = ScreenShot.SacarScreenshotNPCBM(metin);
-                return bm == null ? null : ProcessInMemoryV2(bm, LstAlquimista);
-            }
-
-            public (bool, double) ProcessMobHP(Metin2 metin)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool ProcessText(Metin2 metin) => throw new NotImplementedException();
-        }
-
-        public class PictureTiendaGeneral : IPicture
-        {
-            public TextRegion? ProcessCoordinates(Metin2 metin)
-            {
-                using var bm = ScreenShot.SacarScreenshotNPCBM(metin);
-                return bm == null ? null : ProcessInMemoryV2(bm, LstTiendaGeneral);
-            }
-
-            public (bool, double) ProcessMobHP(Metin2 metin)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool ProcessText(Metin2 metin) => throw new NotImplementedException();
-        }
-
-        public class PictureTextoInventario : IPicture
-        {
-            public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
-
-            public (bool, double) ProcessMobHP(Metin2 metin)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool ProcessText(Metin2 metin)
+            public bool ContainsText(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotTextoInventarioBM(metin);
-                if (bm == null) return false;
 
                 var text = ProcessInMemory(bm);
-                return text != null
-                    && text.Contains("inventario", StringComparison.CurrentCultureIgnoreCase);
+
+                if (string.IsNullOrWhiteSpace(text)) return false;
+
+                return text.Contains("inventario", StringComparison.CurrentCultureIgnoreCase);
             }
         }
 
-        public class PictureTiendaGeneralAbierta : IPicture
+        public class PictureTiendaGeneralAbierta : ICaptureContainsText
         {
-            public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
-
-            public (bool, double) ProcessMobHP(Metin2 metin)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool ProcessText(Metin2 metin)
+            public bool ContainsText(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotTiendaGeneralAbiertaBM(metin);
-                if (bm == null) return false;
 
                 var text = ProcessInMemory(bm);
-                return text != null
-                    && (text.Contains("comprar", StringComparison.CurrentCultureIgnoreCase)
-                        || text.Contains("vender", StringComparison.CurrentCultureIgnoreCase)
-                        || text.Contains("recomprar", StringComparison.CurrentCultureIgnoreCase));
+                
+                if (string.IsNullOrWhiteSpace(text)) return false;
+
+                return text.Contains("comprar", StringComparison.CurrentCultureIgnoreCase)
+                    || text.Contains("vender", StringComparison.CurrentCultureIgnoreCase)
+                    || text.Contains("recomprar", StringComparison.CurrentCultureIgnoreCase);
             }
         }
 
-        public class PicturePiedraMetin : IPicture
+        public class PictureFragmentos : ICapture, ICaptureProcessCoordinates
+        {
+            public void Capture(Metin2 metin)
+            {
+                metin.FragmentosBM = ScreenShot.SacarScreenshotFragmentosBM(metin);
+            }
+
+            public TextRegion? ProcessCoordinates(Metin2 metin)
+            {
+                if (metin.FragmentosBM == null)
+                {
+                    return null;
+                }
+
+                var textRegion = ProcessInMemoryV2(metin.FragmentosBM, ListaItemsAgarrar);
+                metin.FragmentosBM = null;
+                return textRegion;
+            }
+        }
+
+        public class PictureAlquimista : ICaptureProcessCoordinates
+        {
+            public TextRegion? ProcessCoordinates(Metin2 metin)
+            {
+                using var bm = ScreenShot.SacarScreenshotNPCBM(metin);
+                return ProcessInMemoryV2(bm, LstAlquimista);
+            }
+        }
+
+        public class PictureTiendaGeneral : ICaptureProcessCoordinates
+        {
+            public TextRegion? ProcessCoordinates(Metin2 metin)
+            {
+                using var bm = ScreenShot.SacarScreenshotNPCBM(metin);
+                return ProcessInMemoryV2(bm, LstTiendaGeneral);
+            }
+        }
+
+        public class PicturePiedraMetin : ICaptureProcessCoordinates
         {
             public TextRegion? ProcessCoordinates(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotPiedraMetinBM(metin);
-                return bm == null ? null : ProcessInMemoryV2(bm, LstPiedraMetin);
+                return ProcessInMemoryV2(bm, LstPiedraMetin);
             }
-
-            public (bool, double) ProcessMobHP(Metin2 metin)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool ProcessText(Metin2 metin) => throw new NotImplementedException();
         }
 
-        public class PictureNombrePiedraMetin : IPicture
+        public class PictureNombrePiedraMetin : ICaptureContainsText, IProcessMobHP
         {
-            public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
-
             public (bool, double) ProcessMobHP(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotNombrePiedraMetinBM(metin);
-                if (bm == null) return (false, 0);
 
                 var hp = GetMobHpPercentage(bm);
                 var text = ProcessInMemory(bm);
-                return (text != null
-                    && text.Contains("metin", StringComparison.CurrentCultureIgnoreCase),
-                    hp);
+
+                if (string.IsNullOrWhiteSpace(text)) return (false, 0);
+
+                return (text.Contains("metin", StringComparison.CurrentCultureIgnoreCase), hp);
             }
 
-            public bool ProcessText(Metin2 metin)
+            public bool ContainsText(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotNombrePiedraMetinBM(metin);
-                if (bm == null) return false;
 
                 var text = ProcessInMemory(bm);
-                return text != null
-                    && text.Contains("metin", StringComparison.CurrentCultureIgnoreCase);
+
+                if (string.IsNullOrWhiteSpace(text)) return false;
+
+                return text.Contains("metin", StringComparison.CurrentCultureIgnoreCase);
             }
         }
 

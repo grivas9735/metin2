@@ -30,8 +30,12 @@ namespace Metin2Bot.Operaciones
                 Console.WriteLine($"BUSCANDO FRAGMENTOS\n");
                 await MetinKeyboard.Instance.MoverCamaraE(180);
                 await Task.Delay(50);
-                metin.TextRegion = AccionesImg.PicFragmentos.ProcessCoordinates(metin);
-                metin.timerFragmentosDate = DateTime.Now;
+                AccionesImg.PicFragmentos.Capture(metin);
+                _ = Task.Run(() =>
+                {
+                    metin.TextRegion = AccionesImg.PicFragmentos.ProcessCoordinates(metin);
+                    metin.timerFragmentosDate = DateTime.Now;
+                });
             }
         }
 
@@ -88,7 +92,7 @@ namespace Metin2Bot.Operaciones
 
             await Task.Delay(1000);
 
-            var textoMision = AccionesImg.PicMisionAlquimia.ProcessText(metin);
+            var textoMision = AccionesImg.PicMisionAlquimia.ContainsText(metin);
 
             if (textoMision)
             {
@@ -162,7 +166,7 @@ namespace Metin2Bot.Operaciones
             await MetinKeyboard.Instance.ApretarEnter();
             await Task.Delay(1000);
 
-            return AccionesImg.PicTiendaGeneralAbierta.ProcessText(metin);
+            return AccionesImg.PicTiendaGeneralAbierta.ContainsText(metin);
         }
     }
 }

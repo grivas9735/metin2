@@ -189,7 +189,7 @@ namespace Metin2Bot.Controladores
                 metin.StartX + Resolution.WatchCoords().X,
                 metin.StartY + Resolution.WatchCoords().Y);
 
-            AccionesImg.PicCoordenadas.ProcessText(metin);
+            AccionesImg.PicCoordenadas.ContainsText(metin);
 
             if (metin.Coordenadas == null)
             {

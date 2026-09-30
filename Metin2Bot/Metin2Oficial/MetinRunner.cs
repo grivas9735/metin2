@@ -190,7 +190,7 @@ namespace Metin2Bot.Metin2Oficial
                         metin.StartY + Resolution.WatchCoords().Y);
 
                     await Task.Delay(50);
-                    AccionesImg.PicCoordenadas.ProcessText(metin);
+                    AccionesImg.PicCoordenadas.ContainsText(metin);
                     await Task.Delay(50);
 
                     pathing.Inicializar();
@@ -201,7 +201,7 @@ namespace Metin2Bot.Metin2Oficial
 
                     while (pathing.ObtenerSiguientePunto(out var punto))
                     {
-                        if (AccionesImg.PicEstaMuerto.ProcessText(metin))
+                        if (AccionesImg.PicEstaMuerto.ContainsText(metin))
                             Environment.Exit(0);
 
                         await Cliente.CerrarInventario(metin);

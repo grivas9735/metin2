@@ -147,7 +147,7 @@ namespace Metin2Bot.Operaciones
                     metin.StartY - Resolution.ClickRevivir().Y);
 
                 await Task.Delay(800);
-                metin.EstaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
+                metin.EstaMuerto = AccionesImg.PicEstaMuerto.ContainsText(metin);
 
                 if (!metin.EstaMuerto)
                 {
@@ -164,7 +164,7 @@ namespace Metin2Bot.Operaciones
             {
                 Console.WriteLine("VALIDANDO ESTA MUERTO\n");
                 metin.timerEstaMuertoDate = DateTime.Now;
-                metin.EstaMuerto = AccionesImg.PicEstaMuerto.ProcessText(metin);
+                metin.EstaMuerto = AccionesImg.PicEstaMuerto.ContainsText(metin);
             }
         }
 
@@ -183,7 +183,7 @@ namespace Metin2Bot.Operaciones
 
                     await Task.Delay(15000);
 
-                    metin.EstaEnChampSelect = AccionesImg.PicChampSelect.ProcessText(metin);
+                    metin.EstaEnChampSelect = AccionesImg.PicChampSelect.ContainsText(metin);
                     metin.EstaEnPantallaLogin = false;
                 }
 
@@ -200,21 +200,21 @@ namespace Metin2Bot.Operaciones
             if (DateTime.Now - metin.timerReloginDate >= metin.timerRelogin)
             {
                 Console.WriteLine("VALIDANDO RELOGIN\n");
-                metin.EstaEnPantallaLogin = AccionesImg.PicLogin.ProcessText(metin);
-                metin.EstaEnChampSelect = AccionesImg.PicChampSelect.ProcessText(metin);
+                metin.EstaEnPantallaLogin = AccionesImg.PicLogin.ContainsText(metin);
+                metin.EstaEnChampSelect = AccionesImg.PicChampSelect.ContainsText(metin);
                 metin.timerReloginDate = DateTime.Now;
             }
         }
 
         public static async Task<bool> AbrirInventario(Metin2 metin)
         {
-            var inventarioAbierto = AccionesImg.PicTextoInventario.ProcessText(metin);
+            var inventarioAbierto = AccionesImg.PicTextoInventario.ContainsText(metin);
 
             if (!inventarioAbierto)
             {
                 await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_I);
                 await Task.Delay(100);
-                return AccionesImg.PicTextoInventario.ProcessText(metin);
+                return AccionesImg.PicTextoInventario.ContainsText(metin);
             }
 
             return inventarioAbierto;
@@ -222,7 +222,7 @@ namespace Metin2Bot.Operaciones
 
         public static async Task CerrarInventario(Metin2 metin)
         {
-            var inventarioAbierto = AccionesImg.PicTextoInventario.ProcessText(metin);
+            var inventarioAbierto = AccionesImg.PicTextoInventario.ContainsText(metin);
 
             if (inventarioAbierto)
             {
@@ -241,7 +241,7 @@ namespace Metin2Bot.Operaciones
             {
                 await Salir(metin);
                 contadorTimeouts++;
-            } while (!AccionesImg.PicLogin.ProcessText(metin) && contadorTimeouts < timeoutSalir);
+            } while (!AccionesImg.PicLogin.ContainsText(metin) && contadorTimeouts < timeoutSalir);
 
             if (contadorTimeouts == timeoutSalir)
             {
@@ -277,7 +277,7 @@ namespace Metin2Bot.Operaciones
             {
                 await Task.Delay(TimeSpan.FromSeconds(1));
                 contadorTimeouts++;
-            } while (!AccionesImg.PicChampSelect.ProcessText(metin) && contadorTimeouts < timeoutChampSelect);
+            } while (!AccionesImg.PicChampSelect.ContainsText(metin) && contadorTimeouts < timeoutChampSelect);
 
             if (contadorTimeouts == timeoutChampSelect)
             {
