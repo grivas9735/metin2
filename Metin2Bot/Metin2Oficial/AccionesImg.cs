@@ -31,6 +31,7 @@ namespace Metin2Bot.Metin2Oficial
 
         public interface IPicture
         {
+            void Capture(Metin2 metin);
             bool ProcessText(Metin2 metin);
             TextRegion? ProcessCoordinates(Metin2 metin);
             (bool, double) ProcessMobHP(Metin2 metin);
@@ -52,6 +53,11 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PictureCoordenadas : IPicture
         {
+            public void Capture(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+
             public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
 
             public (bool, double) ProcessMobHP(Metin2 metin)
@@ -89,6 +95,11 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PictureChampSelect : IPicture
         {
+            public void Capture(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+
             public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
 
             public (bool, double) ProcessMobHP(Metin2 metin)
@@ -110,6 +121,11 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PictureEstaMuerto : IPicture
         {
+            public void Capture(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+
             public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
 
             public (bool, double) ProcessMobHP(Metin2 metin)
@@ -134,6 +150,11 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PictureLogin : IPicture
         {
+            public void Capture(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+
             public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
 
             public (bool, double) ProcessMobHP(Metin2 metin)
@@ -156,6 +177,11 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PictureMisionAlquimia : IPicture
         {
+            public void Capture(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+
             public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
 
             public (bool, double) ProcessMobHP(Metin2 metin)
@@ -181,10 +207,22 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PictureFragmentos : IPicture
         {
+            public void Capture(Metin2 metin)
+            {
+                metin.FragmentosBM = ScreenShot.SacarScreenshotFragmentosBM(metin);
+            }
+
             public TextRegion? ProcessCoordinates(Metin2 metin)
             {
-                using var bm = ScreenShot.SacarScreenshotFragmentosBM(metin);
-                return bm == null ? null : ProcessInMemoryV2(bm, ListaItemsAgarrar);
+                if (metin.FragmentosBM != null)
+                {
+                    var txtRegion = ProcessInMemoryV2(metin.FragmentosBM, ListaItemsAgarrar);
+                    metin.FragmentosBM.Dispose();
+                    metin.FragmentosBM = null;
+                    return txtRegion;
+                }
+
+                return null;
             }
 
             public (bool, double) ProcessMobHP(Metin2 metin)
@@ -197,6 +235,11 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PictureAlquimista : IPicture
         {
+            public void Capture(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+
             public TextRegion? ProcessCoordinates(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotNPCBM(metin);
@@ -213,6 +256,11 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PictureTiendaGeneral : IPicture
         {
+            public void Capture(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+
             public TextRegion? ProcessCoordinates(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotNPCBM(metin);
@@ -229,6 +277,11 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PictureTextoInventario : IPicture
         {
+            public void Capture(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+
             public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
 
             public (bool, double) ProcessMobHP(Metin2 metin)
@@ -249,6 +302,11 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PictureTiendaGeneralAbierta : IPicture
         {
+            public void Capture(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+
             public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
 
             public (bool, double) ProcessMobHP(Metin2 metin)
@@ -271,6 +329,11 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PicturePiedraMetin : IPicture
         {
+            public void Capture(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+
             public TextRegion? ProcessCoordinates(Metin2 metin)
             {
                 using var bm = ScreenShot.SacarScreenshotPiedraMetinBM(metin);
@@ -287,6 +350,11 @@ namespace Metin2Bot.Metin2Oficial
 
         public class PictureNombrePiedraMetin : IPicture
         {
+            public void Capture(Metin2 metin)
+            {
+                throw new NotImplementedException();
+            }
+
             public TextRegion? ProcessCoordinates(Metin2 metin) => throw new NotImplementedException();
 
             public (bool, double) ProcessMobHP(Metin2 metin)

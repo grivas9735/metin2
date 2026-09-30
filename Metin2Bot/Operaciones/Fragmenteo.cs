@@ -30,8 +30,12 @@ namespace Metin2Bot.Operaciones
                 Console.WriteLine($"BUSCANDO FRAGMENTOS\n");
                 await MetinKeyboard.Instance.MoverCamaraE(180);
                 await Task.Delay(50);
-                metin.TextRegion = AccionesImg.PicFragmentos.ProcessCoordinates(metin);
-                metin.timerFragmentosDate = DateTime.Now;
+                AccionesImg.PicFragmentos.Capture(metin);
+                _ = Task.Run(() => 
+                {
+                    metin.TextRegion = AccionesImg.PicFragmentos.ProcessCoordinates(metin);
+                    metin.timerFragmentosDate = DateTime.Now;
+                });
             }
         }
 
