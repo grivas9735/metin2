@@ -34,9 +34,8 @@ namespace Metin2Bot.Operaciones
                 _ = Task.Run(() =>
                 {
                     metin.TextRegion = AccionesImg.PicFragmentosSplit.ProcessCoordinates(metin);
-                    metin.timerFragmentosDate = DateTime.Now;
-                    metin.FragmentosBM = null;
                 });
+                metin.timerFragmentosDate = DateTime.Now;
             }
         }
 

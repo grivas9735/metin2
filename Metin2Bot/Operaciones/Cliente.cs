@@ -167,8 +167,8 @@ namespace Metin2Bot.Operaciones
                 _ = Task.Run(() =>
                 {
                     metin.EstaMuerto = AccionesImg.PicEstaMuertoSplit.ContainsText(metin);
-                    metin.timerEstaMuertoDate = DateTime.Now;
                 });
+                metin.timerEstaMuertoDate = DateTime.Now;
             }
         }
 
