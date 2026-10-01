@@ -90,16 +90,16 @@ namespace Metin2Bot.Operaciones
                 metin.StartX + textRegion.X + Resolution.ClickAlquimista().X,
                 metin.StartY + textRegion.Y + Resolution.ClickAlquimista().Y);
 
-            await Task.Delay(1000);
+            await Task.Delay(2000);
 
             var textoMision = AccionesImg.PicMisionAlquimia.ContainsText(metin);
 
             if (textoMision)
             {
                 await MetinKeyboard.Instance.ApretarEnter();
-                await Task.Delay(1000);
+                await Task.Delay(2000);
                 await MetinKeyboard.Instance.ApretarEnter();
-                await Task.Delay(1000);
+                await Task.Delay(2000);
                 return true;
             }
 
@@ -162,9 +162,9 @@ namespace Metin2Bot.Operaciones
                 metin.StartX + textRegion.X + Resolution.ClickTiendaGeneral().X,
                 metin.StartY + textRegion.Y + Resolution.ClickTiendaGeneral().Y);
 
-            await Task.Delay(1000);
+            await Task.Delay(1500);
             await MetinKeyboard.Instance.ApretarEnter();
-            await Task.Delay(1000);
+            await Task.Delay(1500);
 
             return AccionesImg.PicTiendaGeneralAbierta.ContainsText(metin);
         }

@@ -43,7 +43,7 @@ namespace Metin2Bot.Operaciones
                             coordenadaX = metin.StartX + metin.TextRegion.X + 15;
                             coordenadaY = metin.StartY + metin.TextRegion.Y + -80 + (timeoutSeleccionado * 20);
                             await User.RightClickAt(coordenadaX, coordenadaY, 50);
-                            await Task.Delay(1200);
+                            await Task.Delay(1500);
 
                             seleccionado = AccionesImg.PicNombrePiedraMetin.ContainsText(metin);
                             timeoutSeleccionado++;
@@ -69,7 +69,7 @@ namespace Metin2Bot.Operaciones
             do
             {
                 await User.RightClickAt(coordenadaX, coordenadaY, 50);
-                await Task.Delay(1200);
+                await Task.Delay(1500);
                 cont++;
             } while (!AccionesImg.PicNombrePiedraMetin.ContainsText(metin) && cont < timeoutSeleccionMetin);
 
@@ -91,7 +91,8 @@ namespace Metin2Bot.Operaciones
                 return;
             }
 
-            while (!estaMuerto && seleccionado)
+            var toleranciaDarMetinPorMuerto = 0;
+            while (!estaMuerto && (seleccionado || toleranciaDarMetinPorMuerto < 10))
             {
                 Console.WriteLine($"{seleccionado}: {hp}");
                 await MetinKeyboard.Instance.AgarrarItems();
@@ -99,6 +100,11 @@ namespace Metin2Bot.Operaciones
 
                 estaMuerto = AccionesImg.PicEstaMuerto.ContainsText(metin);
                 (seleccionado, hp) = AccionesImg.PicNombrePiedraMetin.ProcessMobHP(metin);
+
+                if (seleccionado)
+                    toleranciaDarMetinPorMuerto = 0;
+                else
+                    toleranciaDarMetinPorMuerto++;
 
                 await Task.Delay(100);
             }
@@ -116,6 +122,7 @@ namespace Metin2Bot.Operaciones
                 await Task.Delay(100);
             }
 
+            Console.WriteLine();
             cronometro.Stop();
         }
     }

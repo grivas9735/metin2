@@ -152,7 +152,10 @@ namespace Metin2Bot.Metin2Oficial
 
                 await Movimiento.MoverAPotera(metin);
 
-                await Fragmenteo.BuscarTiendaGeneral(metin);
+                var encontroPotera = await Fragmenteo.BuscarTiendaGeneral(metin);
+
+                if (!encontroPotera)
+                    continue;
 
                 var cantidadPociones = await Fragmenteo.ContarPociones(metin);
 
