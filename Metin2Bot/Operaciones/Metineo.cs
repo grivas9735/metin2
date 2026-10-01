@@ -25,6 +25,8 @@ namespace Metin2Bot.Operaciones
             {
                 await User.MoverCamaraConMouse(metin, i * 150, DireccionCamara.Arriba, 5);
                 await Task.Delay(100);
+                await MetinKeyboard.Instance.PresionarYSoltar(MiButton.BT7.KEY_F, 200);
+                await Task.Delay(100);
 
                 for (int  j = 0; j < 15 && !encontroMetin; j++)
                 {
