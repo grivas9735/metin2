@@ -179,7 +179,6 @@ namespace Metin2Bot.Controladores
             await Movimiento.Caminar(metin, new Vector2(661, 554));
             await Movimiento.Caminar(metin, new Vector2(655, 516));
             await Movimiento.Caminar(metin, new Vector2(623, 510));
-
         }
 
         private static async Task<Vector2> LeerPosicionActualHastaHallarValor(Metin2 metin)
