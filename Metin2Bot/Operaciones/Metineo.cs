@@ -30,6 +30,7 @@ namespace Metin2Bot.Operaciones
 
                 for (int  j = 0; j < 15 && !encontroMetin; j++)
                 {
+                    Console.WriteLine("GIRANDO CAMARA");
                     await MoverCamaraConMouse(metin, 30, DireccionCamara.Derecha, 15);
                     await Task.Delay(100);
 
@@ -45,6 +46,7 @@ namespace Metin2Bot.Operaciones
                             coordenadaX = metin.StartX + metin.TextRegion.X + 15;
                             coordenadaY = metin.StartY + metin.TextRegion.Y + -80 + (timeoutSeleccionado * 20);
                             await User.RightClickAt(coordenadaX, coordenadaY, 50);
+                            Console.WriteLine("BUSCANDO METIN CON CLICK DERECHO");
                             await Task.Delay(1500);
 
                             seleccionado = AccionesImg.PicNombrePiedraMetin.ContainsText(metin);
@@ -59,6 +61,7 @@ namespace Metin2Bot.Operaciones
 
         public static async Task MatarMetin(Metin2 metin, int coordenadaX, int coordenadaY)
         {
+            Console.WriteLine($"MATANDO METIN ({coordenadaX}, {coordenadaY})");
             await Habilidades.BajarseDelCaballo();
             await Habilidades.UsarAura();
             //await Habilidades.UsarBerserk();

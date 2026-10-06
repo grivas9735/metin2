@@ -13,7 +13,7 @@ namespace Metin2Bot.Metin2Oficial
         private static readonly int minutosApagado = 99999; // (60,1) (120,2) (180,3) (240,4) (360,6) (480,8) (600,10)
         private static readonly int minutosPausado = 99999;
 
-        private static readonly int channelInicio = 5;
+        private static readonly int channelInicio = 1;
         private static readonly PathingMetineo pathing = new PathingTierraDeFuegoCirculo();
 
         public static async Task AwaitShutdown()
@@ -208,7 +208,7 @@ namespace Metin2Bot.Metin2Oficial
                             Environment.Exit(0);
 
                         await Cliente.CerrarInventario(metin);
-                        await Movimiento.Cabalgar(metin, new Vector2(punto.Item1, punto.Item2));
+                        await Movimiento.Cabalgar(metin, new Vector2(punto.X, punto.Y));
 
                         var (encontroMetin, coordenadaX, coordenadaY) = await Metineo.BuscarMetin(metin);
 
@@ -218,7 +218,8 @@ namespace Metin2Bot.Metin2Oficial
 
                             await User.ClickAt(
                                 metin.StartX + Resolution.ClickInventario2().X,
-                                metin.StartY + Resolution.ClickInventario2().Y);
+                                metin.StartY + Resolution.ClickInventario2().Y,
+                                50);
 
                             await Metineo.MatarMetin(metin, coordenadaX, coordenadaY);
                             break;

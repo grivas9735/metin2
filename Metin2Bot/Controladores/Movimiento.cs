@@ -7,10 +7,9 @@ namespace Metin2Bot.Controladores
 {
     public static class Movimiento
     {
-
         public static async Task Caminar(Metin2 metin, Vector2 destino)
         {
-            var tiempoMovimientoStep = 150;
+            var tiempoMovimientoStep = 50; // 150 funciona
             var distanciaMaximaTolerada = 2;
             await MoverPersonaje(metin, destino, tiempoMovimientoStep, distanciaMaximaTolerada);
         }
