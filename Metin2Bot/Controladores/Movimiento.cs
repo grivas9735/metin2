@@ -81,7 +81,7 @@ namespace Metin2Bot.Controladores
                     MetinKeyboard.Instance.MoverD);
             }
 
-            await MetinKeyboard.Instance.Quieto(100);
+            await MetinKeyboard.Instance.Quieto(50);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Metin {metin.Id} llegó a ({destino.X},{destino.Y})");
             Console.ResetColor();
