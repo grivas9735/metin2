@@ -15,10 +15,10 @@ namespace Metin2Bot
                 {
                     //await MetinRunner.LevearConChami(revivirAlMorir: false, apagarAlMorir: false);
                     //await MetinRunner.LevearAll();
-                    //await MetinRunner.Fragmentar();
+                    await MetinRunner.Fragmentar();
                     //await MetinRunner.Idle();
                     //await MetinRunner.Metinear();
-                    await MetinRunner.BackearFragmenteros();
+                    //await MetinRunner.BackearFragmenteros();
                     //await MetinRunner.Test();
                     //await MetinRunner.Pescar();
                 }
