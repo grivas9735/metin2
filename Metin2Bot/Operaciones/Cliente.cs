@@ -248,6 +248,7 @@ namespace Metin2Bot.Operaciones
 
             do
             {
+                Console.WriteLine($"CAMBIANDO A CH{channel}...");
                 await Salir(metin);
                 contadorTimeouts++;
             } while (!AccionesImg.PicLogin.ContainsText(metin) && contadorTimeouts < timeoutSalir);
@@ -284,6 +285,7 @@ namespace Metin2Bot.Operaciones
 
             do
             {
+                Console.WriteLine($"ESPERANDO SELECCION DE CAMPEON");
                 await Task.Delay(TimeSpan.FromSeconds(1));
                 contadorTimeouts++;
             } while (!AccionesImg.PicChampSelect.ContainsText(metin) && contadorTimeouts < timeoutChampSelect);

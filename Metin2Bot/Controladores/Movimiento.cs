@@ -7,10 +7,9 @@ namespace Metin2Bot.Controladores
 {
     public static class Movimiento
     {
-
         public static async Task Caminar(Metin2 metin, Vector2 destino)
         {
-            var tiempoMovimientoStep = 150;
+            var tiempoMovimientoStep = 50; // 150 funciona
             var distanciaMaximaTolerada = 2;
             await MoverPersonaje(metin, destino, tiempoMovimientoStep, distanciaMaximaTolerada);
         }
@@ -82,7 +81,7 @@ namespace Metin2Bot.Controladores
                     MetinKeyboard.Instance.MoverD);
             }
 
-            await MetinKeyboard.Instance.Quieto(100);
+            await MetinKeyboard.Instance.Quieto(50);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Metin {metin.Id} llegó a ({destino.X},{destino.Y})");
             Console.ResetColor();
@@ -180,7 +179,6 @@ namespace Metin2Bot.Controladores
             await Movimiento.Caminar(metin, new Vector2(661, 554));
             await Movimiento.Caminar(metin, new Vector2(655, 516));
             await Movimiento.Caminar(metin, new Vector2(623, 510));
-
         }
 
         private static async Task<Vector2> LeerPosicionActualHastaHallarValor(Metin2 metin)
