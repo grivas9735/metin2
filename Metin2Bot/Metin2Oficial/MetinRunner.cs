@@ -13,7 +13,7 @@ namespace Metin2Bot.Metin2Oficial
         private static readonly int minutosApagado = 99999; // (60,1) (120,2) (180,3) (240,4) (360,6) (480,8) (600,10)
         private static readonly int minutosPausado = 99999;
 
-        private static readonly int channelInicio = 5;
+        private static readonly int channelInicio = 1;
         private static readonly PathingMetineo pathing = new PathingTierraDeFuegoCirculo();
 
         public static async Task AwaitShutdown()
@@ -173,12 +173,13 @@ namespace Metin2Bot.Metin2Oficial
             Environment.Exit(0);
         }
 
-        public static async Task Metinear()
+        public static async Task Metinear(int maxMetines = 0)
         {
             try
             {
                 var metins = MetinFactory.GetAll();
                 var metin = metins[0];
+                var metinesMatados = 0;
 
                 await User.MostrarMetin(metin.ProcessId);
 
@@ -221,9 +222,13 @@ namespace Metin2Bot.Metin2Oficial
                                 metin.StartY + Resolution.ClickInventario2().Y);
 
                             await Metineo.MatarMetin(metin, coordenadaX, coordenadaY);
+                            metinesMatados++;
                             break;
                         }
                     }
+
+                    if (metinesMatados >= maxMetines && maxMetines != 0)
+                        Environment.Exit(0);
 
                     channel = channel == 6 ? 1 : channel + 1;
                     await Cliente.CambiarCH(metin, channel);

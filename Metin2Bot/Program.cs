@@ -17,7 +17,7 @@ namespace Metin2Bot
                     //await MetinRunner.LevearAll();
                     await MetinRunner.Fragmentar();
                     //await MetinRunner.Idle();
-                    //await MetinRunner.Metinear();
+                    //await MetinRunner.Metinear(0);
                     //await MetinRunner.BackearFragmenteros();
                     //await MetinRunner.Test();
                     //await MetinRunner.Pescar();
