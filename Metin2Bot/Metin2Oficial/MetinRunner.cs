@@ -181,6 +181,9 @@ namespace Metin2Bot.Metin2Oficial
                 var metin = metins[0];
                 var metinesMatados = 0;
 
+                _ = AwaitShutdown();
+                _ = AwaitPause();
+
                 await User.MostrarMetin(metin.ProcessId);
 
                 var channel = channelInicio;
